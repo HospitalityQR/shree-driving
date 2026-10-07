@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lotus Hut — Staff & Service Man Order Control Portal</title>
+    
+    <meta name="theme-color" content="#120406">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0c0204;
+            --bg-card: rgba(26, 7, 12, 0.95);
+            --border-gold: rgba(212, 175, 55, 0.45);
+            --gold-primary: #d4af37;
+            --gold-light: #fbe69b;
+            --lotus-red: #d91438;
+            --lotus-neon: #ff2a51;
+            --accent-green: #25d366;
+            --accent-green-dark: #128c3e;
+            --font-royal: 'Cinzel', serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-dark);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 16px 12px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .staff-container {
+            width: 100%;
+            max-width: 540px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Top Brand & Portal Bar */
+        .portal-header {
+            background: var(--bg-card);
+            border: 2px solid var(--gold-primary);
+            border-radius: 18px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.7);
+        }
+
+        .portal-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .portal-logo {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1.5px solid var(--gold-primary);
+            background: #fff;
+        }
+
+        .portal-title {
+            font-family: var(--font-royal);
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--gold-light);
+            line-height: 1.1;
+        }
+
+        .portal-badge {
+            font-size: 11px;
+            font-weight: 800;
+            background: rgba(217, 20, 56, 0.3);
+            border: 1px solid var(--lotus-neon);
+            color: #ffb3c1;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-portal-nav {
+            background: rgba(45, 12, 18, 0.9);
+            border: 1.4px solid var(--gold-primary);
+            color: var(--gold-light);
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Tab Switcher (Current Incoming vs Past) */
+        .portal-tabs {
+            display: flex;
+            background: rgba(20, 5, 10, 0.9);
+            border: 1.4px solid var(--border-gold);
+            border-radius: 14px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .portal-tab {
+            flex: 1;
+            padding: 9px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: #c9a4ac;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .portal-tab.active {
+            background: linear-gradient(135deg, #fbe69b 0%, #d4af37 60%, #9a7414 100%);
+            color: #0b0204;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+
+        /* ORDER CARDS SECTION */
+        .orders-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .order-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-gold);
+            border-radius: 20px;
+            padding: 16px 16px 18px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .order-card.pending-border {
+            border-color: var(--lotus-neon);
+            box-shadow: 0 0 20px rgba(217, 20, 56, 0.35);
+        }
+
+        .order-card.accepted-border {
+            border-color: #25d366;
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .order-card.done-border {
+            border-color: var(--gold-primary);
+            opacity: 0.85;
+        }
+
+        /* Prominent Vehicle Highlight */
+        .vehicle-hero-banner {
+            background: linear-gradient(135deg, #2b050d 0%, #4a0d18 50%, #1a0307 100%);
+            border: 1.8px solid var(--lotus-neon);
+            border-radius: 14px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+        }
+
+        .vehicle-no-text {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 2.5px;
+            color: #fff280;
+            text-transform: uppercase;
+        }
+
+        .vehicle-spot-pill {
+            background: rgba(255, 42, 81, 0.3);
+            border: 1px solid var(--lotus-neon);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 10px;
+        }
+
+        /* Order Meta Info */
+        .order-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+            background: rgba(14, 3, 6, 0.85);
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            font-size: 12px;
+        }
+
+        .order-meta-item strong {
+            color: var(--gold-light);
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .order-meta-item span {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13.5px;
+        }
+
+        /* Items Table */
+        .items-box {
+            background: rgba(18, 4, 8, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 10px 12px;
+            margin-bottom: 14px;
+        }
+
+        .items-header {
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            font-size: 13px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-name-qty {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .item-qty-badge {
+            background: var(--lotus-red);
+            color: #fff;
+            padding: 1px 7px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 900;
+            margin-right: 6px;
+        }
+
+        .item-price {
+            font-weight: 800;
+            color: var(--gold-light);
+        }
+
+        /* Total & Payment Badge */
+        .order-total-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(35, 9, 16, 0.9);
+            border-radius: 10px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-gold);
+        }
+
+        .total-amount {
+            font-size: 20px;
+            font-weight: 900;
+            color: #fff280;
+        }
+
+        .payment-status-tag {
+            font-size: 11.5px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: rgba(37, 211, 102, 0.2);
+            color: #6eff9f;
+            border: 1px solid #25d366;
+        }
+
+        /* =====================================================================
+           TWO-STAGE BUTTON WORKFLOW (RED -> GREEN, THEN READY -> ALL IS DONE)
+           ===================================================================== */
+        .staff-actions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* 1. STAGE 1: ACCEPT BUTTON (RED initially, GREEN when clicked!) */
+        .btn-accept-order {
+            width: 100%;
+            padding: 15px 18px;
+            border-radius: 16px;
+            border: 2px solid #ffffff;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+        }
+
+        /* INITIAL RED STATE */
+        .btn-accept-order.state-red {
+            background: linear-gradient(135deg, #ff2a51 0%, #d91438 55%, #85071e 100%);
+            color: #ffffff;
+            box-shadow: 0 0 25px rgba(217, 20, 56, 0.7);
+            animation: pulseRedBtn 1.8s infinite;
+        }
+
+        @keyframes pulseRedBtn {
+            0% { transform: scale(1); box-shadow: 0 0 15px rgba(217, 20, 56, 0.6); }
+            50% { transform: scale(1.02); box-shadow: 0 0 28px rgba(255, 42, 81, 0.9); }
+            100% { transform: scale(1); box-shadow: 0 0 15px rgba(217, 20, 56, 0.6); }
+        }
+
+        /* ACCEPTED GREEN STATE */
+        .btn-accept-order.state-green {
+            background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%);
+            color: #04181c;
+            border-color: #ffffff;
+            box-shadow: 0 0 22px rgba(37, 211, 102, 0.7);
+        }
+
+        /* 2. STAGE 2: BILL PUSH / ORDER READY BUTTON */
+        .btn-ready-order {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            border: 2px solid var(--gold-primary);
+            font-size: 15px;
+            font-weight: 900;
+            cursor: pointer;
+            display: none; /* Shown after acceptance */
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            background: rgba(35, 9, 16, 0.95);
+            color: var(--gold-light);
+        }
+
+        .btn-ready-order.visible {
+            display: flex;
+        }
+
+        .btn-ready-order.state-green {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+            color: #04181c;
+            border-color: #ffffff;
+            box-shadow: 0 0 22px rgba(0, 176, 155, 0.7);
+        }
+
+        /* Quick Sub-buttons: Print KOT & Direct Customer WhatsApp */
+        .sub-actions-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .btn-sub-action {
+            background: rgba(20, 5, 10, 0.85);
+            border: 1.2px solid rgba(212, 175, 55, 0.4);
+            color: var(--gold-light);
+            padding: 9px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            text-decoration: none;
+        }
+
+        /* Empty State */
+        .empty-orders-card {
+            background: var(--bg-card);
+            border: 1.5px dashed var(--gold-primary);
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            color: #c9a4ac;
+        }
+
+        /* Audio alert indicator */
+        .audio-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--gold-light);
+            margin-top: 4px;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="staff-container">
+
+        <!-- Top Portal Bar -->
+        <header class="portal-header">
+            <div class="portal-brand">
+                <img src="logo.png" alt="Lotus Hut" class="portal-logo">
+                <div>
+                    <h1 class="portal-title">LOTUS HUT</h1>
+                    <div class="portal-badge">STAFF & SERVICE DESK</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="index.html" class="btn-portal-nav">
+                    <span>📖</span> Menu
+                </a>
+                <button onclick="createDemoOrder()" class="btn-portal-nav" style="border-color: var(--lotus-neon); background: rgba(217, 20, 56, 0.3);">
+                    <span>+</span> Test
+                </button>
+            </div>
+        </header>
+
+        <!-- Audio Indicator -->
+        <div class="audio-indicator">
+            <span>🔊 Audio Chimes Enabled</span> • <span>Helpline: 9111789220</span>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="portal-tabs">
+            <button class="portal-tab active" id="tabActive" onclick="switchTab('active')">
+                Active Orders (<span id="activeCount">0</span>)
+            </button>
+            <button class="portal-tab" id="tabCompleted" onclick="switchTab('completed')">
+                Completed (<span id="completedCount">0</span>)
+            </button>
+        </div>
+
+        <!-- Orders List Feed -->
+        <main class="orders-feed" id="ordersFeed"></main>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script>
+        var currentTab = 'active';
+        var ordersList = [];
+
+        // Broadcast Channel for live customer sync
+        var orderChannel = null;
+        try {
+            orderChannel = new BroadcastChannel('lotus_hut_orders');
+        } catch (e) {}
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrders();
+            checkUrlOrderParam();
+        });
+
+        // 1. Check if order was passed via WhatsApp Link Query Parameter (?order=...)
+        function checkUrlOrderParam() {
+            var params = new URLSearchParams(window.location.search);
+            var orderDataEncoded = params.get('order');
+            if (orderDataEncoded) {
+                try {
+                    var jsonStr = decodeURIComponent(escape(atob(decodeURIComponent(orderDataEncoded))));
+                    var incomingOrder = JSON.parse(jsonStr);
+
+                    // Check if already in list
+                    var exists = ordersList.find(o => o.orderId === incomingOrder.orderId);
+                    if (!exists) {
+                        ordersList.unshift(incomingOrder);
+                        saveOrders();
+                        playAudioChime('new_order');
+                    }
+                    renderOrders();
+                } catch (e) {
+                    console.error('Error parsing order param', e);
+                }
+            }
+        }
+
+        // 2. Load Orders from LocalStorage
+        function loadOrders() {
+            try {
+                var stored = localStorage.getItem('lotus_hut_all_orders');
+                if (stored) {
+                    ordersList = JSON.parse(stored);
+                }
+            } catch (e) {
+                ordersList = [];
+            }
+            renderOrders();
+        }
+
+        function saveOrders() {
+            try {
+                localStorage.setItem('lotus_hut_all_orders', JSON.stringify(ordersList));
+            } catch (e) {}
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tabActive').classList.toggle('active', tab === 'active');
+            document.getElementById('tabCompleted').classList.toggle('active', tab === 'completed');
+            renderOrders();
+        }
+
+        // 3. Render Orders
+        function renderOrders() {
+            var container = document.getElementById('ordersFeed');
+            if (!container) return;
+
+            var activeOrders = ordersList.filter(o => o.status !== 'DONE');
+            var completedOrders = ordersList.filter(o => o.status === 'DONE');
+
+            document.getElementById('activeCount').innerText = activeOrders.length;
+            document.getElementById('completedCount').innerText = completedOrders.length;
+
+            var displayed = currentTab === 'active' ? activeOrders : completedOrders;
+
+            if (displayed.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-orders-card">
+                        <div style="font-size: 38px; margin-bottom: 8px;">🚘</div>
+                        <h3 style="color: var(--gold-light); margin-bottom: 6px;">No ${currentTab} orders</h3>
+                        <p style="font-size: 13px;">Customer orders sent via WhatsApp will appear here with Vehicle Number!</p>
+                        <button onclick="createDemoOrder()" style="margin-top: 14px; padding: 10px 18px; border-radius: 12px; border: 1px solid var(--gold-primary); background: rgba(217, 20, 56, 0.3); color: #fff; font-weight: 800; cursor: pointer;">
+                            + Create Sample Test Order
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            var html = '';
+            displayed.forEach(function(order) {
+                var isPending = !order.status || order.status === 'PENDING';
+                var isAccepted = order.status === 'ACCEPTED';
+                var isDone = order.status === 'DONE';
+
+                var borderClass = isPending ? 'pending-border' : (isAccepted ? 'accepted-border' : 'done-border');
+
+                // Items list html
+                var itemsHtml = '';
+                if (order.items && order.items.length > 0) {
+                    order.items.forEach(function(it) {
+                        itemsHtml += `
+                            <div class="item-row">
+                                <div class="item-name-qty">
+                                    <span class="item-qty-badge">${it.count}x</span>
+                                    <span>${it.name}</span>
+                                </div>
+                                <div class="item-price">₹${it.price * it.count}</div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Stage 1 Accept Button Class & Text
+                var acceptBtnText = isPending ? `🔴 Accept Order (स्वीकार करें)` : `✅ Order Accepted (तैयार हो रहा है)`;
+                var acceptBtnClass = isPending ? `state-red` : `state-green`;
+
+                // Stage 2 Bill Push & Ready Button
+                var readyBtnStyle = (isAccepted || isDone) ? `display: flex;` : `display: none;`;
+                var readyBtnText = isDone ? `✅ All is Done (Served at Car) 🚗` : `🧾 Bill Push & Mark Ready (तैयार है)`;
+                var readyBtnClass = isDone ? `state-green` : ``;
+
+                html += `
+                    <div class="order-card ${borderClass}" id="order_${order.orderId}">
+                        
+                        <!-- VEHICLE NUMBER HERO -->
+                        <div class="vehicle-hero-banner">
+                            <div>
+                                <div style="font-size: 10px; color: var(--gold-light); font-weight: 800; text-transform: uppercase;">VEHICLE NUMBER</div>
+                                <div class="vehicle-no-text">${order.custVehicle}</div>
+                            </div>
+                            <div class="vehicle-spot-pill">
+                                📍 ${order.custSpot || 'Driveway'}
+                            </div>
+                        </div>
+
+                        <!-- META INFO -->
+                        <div class="order-meta-grid">
+                            <div class="order-meta-item">
+                                <strong>Customer</strong>
+                                <span>${order.custName}</span>
+                            </div>
+                            <div class="order-meta-item">
+                                <strong>Order ID</strong>
+                                <span>#${order.orderId}</span>
+                            </div>
+                            <div class="order-meta-item">
+                                <strong>Time</strong>
+                                <span>${order.timestamp}</span>
+                            </div>
+                            <div class="order-meta-item">
+                                <strong>Phone</strong>
+                                <span>${order.custPhone || 'Direct Drive-in'}</span>
+                            </div>
+                        </div>
+
+                        <!-- ITEMS TABLE -->
+                        <div class="items-box">
+                            <div class="items-header">
+                                <span>Selected Dishes</span>
+                                <span>Amount</span>
+                            </div>
+                            ${itemsHtml}
+                        </div>
+
+                        <!-- TOTAL BAR -->
+                        <div class="order-total-bar">
+                            <div>
+                                <div style="font-size: 11px; color: #d6b8be;">Total Bill Payable:</div>
+                                <div class="total-amount">₹${order.totalAmount}</div>
+                            </div>
+                            <div class="payment-status-tag">
+                                💳 ${order.paymentMode || 'UPI / Cash'}
+                            </div>
+                        </div>
+
+                        <!-- STAGE 1 & 2 ACTION BUTTONS -->
+                        <div class="staff-actions-grid">
+                            <!-- STAGE 1: RED -> GREEN ACCEPT BUTTON -->
+                            <button class="btn-accept-order ${acceptBtnClass}" id="acceptBtn_${order.orderId}" onclick="handleAcceptOrder('${order.orderId}')">
+                                <span>${acceptBtnText}</span>
+                            </button>
+
+                            <!-- STAGE 2: BILL PUSH / READY BUTTON -->
+                            <button class="btn-ready-order ${readyBtnClass}" id="readyBtn_${order.orderId}" style="${readyBtnStyle}" onclick="handleReadyOrder('${order.orderId}')">
+                                <span>${readyBtnText}</span>
+                            </button>
+                        </div>
+
+                        <!-- SUB ACTIONS: Direct WhatsApp to Customer & Print -->
+                        <div class="sub-actions-row">
+                            <button class="btn-sub-action" onclick="sendCustomWhatsApp('${order.orderId}')">
+                                <span>💬</span> Send WhatsApp Msg
+                            </button>
+                            <button class="btn-sub-action" onclick="printOrderSlip('${order.orderId}')">
+                                <span>🖨️</span> Print KOT Slip
+                            </button>
+                        </div>
+
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // =====================================================================
+        // STAGE 1: ACCEPT ORDER HANDLER (RED -> GREEN + WHATSAPP NOTIFICATION)
+        // =====================================================================
+        function handleAcceptOrder(orderId) {
+            var order = ordersList.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            // Update status to ACCEPTED
+            order.status = 'ACCEPTED';
+            saveOrders();
+
+            // Play Chime
+            playAudioChime('accept');
+
+            // Broadcast to customer screen
+            if (orderChannel) {
+                orderChannel.postMessage({ type: 'STATUS_CHANGE', orderId: orderId, status: 'ACCEPTED' });
+            }
+
+            // Immediately switch button visual
+            var btn = document.getElementById(`acceptBtn_${orderId}`);
+            if (btn) {
+                btn.className = 'btn-accept-order state-green';
+                btn.innerHTML = `<span>✅ Order Accepted (तैयार हो रहा है)</span>`;
+            }
+
+            // Reveal Stage 2 (Ready Button)
+            var readyBtn = document.getElementById(`readyBtn_${orderId}`);
+            if (readyBtn) {
+                readyBtn.style.display = 'flex';
+            }
+
+            // Update card border
+            var card = document.getElementById(`order_${orderId}`);
+            if (card) {
+                card.className = 'order-card accepted-border';
+            }
+
+            // Prepare Notification Message to Customer
+            var waMsg = `🚗 *LOTUS HUT - THE DRIVE IN CAFE*\n` +
+                        `━━━━━━━━━━━━━━━━━━━━\n` +
+                        `Namaste *${order.custName}* ji! 🙏\n\n` +
+                        `✅ *YOUR ORDER IS ACCEPTED!* 👨‍🍳\n\n` +
+                        `🚙 *Vehicle No*: ${order.custVehicle.toUpperCase()}\n` +
+                        `🆔 *Order ID*: #${order.orderId}\n` +
+                        `⏱️ *Status*: Chef is preparing your fresh meal\n` +
+                        `⏳ *Estimated Time*: ~15-20 Minutes\n\n` +
+                        `Our service man will deliver hot food directly to your vehicle!\n` +
+                        `━━━━━━━━━━━━━━━━━━━━\n` +
+                        `Lotus Hut Drive-In Cafe (+91 91117 89220)`;
+
+            // If customer phone is provided, send to customer. Otherwise, prompt to send or copy!
+            if (order.custPhone && order.custPhone.length >= 10) {
+                var custPhoneClean = order.custPhone.replace(/[^0-9]/g, '');
+                if (custPhoneClean.length === 10) custPhoneClean = '91' + custPhoneClean;
+                var waUrl = `https://wa.me/${custPhoneClean}?text=${encodeURIComponent(waMsg)}`;
+                window.open(waUrl, '_blank');
+            } else {
+                // If phone wasn't entered, notify via alert and offer copy
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(waMsg);
+                }
+                alert(`✅ Order #${order.orderId} is ACCEPTED!\n\nCustomer message prepared:\n"Your Order for Vehicle ${order.custVehicle} is Accepted!"`);
+            }
+        }
+
+        // =====================================================================
+        // STAGE 2: BILL PUSH / READY HANDLER (GREEN "ALL IS DONE" MSG)
+        // =====================================================================
+        function handleReadyOrder(orderId) {
+            var order = ordersList.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            // Update status to DONE
+            order.status = 'DONE';
+            saveOrders();
+
+            // Play Victory Chime
+            playAudioChime('done');
+
+            // Broadcast to customer screen
+            if (orderChannel) {
+                orderChannel.postMessage({ type: 'STATUS_CHANGE', orderId: orderId, status: 'DONE' });
+            }
+
+            // Update button visual
+            var readyBtn = document.getElementById(`readyBtn_${orderId}`);
+            if (readyBtn) {
+                readyBtn.className = 'btn-ready-order state-green';
+                readyBtn.innerHTML = `<span>✅ All is Done (Served at Car) 🚗✨</span>`;
+            }
+
+            // Update card border
+            var card = document.getElementById(`order_${orderId}`);
+            if (card) {
+                card.className = 'order-card done-border';
+            }
+
+            // Notification Message to Customer: "ALL IS DONE"
+            var waMsg = `🎉 *LOTUS HUT - THE DRIVE IN CAFE*\n` +
+                        `━━━━━━━━━━━━━━━━━━━━\n` +
+                        `Namaste *${order.custName}* ji! 🙏\n\n` +
+                        `🟢 *ALL IS DONE! YOUR ORDER IS READY!* 🚗✨\n\n` +
+                        `🚙 *Vehicle No*: ${order.custVehicle.toUpperCase()}\n` +
+                        `🆔 *Order ID*: #${order.orderId}\n` +
+                        `💰 *Total Bill*: ₹${order.totalAmount}\n\n` +
+                        `Our service man is serving the hot order right at your car!\n` +
+                        `Please enjoy your meal & visit us again! 🙏\n` +
+                        `━━━━━━━━━━━━━━━━━━━━\n` +
+                        `Lotus Hut Drive-In Cafe (+91 91117 89220)`;
+
+            if (order.custPhone && order.custPhone.length >= 10) {
+                var custPhoneClean = order.custPhone.replace(/[^0-9]/g, '');
+                if (custPhoneClean.length === 10) custPhoneClean = '91' + custPhoneClean;
+                var waUrl = `https://wa.me/${custPhoneClean}?text=${encodeURIComponent(waMsg)}`;
+                window.open(waUrl, '_blank');
+            } else {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(waMsg);
+                }
+                alert(`🟢 ALL IS DONE! Order #${order.orderId} marked READY.\n\nNotification for Vehicle ${order.custVehicle} generated!`);
+            }
+
+            // Refresh list after brief moment
+            setTimeout(renderOrders, 1200);
+        }
+
+        // 4. Send Custom WhatsApp to Customer
+        function sendCustomWhatsApp(orderId) {
+            var order = ordersList.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            var defaultMsg = `Namaste ${order.custName} ji! Update regarding your Lotus Hut order #${order.orderId} (Vehicle: ${order.custVehicle}): `;
+            var phone = prompt("Enter customer WhatsApp number (or leave blank to send to staff):", order.custPhone || "");
+            if (phone !== null) {
+                var phoneClean = phone.replace(/[^0-9]/g, '');
+                if (phoneClean.length === 10) phoneClean = '91' + phoneClean;
+                if (!phoneClean) phoneClean = '919111789220';
+                var waUrl = `https://wa.me/${phoneClean}?text=${encodeURIComponent(defaultMsg)}`;
+                window.open(waUrl, '_blank');
+            }
+        }
+
+        // 5. Print KOT Slip
+        function printOrderSlip(orderId) {
+            var order = ordersList.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            var printWin = window.open('', '', 'width=400,height=600');
+            var itemsHtml = '';
+            order.items.forEach(function(i) {
+                itemsHtml += `<tr><td style="padding:4px;">${i.count}x ${i.name}</td><td style="text-align:right;padding:4px;">₹${i.price * i.count}</td></tr>`;
+            });
+
+            printWin.document.write(`
+                <html>
+                <head>
+                    <title>KOT - ${order.custVehicle}</title>
+                    <style>
+                        body { font-family: monospace; padding: 14px; }
+                        h2 { text-align: center; margin: 0; }
+                        .center { text-align: center; }
+                        hr { border: 1px dashed #000; margin: 8px 0; }
+                        table { width: 100%; border-collapse: collapse; }
+                    </style>
+                </head>
+                <body>
+                    <h2>LOTUS HUT</h2>
+                    <div class="center">THE DRIVE IN CAFE</div>
+                    <div class="center">Ph: 9111789220</div>
+                    <hr>
+                    <div><strong>VEHICLE: ${order.custVehicle}</strong></div>
+                    <div>SPOT: ${order.custSpot || 'Driveway'}</div>
+                    <div>CUSTOMER: ${order.custName}</div>
+                    <div>ORDER ID: #${order.orderId}</div>
+                    <div>TIME: ${order.timestamp}</div>
+                    <hr>
+                    <table>
+                        <thead><tr><th style="text-align:left;">Item</th><th style="text-align:right;">Amt</th></tr></thead>
+                        <tbody>${itemsHtml}</tbody>
+                    </table>
+                    <hr>
+                    <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:bold;">
+                        <span>TOTAL:</span>
+                        <span>₹${order.totalAmount}</span>
+                    </div>
+                    <div>Payment: ${order.paymentMode}</div>
+                    <hr>
+                    <div class="center">Thank You! Visit Again 🙏</div>
+                </body>
+                </html>
+            `);
+            printWin.document.close();
+            printWin.focus();
+            setTimeout(() => { printWin.print(); printWin.close(); }, 300);
+        }
+
+        // 6. Test Demo Order Creation
+        function createDemoOrder() {
+            var sampleOrder = {
+                orderId: "LH-" + Math.floor(1000 + Math.random() * 9000),
+                custName: "Naman Sharma",
+                custVehicle: "MP 09 CZ 4521",
+                custSpot: "Drive-In Bay 3",
+                custPhone: "9111789220",
+                custNote: "Extra chocolate on cold coffee",
+                items: [
+                    { id: "cf_1", name: "Lotus Special Cold Coffee with Ice Cream", price: 150, count: 2 },
+                    { id: "bg_1", name: "Lotus Crispy Veg Burger", price: 110, count: 2 },
+                    { id: "bt_2", name: "Peri Peri Masala Fries", price: 130, count: 1 }
+                ],
+                totalAmount: 650,
+                paymentMode: "UPI Paid (9111789220)",
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+                status: 'PENDING'
+            };
+
+            ordersList.unshift(sampleOrder);
+            saveOrders();
+            playAudioChime('new_order');
+            renderOrders();
+            alert(`Sample Test Order #${sampleOrder.orderId} for vehicle ${sampleOrder.custVehicle} created! Notice the RED Accept button.`);
+        }
+
+        // 7. Audio Synthesizer (No external sound files required)
+        function playAudioChime(type) {
+            try {
+                var AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                var ctx = new AudioContext();
+
+                if (type === 'new_order') {
+                    // Double Ding
+                    playTone(ctx, 587.33, 0, 0.15); // D5
+                    playTone(ctx, 880, 0.18, 0.35);  // A5
+                } else if (type === 'accept') {
+                    // Ascending Chime
+                    playTone(ctx, 523.25, 0, 0.12); // C5
+                    playTone(ctx, 659.25, 0.12, 0.12); // E5
+                    playTone(ctx, 783.99, 0.24, 0.28); // G5
+                } else if (type === 'done') {
+                    // Victory Fanfare
+                    playTone(ctx, 523.25, 0, 0.1);
+                    playTone(ctx, 659.25, 0.1, 0.1);
+                    playTone(ctx, 783.99, 0.2, 0.1);
+                    playTone(ctx, 1046.50, 0.3, 0.4); // C6
+                }
+            } catch (e) {}
+        }
+
+        function playTone(ctx, freq, delay, duration) {
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            var startTime = ctx.currentTime + delay;
+            gain.gain.setValueAtTime(0.3, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+        }
+    </script>
+</body>
+</html>

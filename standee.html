@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotus Hut — Luxury Printable Car & Table Standee</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Playfair+Display:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rozha+One&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-night: #0a0204;
+            --gold-primary: #d4af37;
+            --gold-light: #fbe69b;
+            --lotus-red: #d91438;
+            --lotus-neon: #ff2a51;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        body {
+            background-color: #1a060b;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 12px;
+            color: #ffffff;
+        }
+
+        .controls-toolbar {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #250810;
+            border: 1px solid var(--gold-primary);
+            padding: 10px 16px;
+            border-radius: 14px;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #fbe69b 0%, #d4af37 60%, #9a7414 100%);
+            color: #0b0204;
+            font-weight: 900;
+            font-size: 14px;
+            padding: 8px 18px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 8px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+        }
+
+        /* STANDEE FRAME */
+        .standee-frame {
+            width: 100%;
+            max-width: 480px;
+            aspect-ratio: 1 / 1.5; /* 4x6 / A5 Standard Standee Proportion */
+            background: #0a0204;
+            background-image: linear-gradient(180deg, rgba(10, 2, 4, 0.85) 0%, rgba(10, 2, 4, 0.94) 100%),
+                              url('ambience_night.png');
+            background-size: cover;
+            background-position: center top;
+            border: 4px solid var(--gold-primary);
+            border-radius: 24px;
+            padding: 26px 20px 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.85), 0 0 25px rgba(217, 20, 56, 0.4);
+            overflow: hidden;
+        }
+
+        /* Inner Hairline Gold Border */
+        .standee-frame::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border: 1.5px solid rgba(251, 230, 155, 0.7);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+
+        .logo-wrap {
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            border: 2px solid var(--gold-primary);
+            background: #ffffff;
+            box-shadow: 0 0 20px rgba(255, 42, 81, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .brand-title {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fbe69b 0%, #d4af37 60%, #9a7414 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            line-height: 1.1;
+        }
+
+        .brand-pill {
+            background: var(--lotus-red);
+            border: 1px solid var(--lotus-neon);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 2.5px;
+            padding: 3px 14px;
+            border-radius: 20px;
+            margin: 6px 0 10px;
+            text-transform: uppercase;
+            box-shadow: 0 0 12px rgba(217, 20, 56, 0.6);
+        }
+
+        .standee-heading {
+            font-size: 15.5px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .standee-heading-hi {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold-light);
+            margin-top: 2px;
+            margin-bottom: 12px;
+        }
+
+        /* Center QR Code */
+        .qr-card {
+            background: #ffffff;
+            border: 4px solid var(--gold-primary);
+            border-radius: 20px;
+            padding: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-img {
+            width: 200px;
+            height: 200px;
+            display: block;
+        }
+
+        /* UPI Card */
+        .upi-badge-card {
+            background: rgba(30, 8, 14, 0.95);
+            border: 1.8px solid var(--gold-primary);
+            border-radius: 14px;
+            padding: 8px 14px;
+            width: 90%;
+            margin-bottom: 12px;
+        }
+
+        .upi-badge-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--gold-light);
+            letter-spacing: 0.5px;
+        }
+
+        .upi-badge-num {
+            font-size: 17px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 1.5px;
+        }
+
+        .upi-badge-sub {
+            font-size: 10px;
+            color: #d6b8be;
+        }
+
+        /* Steps */
+        .steps-row {
+            display: flex;
+            justify-content: space-between;
+            width: 95%;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .step-pill {
+            background: rgba(45, 12, 18, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 8px;
+            padding: 5px 6px;
+            font-size: 9.5px;
+            font-weight: 800;
+            color: #ffffff;
+            flex: 1;
+        }
+
+        .standee-footer {
+            margin-top: auto;
+            border-top: 1px solid rgba(212, 175, 55, 0.4);
+            padding-top: 8px;
+            width: 100%;
+            font-size: 11px;
+            color: var(--gold-light);
+        }
+
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            .controls-toolbar {
+                display: none;
+            }
+            .standee-frame {
+                box-shadow: none;
+                max-width: 100%;
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls-toolbar">
+        <a href="index.html" class="btn-back">← Back to Menu</a>
+        <button class="btn-print" onclick="window.print()">🖨️ Print Standee (Ctrl+P)</button>
+    </div>
+
+    <div class="standee-frame">
+        <!-- Logo -->
+        <div class="logo-wrap">
+            <img src="logo.png" alt="Lotus Hut Logo" class="logo-img">
+        </div>
+
+        <!-- Titles -->
+        <h1 class="brand-title">LOTUS HUT</h1>
+        <div class="brand-pill">THE DRIVE IN CAFE</div>
+
+        <div class="standee-heading">SCAN FROM YOUR CAR TO ORDER</div>
+        <div class="standee-heading-hi">अपनी गाड़ी से सीधे डिजिटल मेन्यू ऑर्डर करें</div>
+
+        <!-- Center QR -->
+        <div class="qr-card">
+            <img src="qr_digital_menu.png" alt="Lotus Hut Menu QR" class="qr-img">
+        </div>
+
+        <!-- UPI Info -->
+        <div class="upi-badge-card">
+            <div class="upi-badge-title">💳 INSTANT UPI PAYMENT & GPAY / PHONEPE</div>
+            <div class="upi-badge-num">9111789220</div>
+            <div class="upi-badge-sub">UPI ID: 9111789220@upi • Cash Accepted at Vehicle</div>
+        </div>
+
+        <!-- 4 Steps -->
+        <div class="steps-row">
+            <div class="step-pill">1. Scan QR</div>
+            <div class="step-pill">2. Enter Car No.</div>
+            <div class="step-pill">3. WhatsApp Order</div>
+            <div class="step-pill">4. Served at Car 🚗</div>
+        </div>
+
+        <!-- Footer -->
+        <div class="standee-footer">
+            <strong>LOTUS HUT • THE DRIVE IN CAFE • INDORE</strong><br>
+            <span>Direct WhatsApp & Call: <strong>+91 91117 89220</strong></span>
+        </div>
+    </div>
+
+</body>
+</html>

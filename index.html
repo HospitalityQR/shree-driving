@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lotus Hut - The Drive In Cafe | Digital Menu & Fast Car Order</title>
+    
+    <!-- Meta & Social Sharing -->
+    <meta name="description" content="Lotus Hut - The Drive In Cafe. Order gourmet coffee, shakes, burgers, pizzas, and starters directly to your vehicle. Fast WhatsApp ordering & Instant UPI payments.">
+    <meta name="theme-color" content="#120406">
+
+    <!-- Google Fonts: Luxury Serif & Modern Clean Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rozha+One&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palette: Lotus Hut Neon Crimson & 24K Polished Gold */
+            --bg-night-deep: #0a0204;
+            --bg-card: rgba(22, 6, 10, 0.92);
+            --bg-card-hover: rgba(36, 10, 16, 0.96);
+            --card-border: rgba(212, 175, 55, 0.45);
+            --card-border-glow: rgba(255, 215, 0, 0.85);
+
+            /* Brand Colors */
+            --lotus-red: #d91438;
+            --lotus-red-dark: #8a0c23;
+            --lotus-neon: #ff2a51;
+            --gold-primary: #d4af37;
+            --gold-light: #fbe69b;
+            --gold-dark: #9a7414;
+            --gold-gradient: linear-gradient(135deg, #fbe69b 0%, #d4af37 55%, #9a7414 100%);
+            --neon-red-gradient: linear-gradient(135deg, #ff2a51 0%, #d91438 50%, #80071c 100%);
+
+            /* Typography */
+            --text-white: #ffffff;
+            --text-gold: #fbe69b;
+            --text-muted: #d6b8be;
+            --font-royal: 'Cinzel', 'Playfair Display', serif;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+            /* Shadows & Elevation */
+            --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.7);
+            --shadow-neon: 0 0 25px rgba(217, 20, 56, 0.45);
+            --shadow-gold: 0 0 22px rgba(212, 175, 55, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-night-deep);
+            color: var(--text-white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 110px;
+        }
+
+        /* Fixed Luxury Ambience Backdrop */
+        .fixed-bg {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(10, 2, 4, 0.82) 0%, rgba(10, 2, 4, 0.94) 60%, #0a0204 100%),
+                        url('ambience_night.png') center top / cover no-repeat;
+            z-index: 0;
+            pointer-events: none;
+            filter: brightness(0.65) contrast(1.1);
+        }
+
+        /* Outer Frame Wrapper */
+        .app-container {
+            width: 100%;
+            max-width: 520px;
+            position: relative;
+            z-index: 2;
+            padding: 16px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* =====================================================================
+           1. BRAND HERO HEADER
+           ===================================================================== */
+        .brand-header {
+            width: 100%;
+            background: var(--bg-card);
+            border: 2px solid var(--gold-primary);
+            border-radius: 20px;
+            padding: 18px 16px 14px;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow-card), var(--shadow-neon);
+            backdrop-filter: blur(14px);
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        /* Inner Hairline Gold Border */
+        .brand-header::before {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .header-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .logo-img {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 0 16px rgba(255, 42, 81, 0.5), 0 0 12px rgba(212, 175, 55, 0.6);
+            object-fit: cover;
+            background: #ffffff;
+        }
+
+        .brand-title-wrap {
+            text-align: left;
+        }
+
+        .brand-title {
+            font-family: var(--font-royal);
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .brand-subname {
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            color: #ffffff;
+            display: inline-block;
+            background: var(--neon-red-gradient);
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-top: 4px;
+            box-shadow: 0 0 12px rgba(255, 42, 81, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+        }
+
+        .drivein-meta-pills {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .meta-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(45, 12, 18, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 4px 10px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-gold);
+        }
+
+        .meta-pill.highlight {
+            background: rgba(217, 20, 56, 0.25);
+            border-color: var(--lotus-neon);
+            color: #ffffff;
+        }
+
+        /* Car Order Prompt Banner */
+        .car-order-banner {
+            width: 100%;
+            background: linear-gradient(90deg, #1b060a 0%, #3a0d15 50%, #1b060a 100%);
+            border: 1px solid var(--lotus-neon);
+            border-radius: 14px;
+            padding: 9px 12px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 700;
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+        }
+
+        .car-order-banner span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* =====================================================================
+           2. QUICK ACTION CARDS (Track, Ambience, Staff Portal)
+           ===================================================================== */
+        .quick-nav-row {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .quick-card {
+            background: var(--bg-card);
+            border: 1.5px solid var(--card-border);
+            border-radius: 14px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .quick-card:hover, .quick-card:active {
+            border-color: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .quick-icon {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            flex-shrink: 0;
+        }
+
+        .quick-text-title {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--text-gold);
+            line-height: 1.2;
+        }
+
+        .quick-text-sub {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* =====================================================================
+           3. LIVE SEARCH & CATEGORY CHIPS
+           ===================================================================== */
+        .search-box-wrap {
+            position: relative;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            border-radius: 14px;
+            border: 1.8px solid var(--gold-primary);
+            background: rgba(25, 7, 12, 0.92);
+            color: #ffffff;
+            font-family: var(--font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+            transition: all 0.25s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--gold-light);
+            box-shadow: 0 0 16px rgba(212, 175, 55, 0.4);
+        }
+
+        .search-input::placeholder {
+            color: #b08d95;
+            font-weight: 500;
+        }
+
+        .search-icon-svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            fill: var(--gold-light);
+            pointer-events: none;
+        }
+
+        .search-clear-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gold-light);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+            padding: 4px;
+        }
+
+        .category-scroll-bar {
+            width: 100%;
+            overflow-x: auto;
+            white-space: nowrap;
+            display: flex;
+            gap: 8px;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .category-scroll-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1.4px solid var(--card-border);
+            background: rgba(28, 8, 14, 0.85);
+            color: var(--text-gold);
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-chip:hover, .category-chip.active {
+            background: var(--gold-gradient);
+            color: #0e0305;
+            border-color: #ffffff;
+            box-shadow: 0 4px 14px rgba(212, 175, 55, 0.45);
+            transform: scale(1.03);
+        }
+
+        .category-header-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 4px 10px;
+            border-bottom: 1.5px solid rgba(212, 175, 55, 0.35);
+            margin-bottom: 12px;
+        }
+
+        .category-header-title {
+            font-family: var(--font-royal);
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-gold);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-header-count {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: rgba(45, 12, 18, 0.8);
+            padding: 3px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* =====================================================================
+           4. DISH CARDS LIST
+           ===================================================================== */
+        .dishes-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .dish-card {
+            background: var(--bg-card);
+            border: 1.5px solid var(--card-border);
+            border-radius: 16px;
+            padding: 12px 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(8px);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+            position: relative;
+        }
+
+        .dish-card:hover {
+            border-color: var(--gold-light);
+            transform: translateY(-1px);
+        }
+
+        .dish-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dish-top-badges {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .veg-symbol {
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid #22a652;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: #ffffff;
+        }
+
+        .veg-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22a652;
+        }
+
+        .dish-badge {
+            font-size: 10px;
+            font-weight: 800;
+            background: rgba(217, 20, 56, 0.25);
+            border: 1px solid var(--lotus-neon);
+            color: #ff9fb0;
+            padding: 1px 7px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dish-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.25;
+            margin-bottom: 2px;
+        }
+
+        .dish-name-hi {
+            font-size: 11.5px;
+            color: var(--text-gold);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .dish-desc {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            line-height: 1.35;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .dish-meta-bottom {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #a7878e;
+        }
+
+        .dish-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            flex-shrink: 0;
+            min-width: 90px;
+        }
+
+        .dish-price {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--text-gold);
+            letter-spacing: 0.5px;
+        }
+
+        /* Quantity Controls (+ / -) */
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            background: rgba(14, 3, 6, 0.95);
+            border: 1.5px solid var(--gold-primary);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .qty-btn {
+            background: none;
+            border: none;
+            color: var(--gold-light);
+            font-size: 16px;
+            font-weight: 800;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s ease;
+        }
+
+        .qty-btn:active {
+            background: rgba(212, 175, 55, 0.3);
+        }
+
+        .qty-val {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #ffffff;
+            min-width: 22px;
+            text-align: center;
+        }
+
+        .add-initial-btn {
+            background: var(--neon-red-gradient);
+            border: 1.2px solid var(--gold-primary);
+            color: #ffffff;
+            font-size: 12.5px;
+            font-weight: 800;
+            padding: 7px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(217, 20, 56, 0.4);
+        }
+
+        .add-initial-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* =====================================================================
+           5. FLOATING BOTTOM CART BAR
+           ===================================================================== */
+        .floating-cart-bar {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 28px);
+            max-width: 490px;
+            background: linear-gradient(135deg, #2b060d 0%, #150306 100%);
+            border: 2px solid var(--gold-primary);
+            border-radius: 22px;
+            padding: 12px 18px;
+            display: none; /* Shown dynamically when count > 0 */
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.85), var(--shadow-neon);
+            z-index: 100;
+            backdrop-filter: blur(14px);
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            cursor: pointer;
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 40px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        .cart-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cart-badge-count {
+            background: var(--lotus-neon);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 900;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 10px rgba(255, 42, 81, 0.8);
+        }
+
+        .cart-amount-total {
+            font-size: 19px;
+            font-weight: 900;
+            color: var(--text-gold);
+            line-height: 1.1;
+        }
+
+        .cart-amount-sub {
+            font-size: 10.5px;
+            color: var(--text-muted);
+        }
+
+        .cart-view-btn {
+            background: var(--gold-gradient);
+            border: none;
+            color: #0e0305;
+            font-size: 13.5px;
+            font-weight: 800;
+            padding: 9px 18px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 14px rgba(212, 175, 55, 0.45);
+        }
+
+        /* =====================================================================
+           6. SLIDE-UP CART & CHECKOUT MODAL
+           ===================================================================== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.78);
+            backdrop-filter: blur(6px);
+            z-index: 200;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            display: block;
+            opacity: 1;
+        }
+
+        .cart-modal-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(100%);
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            background: #130407;
+            border-top: 3px solid var(--gold-primary);
+            border-radius: 26px 26px 0 0;
+            padding: 20px 18px 24px;
+            box-shadow: 0 -14px 45px rgba(0, 0, 0, 0.9);
+            z-index: 210;
+            overflow-y: auto;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-modal-sheet.open {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .sheet-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1.5px solid rgba(212, 175, 55, 0.35);
+            margin-bottom: 14px;
+        }
+
+        .sheet-title {
+            font-family: var(--font-royal);
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--text-gold);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sheet-close-btn {
+            background: rgba(45, 12, 18, 0.8);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-light);
+            font-size: 18px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Order Items in Tray */
+        .sheet-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 28vh;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 14px;
+        }
+
+        .sheet-item-row {
+            background: rgba(28, 8, 14, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 9px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sheet-item-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .sheet-item-sub {
+            font-size: 11px;
+            color: var(--text-gold);
+        }
+
+        .sheet-item-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sheet-item-price {
+            font-size: 14.5px;
+            font-weight: 800;
+            color: var(--text-gold);
+        }
+
+        /* Customer Details Form (MANDATORY: Name & Vehicle Number) */
+        .form-section-card {
+            background: rgba(30, 8, 14, 0.95);
+            border: 1.8px solid var(--gold-primary);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+        }
+
+        .form-section-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: var(--text-gold);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-gold);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 9px 11px;
+            border-radius: 10px;
+            border: 1.4px solid rgba(212, 175, 55, 0.5);
+            background: #0d0205;
+            color: #ffffff;
+            font-family: var(--font-sans);
+            font-size: 13.5px;
+            font-weight: 700;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--gold-light);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+
+        .form-input.highlight-car {
+            border-color: var(--lotus-neon);
+            background: #1a0307;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff280;
+        }
+
+        /* Direct UPI Payment Section */
+        .upi-payment-box {
+            background: linear-gradient(135deg, #24060c 0%, #150306 100%);
+            border: 2px dashed var(--gold-primary);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+
+        .upi-header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(212, 175, 55, 0.18);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .upi-number-display {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .upi-sub-note {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        /* Dynamic QR Code Box */
+        .qr-wrapper {
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 14px;
+            display: inline-block;
+            margin: 6px auto 10px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+            border: 2px solid var(--gold-primary);
+        }
+
+        .qr-img {
+            width: 130px;
+            height: 130px;
+            display: block;
+        }
+
+        .upi-actions-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .btn-upi-pay {
+            background: var(--neon-red-gradient);
+            border: 1px solid var(--gold-primary);
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 12.5px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(217, 20, 56, 0.4);
+        }
+
+        .btn-upi-copy {
+            background: rgba(45, 12, 18, 0.9);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-light);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* Payment Mode Selector */
+        .payment-mode-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .mode-opt {
+            background: rgba(14, 3, 6, 0.85);
+            border: 1.5px solid rgba(212, 175, 55, 0.4);
+            border-radius: 10px;
+            padding: 8px 6px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .mode-opt.selected {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-light);
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        /* Total Bill Breakdown */
+        .bill-summary-box {
+            background: rgba(20, 5, 10, 0.9);
+            border-radius: 12px;
+            padding: 10px 14px;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            margin-bottom: 14px;
+        }
+
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .bill-row.total {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--text-gold);
+            padding-top: 6px;
+            border-top: 1px dashed var(--gold-primary);
+            margin-top: 6px;
+        }
+
+        /* Final Primary WhatsApp Order Button */
+        .whatsapp-send-order-btn {
+            background: #25d366;
+            background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #178a3f 100%);
+            border: none;
+            color: #ffffff;
+            border-radius: 18px;
+            padding: 14px;
+            font-size: 15.5px;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+            transition: transform 0.2s ease;
+        }
+
+        .whatsapp-send-order-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* =====================================================================
+           7. LIVE CUSTOMER TRACKER MODAL (Accepted & Ready Sync)
+           ===================================================================== */
+        .tracker-modal-sheet {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 2, 4, 0.94);
+            z-index: 300;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+        }
+
+        .tracker-card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--bg-card);
+            border: 2px solid var(--gold-primary);
+            border-radius: 22px;
+            padding: 22px 18px;
+            text-align: center;
+            box-shadow: var(--shadow-card), var(--shadow-neon);
+            position: relative;
+        }
+
+        .tracker-order-id {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--lotus-neon);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .tracker-vehicle-badge {
+            background: var(--neon-red-gradient);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 8px auto 14px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 14px rgba(255, 42, 81, 0.6);
+        }
+
+        /* Order Status Stepper */
+        .status-stepper {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-align: left;
+            margin: 16px 0 20px;
+            background: rgba(15, 3, 6, 0.9);
+            padding: 16px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            position: relative;
+        }
+
+        .step-bullet {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 900;
+            background: #333;
+            color: #888;
+            flex-shrink: 0;
+            border: 2px solid #555;
+            transition: all 0.3s ease;
+        }
+
+        .step-item.active .step-bullet {
+            background: var(--lotus-red);
+            border-color: #ffffff;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(255, 42, 81, 0.8);
+            animation: pulseBullet 1.5s infinite;
+        }
+
+        .step-item.done .step-bullet {
+            background: #25d366;
+            border-color: #ffffff;
+            color: #04181c;
+            box-shadow: 0 0 12px rgba(37, 211, 102, 0.8);
+        }
+
+        @keyframes pulseBullet {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .step-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .step-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* =====================================================================
+           8. FOOTER
+           ===================================================================== */
+        .app-footer {
+            width: 100%;
+            text-align: center;
+            margin-top: 24px;
+            padding: 14px;
+            color: var(--text-muted);
+            font-size: 11.5px;
+        }
+
+        .footer-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            margin-bottom: 6px;
+            border: 1px solid var(--gold-primary);
+        }
+
+        /* Ambience Lightbox */
+        .lightbox-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 400;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+        }
+
+        .lightbox-modal.open {
+            display: flex;
+        }
+
+        .lightbox-img {
+            max-width: 95%;
+            max-height: 85vh;
+            border-radius: 16px;
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Ambience Background -->
+    <div class="fixed-bg"></div>
+
+    <!-- Main Container -->
+    <div class="app-container">
+
+        <!-- 1. BRAND HERO HEADER -->
+        <header class="brand-header">
+            <div class="header-top-row">
+                <img src="logo.png" alt="Lotus Hut Logo" class="logo-img">
+                <div class="brand-title-wrap">
+                    <h1 class="brand-title">LOTUS HUT</h1>
+                    <div class="brand-subname">THE DRIVE IN CAFE</div>
+                </div>
+            </div>
+
+            <div class="drivein-meta-pills">
+                <div class="meta-pill highlight">🚗 Car Service at Parking</div>
+                <div class="meta-pill">☕ Gourmet Brews</div>
+                <div class="meta-pill">⚡ Fast Order Delivery</div>
+                <div class="meta-pill">📍 Indore</div>
+            </div>
+
+            <!-- Car Order Notice -->
+            <div class="car-order-banner">
+                <span>🚘 Sitting in your Car? Order Directly:</span>
+                <span style="color: var(--gold-light); font-weight: 800;">⏱️ 15-20 Min Prep</span>
+            </div>
+        </header>
+
+        <!-- 2. QUICK NAVIGATION & AMBIENCE TILES -->
+        <div class="quick-nav-row">
+            <div class="quick-card" onclick="openAmbiencePhoto('ambience_night.png')">
+                <div class="quick-icon">✨</div>
+                <div>
+                    <div class="quick-text-title">Night Ambience</div>
+                    <div class="quick-text-sub">View Drive-In Vibes</div>
+                </div>
+            </div>
+            <a href="staff.html" class="quick-card" style="border-color: rgba(217, 20, 56, 0.6);">
+                <div class="quick-icon" style="background: rgba(217, 20, 56, 0.2); border-color: var(--lotus-neon);">👨‍🍳</div>
+                <div>
+                    <div class="quick-text-title">Owner / Staff</div>
+                    <div class="quick-text-sub">Order Accept Portal</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- 3. LIVE SEARCH BAR -->
+        <div class="search-box-wrap">
+            <svg class="search-icon-svg" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search coffee, shake, burger, pizza, fries..." oninput="handleSearch(this.value)">
+            <button id="searchClearBtn" class="search-clear-btn" onclick="clearSearch()">✕</button>
+        </div>
+
+        <!-- 4. HORIZONTAL CATEGORY SCROLLER -->
+        <div class="category-scroll-bar" id="categoryChips"></div>
+
+        <!-- 5. CATEGORY HEADING & ITEM COUNT -->
+        <div class="category-header-row">
+            <div class="category-header-title" id="categoryHeading">
+                <span>✨</span> All Items
+            </div>
+            <div class="category-header-count" id="categoryCount">0 Items</div>
+        </div>
+
+        <!-- 6. DISHES LIST CONTAINER -->
+        <main class="dishes-list" id="dishesList"></main>
+
+        <!-- 7. FOOTER -->
+        <footer class="app-footer">
+            <img src="logo.png" alt="Lotus Hut" class="footer-logo"><br>
+            <strong style="color: var(--text-gold); font-size: 13px;">LOTUS HUT • THE DRIVE IN CAFE</strong><br>
+            <span>Direct WhatsApp & UPI Helpline: <strong>+91 91117 89220</strong></span><br>
+            <span style="opacity: 0.7;">Indore, Madhya Pradesh</span>
+        </footer>
+
+    </div>
+
+    <!-- =====================================================================
+       8. FLOATING BOTTOM CART BAR (Triggers Slide-up Cart)
+       ===================================================================== -->
+    <div class="floating-cart-bar" id="floatingCart" onclick="openCartModal()">
+        <div class="cart-bar-left">
+            <div class="cart-badge-count" id="cartCount">0</div>
+            <div>
+                <div class="cart-amount-total" id="cartTotal">₹0</div>
+                <div class="cart-amount-sub">Tap to Enter Vehicle & Pay</div>
+            </div>
+        </div>
+        <button class="cart-view-btn">
+            <span>View Tray 🛒</span>
+        </button>
+    </div>
+
+    <!-- =====================================================================
+       9. SLIDE-UP CART & ORDER MODAL
+       ===================================================================== -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeCartModal()"></div>
+
+    <div class="cart-modal-sheet" id="cartModal">
+        <div class="sheet-header">
+            <div class="sheet-title">
+                <span>🚘</span> My Drive-In Tray (ऑर्डर)
+            </div>
+            <button class="sheet-close-btn" onclick="closeCartModal()">✕</button>
+        </div>
+
+        <!-- Selected Items List -->
+        <div class="sheet-items-list" id="sheetItemsList"></div>
+
+        <!-- MANDATORY CUSTOMER & VEHICLE DETAILS -->
+        <div class="form-section-card">
+            <div class="form-section-title">
+                <span>🚗</span> Step 1: Customer & Vehicle Details
+            </div>
+            
+            <div class="input-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Customer Name *</label>
+                    <input type="text" id="custNameInput" class="form-input" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Vehicle Number *</label>
+                    <input type="text" id="custVehicleInput" class="form-input highlight-car" placeholder="e.g. MP 09 AB 1234" required>
+                </div>
+            </div>
+
+            <div class="input-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Car Spot / Bay (Optional)</label>
+                    <input type="text" id="custSpotInput" class="form-input" placeholder="e.g. Bay 2 / Driveway">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number (Optional)</label>
+                    <input type="tel" id="custPhoneInput" class="form-input" placeholder="10 Digit Mobile">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 4px;">
+                <label class="form-label">Cooking Request / Notes</label>
+                <input type="text" id="custNoteInput" class="form-input" placeholder="e.g. Less spicy, extra tissues">
+            </div>
+        </div>
+
+        <!-- INSTANT DIRECT UPI PAYMENT (9111789220) -->
+        <div class="upi-payment-box">
+            <div class="upi-header-badge">
+                <span>💳</span> Step 2: Instant Payment Option
+            </div>
+            
+            <div style="font-size: 11px; color: var(--text-gold); margin-bottom: 2px;">Direct UPI & GPay / PhonePe Number:</div>
+            <div class="upi-number-display">9111789220</div>
+            <div class="upi-sub-note">Scan QR or Launch UPI app directly to pay exact amount:</div>
+
+            <!-- Dynamic Amount QR Code -->
+            <div class="qr-wrapper">
+                <img id="dynamicUpiQr" src="" alt="UPI QR Code" class="qr-img">
+            </div>
+
+            <div class="upi-actions-row">
+                <a id="upiIntentBtn" href="#" class="btn-upi-pay">
+                    <span>📱</span> Pay via UPI App
+                </a>
+                <button class="btn-upi-copy" onclick="copyUpiNumber()">
+                    <span>📋</span> Copy 9111789220
+                </button>
+            </div>
+
+            <!-- Payment Mode Selection -->
+            <div style="font-size: 11px; color: var(--text-gold); margin-top: 10px;">Select How You Are Paying:</div>
+            <div class="payment-mode-grid">
+                <div class="mode-opt selected" id="optUpi" onclick="setPaymentMode('UPI Paid (9111789220)')">
+                    ✅ UPI Paid (9111789220)
+                </div>
+                <div class="mode-opt" id="optCash" onclick="setPaymentMode('Pay Cash at Vehicle')">
+                    💵 Pay Cash at Car
+                </div>
+            </div>
+        </div>
+
+        <!-- BILL TOTAL BREAKDOWN -->
+        <div class="bill-summary-box">
+            <div class="bill-row">
+                <span>Selected Items:</span>
+                <span id="billItemsCount">0 items</span>
+            </div>
+            <div class="bill-row">
+                <span>Estimated Prep Time:</span>
+                <span>~15-20 Min</span>
+            </div>
+            <div class="bill-row total">
+                <span>Total Payable:</span>
+                <span id="billGrandTotal">₹0</span>
+            </div>
+        </div>
+
+        <!-- PRIMARY ORDER BUTTON: WHATSAPP -->
+        <button class="whatsapp-send-order-btn" onclick="sendOrderToWhatsApp()">
+            <svg style="width: 22px; height: 22px; fill: currentColor;" viewBox="0 0 24 24">
+                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm.01 17.01c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.13 8.13 0 01-1.25-4.24c0-4.52 3.68-8.2 8.2-8.2 2.19 0 4.25.85 5.8 2.4 1.55 1.55 2.4 3.61 2.4 5.8 0 4.52-3.68 8.2-8.16 8.2zm4.49-6.14c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.39-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.12.17 1.73 2.64 4.19 3.7.59.25 1.05.4 1.41.51.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.07-.12-.23-.19-.48-.31z"/>
+            </svg>
+            <span>Send Order via WhatsApp 💬</span>
+        </button>
+    </div>
+
+    <!-- =====================================================================
+       10. LIVE CUSTOMER TRACKER MODAL
+       ===================================================================== -->
+    <div class="tracker-modal-sheet" id="trackerModal">
+        <div class="tracker-card">
+            <div class="tracker-order-id" id="trackerOrderId">ORDER #LH-8492</div>
+            <div class="tracker-vehicle-badge" id="trackerVehicleBadge">MP 09 AB 1234</div>
+            <h3 style="font-family: var(--font-royal); color: var(--text-gold); font-size: 19px; margin-bottom: 4px;">Live Order Tracking</h3>
+            <p style="font-size: 12px; color: var(--text-muted);">Lotus Hut Kitchen & Service Desk</p>
+
+            <!-- Stepper -->
+            <div class="status-stepper">
+                <!-- Step 1 -->
+                <div class="step-item done" id="step1">
+                    <div class="step-bullet">✓</div>
+                    <div>
+                        <div class="step-title">Order Sent via WhatsApp</div>
+                        <div class="step-sub" id="step1Time">Received by Lotus Hut (9111789220)</div>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="step-item active" id="step2">
+                    <div class="step-bullet" id="step2Bullet">2</div>
+                    <div>
+                        <div class="step-title" id="step2Title">Waiting for Staff Acceptance... 🔴</div>
+                        <div class="step-sub" id="step2Sub">Service boy / Chef is reviewing your order</div>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="step-item" id="step3">
+                    <div class="step-bullet" id="step3Bullet">3</div>
+                    <div>
+                        <div class="step-title" id="step3Title">Order Ready / "All is Done" 🚗</div>
+                        <div class="step-sub">Bringing delicious hot food to your car</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <button onclick="closeTrackerModal()" style="flex: 1; padding: 12px; border-radius: 12px; border: 1px solid var(--gold-primary); background: rgba(45, 12, 18, 0.9); color: var(--gold-light); font-weight: 800; cursor: pointer;">
+                    Keep Browsing Menu
+                </button>
+                <a href="tel:9111789220" style="flex: 1; padding: 12px; border-radius: 12px; border: none; background: var(--gold-gradient); color: #04181c; font-weight: 900; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                    📞 Call Service Boy
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambience Lightbox -->
+    <div class="lightbox-modal" id="lightboxModal" onclick="closeAmbiencePhoto()">
+        <img id="lightboxImg" src="" alt="Ambience" class="lightbox-img">
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="menu-data.js"></script>
+    <script>
+        // State variables
+        var currentCategory = 'all';
+        var searchQuery = '';
+        var cart = {}; // itemId -> quantity
+        var selectedPaymentMode = 'UPI Paid (9111789220)';
+        var currentActiveOrderId = null;
+
+        // BroadcastChannel to sync live updates across tabs (e.g. staff accepting)
+        var orderChannel = null;
+        try {
+            orderChannel = new BroadcastChannel('lotus_hut_orders');
+            orderChannel.onmessage = function(event) {
+                if (event.data && event.data.type === 'STATUS_CHANGE') {
+                    if (currentActiveOrderId && event.data.orderId === currentActiveOrderId) {
+                        updateTrackerStatus(event.data.status);
+                    }
+                }
+            };
+        } catch (e) {
+            console.warn('BroadcastChannel not supported', e);
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCategoryChips();
+            renderDishes();
+            loadSavedCart();
+            checkExistingActiveOrder();
+        });
+
+        // 1. Render Category Chips
+        function renderCategoryChips() {
+            var container = document.getElementById('categoryChips');
+            if (!container || typeof MENU_CATEGORIES === 'undefined') return;
+
+            var html = '';
+            MENU_CATEGORIES.forEach(function(cat) {
+                var isActive = cat.id === currentCategory ? 'active' : '';
+                html += `
+                    <button class="category-chip ${isActive}" onclick="selectCategory('${cat.id}')">
+                        <span>${cat.icon}</span>
+                        <span>${cat.name}</span>
+                    </button>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function selectCategory(catId) {
+            currentCategory = catId;
+            if (searchQuery) {
+                document.getElementById('searchInput').value = '';
+                searchQuery = '';
+                document.getElementById('searchClearBtn').style.display = 'none';
+            }
+            renderCategoryChips();
+            renderDishes();
+        }
+
+        // 2. Render Dishes List
+        function renderDishes() {
+            var container = document.getElementById('dishesList');
+            var heading = document.getElementById('categoryHeading');
+            var countEl = document.getElementById('categoryCount');
+            if (!container || typeof MENU_DATA === 'undefined') return;
+
+            var filtered = MENU_DATA.filter(function(item) {
+                var matchCategory = currentCategory === 'all' || item.category === currentCategory;
+                var matchSearch = !searchQuery ||
+                    item.name.toLowerCase().includes(searchQuery) ||
+                    (item.nameHi && item.nameHi.toLowerCase().includes(searchQuery)) ||
+                    (item.desc && item.desc.toLowerCase().includes(searchQuery));
+                return matchCategory && matchSearch;
+            });
+
+            // Update header title & count
+            var currentCatObj = MENU_CATEGORIES.find(c => c.id === currentCategory);
+            heading.innerHTML = `<span>${currentCatObj ? currentCatObj.icon : '✨'}</span> ${searchQuery ? 'Search Results' : (currentCatObj ? currentCatObj.name : 'All Items')}`;
+            countEl.innerText = `${filtered.length} Items`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                        <div style="font-size: 38px; margin-bottom: 8px;">🍽️</div>
+                        <h3 style="color: var(--text-gold); margin-bottom: 6px;">No dishes found</h3>
+                        <p style="font-size: 13px;">Try searching for coffee, burger, pizza or fries</p>
+                    </div>
+                `;
+                return;
+            }
+
+            var html = '';
+            filtered.forEach(function(item) {
+                var qty = cart[item.id] || 0;
+                var badgeHtml = item.badge ? `<span class="dish-badge">${item.badge}</span>` : '';
+
+                var actionControl = qty > 0 ? `
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="updateItemQty('${item.id}', -1)">−</button>
+                        <span class="qty-val">${qty}</span>
+                        <button class="qty-btn" onclick="updateItemQty('${item.id}', 1)">+</button>
+                    </div>
+                ` : `
+                    <button class="add-initial-btn" onclick="updateItemQty('${item.id}', 1)">
+                        ADD +
+                    </button>
+                `;
+
+                html += `
+                    <div class="dish-card" id="dish_${item.id}">
+                        <div class="dish-info">
+                            <div class="dish-top-badges">
+                                <div class="veg-symbol"><div class="veg-dot"></div></div>
+                                ${badgeHtml}
+                            </div>
+                            <h3 class="dish-name">${item.name}</h3>
+                            <div class="dish-name-hi">${item.nameHi || ''}</div>
+                            <p class="dish-desc">${item.desc || ''}</p>
+                            <div class="dish-meta-bottom">
+                                <span>⏱️ ${item.prepTime || '15 Min'}</span>
+                                <span>• 🚗 Car Delivery</span>
+                            </div>
+                        </div>
+                        <div class="dish-right">
+                            <div class="dish-price">₹${item.price}</div>
+                            ${actionControl}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // 3. Search Filter
+        function handleSearch(val) {
+            searchQuery = val.trim().toLowerCase();
+            document.getElementById('searchClearBtn').style.display = searchQuery ? 'block' : 'none';
+            renderDishes();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            searchQuery = '';
+            document.getElementById('searchClearBtn').style.display = 'none';
+            renderDishes();
+        }
+
+        // 4. Cart Logic (+ / -)
+        function updateItemQty(itemId, delta) {
+            var current = cart[itemId] || 0;
+            var updated = current + delta;
+            if (updated <= 0) {
+                delete cart[itemId];
+            } else {
+                cart[itemId] = updated;
+            }
+            saveCart();
+            renderDishes();
+            updateFloatingCartBar();
+            renderSheetItems();
+        }
+
+        function saveCart() {
+            try {
+                localStorage.setItem('lotus_hut_cart', JSON.stringify(cart));
+            } catch (e) {}
+        }
+
+        function loadSavedCart() {
+            try {
+                var saved = localStorage.getItem('lotus_hut_cart');
+                if (saved) {
+                    cart = JSON.parse(saved);
+                    updateFloatingCartBar();
+                }
+            } catch (e) {}
+        }
+
+        function calculateCartTotals() {
+            var totalCount = 0;
+            var totalPrice = 0;
+            for (var id in cart) {
+                var count = cart[id];
+                var dish = MENU_DATA.find(d => d.id === id);
+                if (dish && count > 0) {
+                    totalCount += count;
+                    totalPrice += dish.price * count;
+                }
+            }
+            return { count: totalCount, total: totalPrice };
+        }
+
+        function updateFloatingCartBar() {
+            var stats = calculateCartTotals();
+            var bar = document.getElementById('floatingCart');
+            if (stats.count > 0) {
+                bar.style.display = 'flex';
+                document.getElementById('cartCount').innerText = stats.count;
+                document.getElementById('cartTotal').innerText = `₹${stats.total}`;
+            } else {
+                bar.style.display = 'none';
+                closeCartModal();
+            }
+        }
+
+        // 5. Cart Sheet Open / Close
+        function openCartModal() {
+            var stats = calculateCartTotals();
+            if (stats.count === 0) return;
+
+            renderSheetItems();
+            updateUpiDetails(stats.total);
+
+            // Autofill customer details if stored previously
+            var savedName = localStorage.getItem('lotus_hut_cust_name');
+            var savedVehicle = localStorage.getItem('lotus_hut_cust_vehicle');
+            if (savedName) document.getElementById('custNameInput').value = savedName;
+            if (savedVehicle) document.getElementById('custVehicleInput').value = savedVehicle;
+
+            document.getElementById('modalOverlay').classList.add('open');
+            document.getElementById('cartModal').classList.add('open');
+        }
+
+        function closeCartModal() {
+            document.getElementById('modalOverlay').classList.remove('open');
+            document.getElementById('cartModal').classList.remove('open');
+        }
+
+        function renderSheetItems() {
+            var listEl = document.getElementById('sheetItemsList');
+            var stats = calculateCartTotals();
+            document.getElementById('billItemsCount').innerText = `${stats.count} Items`;
+            document.getElementById('billGrandTotal').innerText = `₹${stats.total}`;
+
+            var html = '';
+            for (var id in cart) {
+                var count = cart[id];
+                var dish = MENU_DATA.find(d => d.id === id);
+                if (dish && count > 0) {
+                    html += `
+                        <div class="sheet-item-row">
+                            <div>
+                                <div class="sheet-item-title">${dish.name}</div>
+                                <div class="sheet-item-sub">₹${dish.price} each</div>
+                            </div>
+                            <div class="sheet-item-right">
+                                <span class="sheet-item-price">₹${dish.price * count}</span>
+                                <div class="qty-controls" style="border-width: 1px;">
+                                    <button class="qty-btn" style="width: 26px; height: 26px;" onclick="updateItemQty('${dish.id}', -1)">−</button>
+                                    <span class="qty-val" style="font-size: 12px; min-width: 18px;">${count}</span>
+                                    <button class="qty-btn" style="width: 26px; height: 26px;" onclick="updateItemQty('${dish.id}', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            listEl.innerHTML = html;
+        }
+
+        // 6. UPI Payment Details & Dynamic Amount QR Code
+        function updateUpiDetails(amount) {
+            var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220@upi";
+            var payee = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "Lotus Hut Drive In";
+            var note = "Lotus Hut Order Bill";
+
+            // Standard UPI Deep-link URI
+            var upiUri = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payee)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+
+            // Set button href
+            var intentBtn = document.getElementById('upiIntentBtn');
+            if (intentBtn) intentBtn.href = upiUri;
+
+            // Generate Instant Dynamic QR Code
+            var qrImg = document.getElementById('dynamicUpiQr');
+            if (qrImg) {
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUri)}`;
+            }
+        }
+
+        function copyUpiNumber() {
+            var num = "9111789220";
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(num);
+                alert("UPI Number copied: 9111789220\nOpen GPay / PhonePe / Paytm and pay directly!");
+            } else {
+                alert("UPI Number: 9111789220");
+            }
+        }
+
+        function setPaymentMode(mode) {
+            selectedPaymentMode = mode;
+            document.getElementById('optUpi').classList.toggle('selected', mode.startsWith('UPI'));
+            document.getElementById('optCash').classList.toggle('selected', mode.startsWith('Pay Cash'));
+        }
+
+        // 7. PLACE ORDER VIA WHATSAPP (Direct to 9111789220)
+        function sendOrderToWhatsApp() {
+            var stats = calculateCartTotals();
+            if (stats.count === 0) {
+                alert("Please add items to your tray first!");
+                return;
+            }
+
+            var nameInput = document.getElementById('custNameInput');
+            var vehicleInput = document.getElementById('custVehicleInput');
+            var spotInput = document.getElementById('custSpotInput');
+            var phoneInput = document.getElementById('custPhoneInput');
+            var noteInput = document.getElementById('custNoteInput');
+
+            var custName = nameInput.value.trim();
+            var custVehicle = vehicleInput.value.trim();
+
+            if (!custName) {
+                alert("Please enter Customer Name!");
+                nameInput.focus();
+                return;
+            }
+
+            if (!custVehicle) {
+                alert("Please enter Vehicle Number (e.g. MP 09 AB 1234) so service boy can deliver to your car!");
+                vehicleInput.focus();
+                return;
+            }
+
+            // Save for future auto-fill
+            localStorage.setItem('lotus_hut_cust_name', custName);
+            localStorage.setItem('lotus_hut_cust_vehicle', custVehicle);
+
+            // Generate unique Order ID
+            var orderId = "LH-" + Math.floor(1000 + Math.random() * 9000);
+            var now = new Date();
+            var timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+            var dateStr = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+            // Build items list
+            var itemsList = [];
+            var itemsText = "";
+            for (var id in cart) {
+                var count = cart[id];
+                var dish = MENU_DATA.find(d => d.id === id);
+                if (dish && count > 0) {
+                    itemsList.push({ id: dish.id, name: dish.name, price: dish.price, count: count });
+                    itemsText += `• ${dish.name} x ${count} = ₹${dish.price * count}\n`;
+                }
+            }
+
+            // Save order in localStorage so Staff Portal can load it automatically
+            var orderObj = {
+                orderId: orderId,
+                custName: custName,
+                custVehicle: custVehicle,
+                custSpot: spotInput.value.trim() || "Driveway / Parking",
+                custPhone: phoneInput.value.trim() || "",
+                custNote: noteInput.value.trim() || "",
+                items: itemsList,
+                totalAmount: stats.total,
+                paymentMode: selectedPaymentMode,
+                timestamp: `${timeStr}, ${dateStr}`,
+                status: 'PENDING'
+            };
+
+            saveOrderLocally(orderObj);
+            currentActiveOrderId = orderId;
+
+            // Base64 encode order data so staff link carries full details even across devices!
+            var orderDataParam = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(orderObj)))));
+            var baseUrl = window.location.href.split('?')[0].replace('index.html', '');
+            if (!baseUrl.endsWith('/')) baseUrl += '/';
+            var staffActionUrl = `${baseUrl}staff.html?order=${orderDataParam}`;
+
+            // Build WhatsApp Message for Owner & Service Man (9111789220)
+            var waMsg = `🚗 *LOTUS HUT - DRIVE-IN CAFE ORDER*\n` +
+                        `━━━━━━━━━━━━━━━━━━━━\n` +
+                        `🆔 *Order ID*: #${orderId}\n` +
+                        `👤 *Customer*: ${custName}\n` +
+                        `🚙 *Vehicle No*: ${custVehicle.toUpperCase()}\n` +
+                        `📍 *Car Spot*: ${orderObj.custSpot}\n` +
+                        `🕒 *Time*: ${timeStr} (${dateStr})\n`;
+
+            if (orderObj.custPhone) {
+                waMsg += `📞 *Customer Phone*: ${orderObj.custPhone}\n`;
+            }
+
+            waMsg += `━━━━━━━━━━━━━━━━━━━━\n` +
+                     `📋 *ORDER ITEMS*:\n` +
+                     `${itemsText}` +
+                     `━━━━━━━━━━━━━━━━━━━━\n` +
+                     `💰 *TOTAL AMOUNT*: ₹${stats.total}\n` +
+                     `💳 *Payment*: ${selectedPaymentMode}\n`;
+
+            if (orderObj.custNote) {
+                waMsg += `📝 *Note*: ${orderObj.custNote}\n`;
+            }
+
+            waMsg += `━━━━━━━━━━━━━━━━━━━━\n` +
+                     `👉 *STAFF ACCEPT & READY LINK*:\n` +
+                     `${staffActionUrl}\n` +
+                     `━━━━━━━━━━━━━━━━━━━━\n` +
+                     `🙏 *Thank You For Visiting Lotus Hut!*`;
+
+            var waUrl = `https://wa.me/919111789220?text=${encodeURIComponent(waMsg)}`;
+
+            // Clear current tray and close modal
+            cart = {};
+            saveCart();
+            updateFloatingCartBar();
+            closeCartModal();
+
+            // Open Live Tracker on Customer Screen
+            openTrackerModal(orderObj);
+
+            // Open WhatsApp directly
+            window.open(waUrl, '_blank');
+        }
+
+        // 8. Order Storage & Live Tracker
+        function saveOrderLocally(order) {
+            try {
+                var orders = JSON.parse(localStorage.getItem('lotus_hut_all_orders') || '[]');
+                orders.unshift(order);
+                localStorage.setItem('lotus_hut_all_orders', JSON.stringify(orders.slice(0, 50)));
+                localStorage.setItem('lotus_hut_active_order', JSON.stringify(order));
+            } catch (e) {}
+        }
+
+        function checkExistingActiveOrder() {
+            try {
+                var active = JSON.parse(localStorage.getItem('lotus_hut_active_order') || 'null');
+                if (active && active.status !== 'DONE') {
+                    currentActiveOrderId = active.orderId;
+                }
+            } catch (e) {}
+        }
+
+        function openTrackerModal(order) {
+            document.getElementById('trackerOrderId').innerText = `ORDER #${order.orderId}`;
+            document.getElementById('trackerVehicleBadge').innerText = order.custVehicle.toUpperCase();
+            document.getElementById('step1Time').innerText = `Sent at ${order.timestamp}`;
+            updateTrackerStatus(order.status || 'PENDING');
+            document.getElementById('trackerModal').style.display = 'flex';
+        }
+
+        function closeTrackerModal() {
+            document.getElementById('trackerModal').style.display = 'none';
+        }
+
+        function updateTrackerStatus(status) {
+            var step2 = document.getElementById('step2');
+            var step2Bullet = document.getElementById('step2Bullet');
+            var step2Title = document.getElementById('step2Title');
+            var step2Sub = document.getElementById('step2Sub');
+
+            var step3 = document.getElementById('step3');
+            var step3Bullet = document.getElementById('step3Bullet');
+            var step3Title = document.getElementById('step3Title');
+
+            if (status === 'ACCEPTED') {
+                step2.className = 'step-item done';
+                step2Bullet.innerText = '✓';
+                step2Title.innerText = 'Order Accepted! 👨‍🍳 (Preparing)';
+                step2Sub.innerText = 'Chef is preparing your fresh meal (~15 min)';
+
+                step3.className = 'step-item active';
+                step3Bullet.innerText = '3';
+                step3Title.innerText = 'Cooking in Progress... 🍲';
+            } else if (status === 'READY' || status === 'DONE') {
+                step2.className = 'step-item done';
+                step2Bullet.innerText = '✓';
+                step2Title.innerText = 'Order Accepted! 👨‍🍳';
+
+                step3.className = 'step-item done';
+                step3Bullet.innerText = '✓';
+                step3Title.innerText = 'All is Done! Food Delivered 🚗✨';
+            } else {
+                step2.className = 'step-item active';
+                step2Bullet.innerText = '2';
+                step2Title.innerText = 'Waiting for Staff Acceptance... 🔴';
+                step2Sub.innerText = 'Service boy / Owner is reviewing your order';
+
+                step3.className = 'step-item';
+                step3Bullet.innerText = '3';
+                step3Title.innerText = 'Order Ready / "All is Done" 🚗';
+            }
+        }
+
+        // 9. Ambience Photo Viewer
+        function openAmbiencePhoto(src) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxModal').classList.add('open');
+        }
+
+        function closeAmbiencePhoto() {
+            document.getElementById('lightboxModal').classList.remove('open');
+        }
+    </script>
+</body>
+</html>
