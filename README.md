@@ -3,6 +3,13 @@
 
 ---
 
+## 🌐 Live URLs:
+- 📱 **Customer Digital Menu**: https://hospitalityqr.github.io/shree-driving/
+- 👨‍🍳 **Staff & Kitchen Portal**: https://hospitalityqr.github.io/shree-driving/staff.html
+- 🖼️ **Printable Standee**: https://hospitalityqr.github.io/shree-driving/standee.html
+
+---
+
 ## 🌟 Overview & Key Features
 
 This system is built specifically for **Lotus Hut — The Drive In Cafe** matching the uploaded ambience and neon signboard branding. It allows car passengers and drive-in visitors to view the luxury menu, place orders to their vehicle, pay via UPI, and enables the owner/serviceman to accept and fulfill orders with automatic WhatsApp status updates.
