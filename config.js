@@ -36,6 +36,11 @@ window.RESTAURANT_CONFIG = {
     // 6. Service Details
     defaultPrepTime: "15-20 Min",
     currency: "₹",
-    allowCashAtCar: true,
-    allowDirectUpi: true
+    allowCashAtCar: false, // Strict Prepaid Only
+    allowDirectUpi: true,
+
+    // 7. Instant Bank Verification Gateway (Razorpay)
+    // Put your Razorpay Key ID below (e.g. "rzp_live_...").
+    // If empty or test, test mode will be used.
+    razorpayKeyId: "rzp_test_1DP5mmOlF5G5ag"
 };
