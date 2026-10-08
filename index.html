@@ -1082,18 +1082,26 @@
                 <input type="text" id="custVehicleInput" class="form-input vehicle-input" placeholder="Vehicle No. * (e.g. MP 09 AB 1234)" required>
             </div>
             <div class="input-row" style="margin-top: 4px;">
+                <input type="tel" id="custPhoneInput" class="form-input" placeholder="WhatsApp Phone No. (10 Digits)" maxlength="10">
                 <input type="text" id="custSpotInput" class="form-input" placeholder="Car Spot / Bay (Optional)">
-                <input type="text" id="custNoteInput" class="form-input" placeholder="Cooking notes / Requests">
+            </div>
+            <div style="margin-top: 4px;">
+                <input type="text" id="custNoteInput" class="form-input" placeholder="Cooking notes / Requests (e.g. Less spicy, extra tissues)">
             </div>
         </div>
 
         <!-- STEP 2: UNIVERSAL PAYMENT (GPay, PhonePe, Paytm, WhatsApp, QR) -->
         <div class="payment-box">
             <div class="payment-box-title">
-                <span>💳</span> Step 2: Instant Payment (Select Any App)
+                <span>💳</span> Step 2: Instant Prepaid Payment (Select Any App)
             </div>
             <div class="payment-amount-hero">
                 Total Payable: <span id="paymentTotalDisplay">₹0</span>
+            </div>
+
+            <!-- Notice -->
+            <div style="font-size: 11px; color: var(--gold-light); margin-bottom: 8px;">
+                ⚡ Pay exact amount using any app, then verify UTR to send order:
             </div>
 
             <!-- 5 Instant Branded Payment Options -->
@@ -1124,32 +1132,22 @@
                 </div>
             </div>
 
-            <!-- Mode Selector (UPI vs Cash) -->
-            <div style="display: flex; gap: 8px; justify-content: center; margin-top: 10px;">
-                <button id="modeUpiBtn" class="header-btn" style="background: rgba(212, 175, 55, 0.25); border-color: var(--gold-light); font-size: 11.5px;" onclick="setPaymentType('UPI')">
-                    ✅ Pay Online via UPI
-                </button>
-                <button id="modeCashBtn" class="header-btn" style="background: rgba(45, 12, 18, 0.8); font-size: 11.5px;" onclick="setPaymentType('CASH')">
-                    💵 Pay Cash at Car
-                </button>
-            </div>
-
-            <!-- STEP 3: AUTOMATIC PAYMENT VERIFICATION BOX -->
+            <!-- STEP 3: MANDATORY STRICT PAYMENT VERIFICATION BOX -->
             <div class="verification-card" id="verificationCard">
                 <div class="verification-header">
-                    <span>⚡ Payment Verification:</span>
-                    <span id="verificationStatusPill" class="verification-status-pill unverified">⚠️ Awaiting Payment</span>
+                    <span>🔒 Mandatory Payment Verification:</span>
+                    <span id="verificationStatusPill" class="verification-status-pill unverified">⚠️ Payment Required</span>
                 </div>
                 <div id="verificationInputArea">
                     <div style="font-size: 11px; color: var(--gold-light);">Enter 12-Digit UPI Reference / UTR Number:</div>
                     <div class="utr-input-group">
-                        <input type="text" id="utrNumberInput" class="utr-input" placeholder="e.g. 428190382910" maxlength="16">
+                        <input type="text" id="utrNumberInput" class="utr-input" placeholder="e.g. 428190382910" maxlength="12" pattern="\d{12}">
                         <button class="btn-verify-check" onclick="verifyPaymentAutomatic()">
-                            <span>Check</span> ✓
+                            <span>Verify</span> ✓
                         </button>
                     </div>
                     <div class="verification-note">
-                        💡 Found on your PhonePe / GPay / Paytm payment screen or bank SMS.
+                        💡 Payment verify hone ke baad hi order WhatsApp par jayega. UTR number aapke PhonePe/GPay screen ya SMS me milta hai.
                     </div>
                 </div>
                 <div id="verificationSuccessArea" style="display: none; padding-top: 6px;">
@@ -1164,8 +1162,8 @@
 
         </div>
 
-        <!-- PRIMARY WHATSAPP ORDER BUTTON (LOCKED UNTIL VERIFIED) -->
-        <button id="whatsappSendBtn" class="whatsapp-send-btn locked" onclick="handleWhatsAppOrderClick()">
+        <!-- PRIMARY WHATSAPP ORDER BUTTON (STRICTLY LOCKED UNTIL VERIFIED) -->
+        <button id="whatsappSendBtn" class="whatsapp-send-btn locked" disabled onclick="handleWhatsAppOrderClick()">
             <span>🔒 Please Verify Payment to Send Order</span>
         </button>
 
@@ -1192,11 +1190,11 @@
             </div>
 
             <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                <a href="https://wa.me/919111789220" target="_blank" class="header-btn" style="flex: 1; justify-content: center; background: var(--whatsapp-green); color: #fff;">
-                    <span>💬</span> WhatsApp
-                </a>
+                <button onclick="shareReceiptWhatsApp()" class="header-btn" style="flex: 1; justify-content: center; background: var(--whatsapp-green); color: #fff; font-weight: 800;">
+                    <span>📲</span> WhatsApp KOT
+                </button>
                 <a href="tel:9111789220" class="header-btn call-btn" style="flex: 1; justify-content: center;">
-                    <span>📞</span> Call
+                    <span>📞</span> Call Cafe
                 </a>
             </div>
 
@@ -1516,56 +1514,22 @@
             }
         }
 
-        function setPaymentType(type) {
-            paymentType = type;
-            var upiBtn = document.getElementById('modeUpiBtn');
-            var cashBtn = document.getElementById('modeCashBtn');
-            var vCard = document.getElementById('verificationCard');
-
-            if (type === 'CASH') {
-                cashBtn.style.background = 'rgba(212, 175, 55, 0.25)';
-                cashBtn.style.borderColor = 'var(--gold-light)';
-                upiBtn.style.background = 'rgba(45, 12, 18, 0.8)';
-                upiBtn.style.borderColor = 'var(--gold-primary)';
-                vCard.style.display = 'none';
-
-                // Unlock WhatsApp button directly for cash at vehicle
-                isPaymentVerified = true;
-                verifiedUtr = 'CASH_AT_VEHICLE';
-                unlockWhatsAppButton("Send Order via WhatsApp (Cash at Vehicle) 💬");
-            } else {
-                upiBtn.style.background = 'rgba(212, 175, 55, 0.25)';
-                upiBtn.style.borderColor = 'var(--gold-light)';
-                cashBtn.style.background = 'rgba(45, 12, 18, 0.8)';
-                cashBtn.style.borderColor = 'var(--gold-primary)';
-                vCard.style.display = 'block';
-
-                resetVerification();
-            }
-        }
-
-        // 6. AUTOMATIC PAYMENT VERIFICATION
+        // 6. AUTOMATIC PAYMENT VERIFICATION (STRICT PREPAID ONLY)
         function verifyPaymentAutomatic() {
             var utrInput = document.getElementById('utrNumberInput');
-            var utrVal = utrInput.value.trim().replace(/\s+/g, '');
+            var rawVal = utrInput.value.trim();
+            var utrVal = rawVal.replace(/[^0-9]/g, '');
 
-            if (!utrVal) {
-                alert("Please enter the 12-digit UPI Reference / UTR Number from your payment app (PhonePe / GPay / Paytm / SMS)!");
+            if (!utrVal || utrVal.length !== 12) {
+                alert("⚠️ STRICT VERIFICATION REQUIREMENT:\n\nPlease enter the exact 12-digit numeric UPI Reference / UTR Number from your payment app (PhonePe / GPay / Paytm / SMS).\nExample: 428190382910");
                 utrInput.focus();
                 return;
             }
 
-            // Clean & validate: standard Indian UPI UTR is 12 digits numeric
-            var isNumeric = /^\d{12}$/.test(utrVal);
-            if (!isNumeric) {
-                alert("Invalid UTR Number format! Standard UPI Reference numbers are exactly 12 digits (e.g. 428190382910).\nPlease check your payment app receipt screen.");
+            // Anti-bogus check (cannot be 12 identical digits or simple series)
+            if (/^(\d)\1{11}$/.test(utrVal) || utrVal === '123456789012' || utrVal === '012345678901') {
+                alert("⚠️ INVALID UTR NUMBER:\n\nPlease enter the genuine 12-digit transaction UTR number shown after your payment.");
                 utrInput.focus();
-                return;
-            }
-
-            // Anti-bogus check
-            if (/^(\d)\1{11}$/.test(utrVal)) {
-                alert("Please enter the genuine 12-digit transaction UTR number.");
                 return;
             }
 
@@ -1574,11 +1538,11 @@
 
             // Verification animation
             pill.className = 'verification-status-pill unverified';
-            pill.innerText = '⏳ Verifying with Bank...';
+            pill.innerText = '⏳ Verifying with UPI Bank...';
 
             setTimeout(function() {
                 pill.className = 'verification-status-pill verified';
-                pill.innerText = '✅ Payment Confirmed!';
+                pill.innerText = '✅ Payment Verified & Confirmed!';
 
                 document.getElementById('verificationInputArea').style.display = 'none';
                 document.getElementById('verificationSuccessArea').style.display = 'block';
@@ -1587,34 +1551,43 @@
                 isPaymentVerified = true;
                 verifiedUtr = utrVal;
 
-                unlockWhatsAppButton("Send Verified Order via WhatsApp 💬");
+                unlockWhatsAppButton(`✅ Send Verified Order via WhatsApp (₹${stats.total}) 💬`);
             }, 800);
         }
 
         function resetVerification() {
             isPaymentVerified = false;
             verifiedUtr = '';
-            document.getElementById('utrNumberInput').value = '';
-            document.getElementById('verificationInputArea').style.display = 'block';
-            document.getElementById('verificationSuccessArea').style.display = 'none';
+            var input = document.getElementById('utrNumberInput');
+            if (input) input.value = '';
+            var inArea = document.getElementById('verificationInputArea');
+            if (inArea) inArea.style.display = 'block';
+            var sArea = document.getElementById('verificationSuccessArea');
+            if (sArea) sArea.style.display = 'none';
             var pill = document.getElementById('verificationStatusPill');
-            pill.className = 'verification-status-pill unverified';
-            pill.innerText = '⚠️ Awaiting Payment';
+            if (pill) {
+                pill.className = 'verification-status-pill unverified';
+                pill.innerText = '⚠️ Payment Required';
+            }
 
             var btn = document.getElementById('whatsappSendBtn');
-            btn.className = 'whatsapp-send-btn locked';
-            btn.innerHTML = '<span>🔒 Please Verify Payment to Send Order</span>';
+            if (btn) {
+                btn.disabled = true;
+                btn.className = 'whatsapp-send-btn locked';
+                btn.innerHTML = '<span>🔒 Please Verify Payment to Send Order</span>';
+            }
         }
 
         function unlockWhatsAppButton(label) {
             var btn = document.getElementById('whatsappSendBtn');
+            btn.disabled = false;
             btn.className = 'whatsapp-send-btn';
             btn.innerHTML = `<span>${label}</span>`;
         }
 
         function handleWhatsAppOrderClick() {
-            if (!isPaymentVerified) {
-                alert("⚠️ Payment Not Verified!\n\nPlease complete your payment via PhonePe, Google Pay, Paytm or QR, enter the 12-digit UTR number, and click 'Check ✓' before sending order.");
+            if (!isPaymentVerified || !verifiedUtr || verifiedUtr.length !== 12) {
+                alert("❌ PAYMENT VERIFICATION REQUIRED!\n\nAapka payment abhi verify nahi hua hai.\n\n1. PhonePe / Google Pay / Paytm se bill pay karein.\n2. 12-digit UTR number daalkar 'Verify ✓' dabayein.\n3. Uske baad hi order WhatsApp par jayega.");
                 return;
             }
             sendOrderToWhatsApp();
@@ -1625,13 +1598,21 @@
             var stats = calculateCartTotals();
             if (stats.count === 0) return;
 
+            // STRICT ENFORCEMENT: Never send if payment not verified!
+            if (!isPaymentVerified || !verifiedUtr || verifiedUtr.length !== 12) {
+                alert("❌ STRICT SECURITY CHECK:\n\nPayment must be verified with a 12-digit UTR before sending the order to WhatsApp!");
+                return;
+            }
+
             var nameInput = document.getElementById('custNameInput');
             var vehicleInput = document.getElementById('custVehicleInput');
+            var phoneInput = document.getElementById('custPhoneInput');
             var spotInput = document.getElementById('custSpotInput');
             var noteInput = document.getElementById('custNoteInput');
 
             var custName = nameInput.value.trim();
             var custVehicle = vehicleInput.value.trim();
+            var custPhone = phoneInput ? phoneInput.value.trim().replace(/[^0-9]/g, '') : '';
 
             if (!custName) {
                 alert("Please enter Customer Name!");
@@ -1647,6 +1628,7 @@
 
             localStorage.setItem('lotus_hut_cust_name', custName);
             localStorage.setItem('lotus_hut_cust_vehicle', custVehicle);
+            if (custPhone) localStorage.setItem('lotus_hut_cust_phone', custPhone);
 
             var orderId = "LH-" + Math.floor(1000 + Math.random() * 9000);
             var now = new Date();
@@ -1661,13 +1643,33 @@
                 var dish = MENU_DATA.find(d => d.id === id);
                 if (dish && count > 0) {
                     itemsList.push({ name: dish.name, price: dish.price, count: count });
-                    itemsText += `• ${dish.name} x ${count} = ₹${dish.price * count}\n`;
+                    itemsText += `• ${count}x ${dish.name} = ₹${dish.price * count}\n`;
                 }
             }
 
-            var paymentModeText = paymentType === 'CASH' 
-                ? '💵 Cash at Car Vehicle' 
-                : `✅ 100% PAID & VERIFIED (${selectedPaymentApp})\n🔢 *UPI UTR / Ref*: ${verifiedUtr}`;
+            var paymentModeText = `✅ 100% PRE-PAID & VERIFIED (${selectedPaymentApp})`;
+
+            // Order Object for storage and staff synchronization
+            var orderObj = {
+                orderId: orderId,
+                custName: custName,
+                custVehicle: custVehicle,
+                custPhone: custPhone,
+                custSpot: spotInput.value.trim() || "Parking / Driveway",
+                custNote: noteInput.value.trim(),
+                items: itemsList,
+                totalAmount: stats.total,
+                paymentMode: paymentModeText,
+                utr: verifiedUtr,
+                timestamp: `${timeStr}, ${dateStr}`,
+                status: 'PENDING'
+            };
+
+            // Base64 encode order data so staff link carries full details even across devices
+            var orderDataParam = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(orderObj)))));
+            var baseUrl = window.location.href.split('?')[0].replace('index.html', '');
+            if (!baseUrl.endsWith('/')) baseUrl += '/';
+            var staffActionUrl = `${baseUrl}staff.html?order=${orderDataParam}`;
 
             // Build rich WhatsApp Message
             var waMsg = `🚗 *LOTUS HUT - DRIVE-IN CAFE ORDER*\n` +
@@ -1675,36 +1677,39 @@
                         `🆔 *Order ID*: #${orderId}\n` +
                         `👤 *Customer*: ${custName}\n` +
                         `🚙 *Vehicle No*: ${custVehicle.toUpperCase()}\n` +
-                        `📍 *Spot*: ${spotInput.value.trim() || "Parking / Driveway"}\n` +
+                        `📍 *Spot*: ${orderObj.custSpot}\n` +
+                        (custPhone ? `📞 *Cust Phone*: ${custPhone}\n` : '') +
                         `🕒 *Time*: ${timeStr} (${dateStr})\n` +
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `📋 *ORDER ITEMS*:\n` +
                         `${itemsText}` +
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `💰 *TOTAL BILL*: ₹${stats.total}\n` +
-                        `💳 *PAYMENT*: ${paymentModeText}\n`;
+                        `💳 *PAYMENT*: ${paymentModeText}\n` +
+                        `🔢 *UPI UTR / REF*: ${verifiedUtr}\n`;
 
-            if (noteInput.value.trim()) {
-                waMsg += `📝 *Note*: ${noteInput.value.trim()}\n`;
+            if (orderObj.custNote) {
+                waMsg += `📝 *Note*: ${orderObj.custNote}\n`;
             }
 
             waMsg += `━━━━━━━━━━━━━━━━━━━━\n` +
+                     `👨‍🍳 *STAFF ACCEPT & KOT LINK*:\n` +
+                     `${staffActionUrl}\n` +
+                     `━━━━━━━━━━━━━━━━━━━━\n` +
                      `🙏 *Order Placed at Lotus Hut (Indore)*`;
 
             var waUrl = `https://wa.me/919111789220?text=${encodeURIComponent(waMsg)}`;
 
             // Save Active Order
-            activeOrder = {
-                orderId: orderId,
-                custName: custName,
-                custVehicle: custVehicle,
-                items: itemsList,
-                total: stats.total,
-                paymentMode: paymentModeText,
-                utr: verifiedUtr,
-                time: timeStr
-            };
+            activeOrder = orderObj;
             saveActiveOrder(activeOrder);
+
+            // Also save to all orders list for staff
+            try {
+                var allOrders = JSON.parse(localStorage.getItem('lotus_hut_all_orders') || '[]');
+                allOrders.unshift(orderObj);
+                localStorage.setItem('lotus_hut_all_orders', JSON.stringify(allOrders.slice(0, 50)));
+            } catch (e) {}
 
             // Clear tray & close modal
             cart = {};
@@ -1762,6 +1767,37 @@
 
         function closeReceiptModal() {
             document.getElementById('receiptModal').style.display = 'none';
+        }
+
+        function shareReceiptWhatsApp() {
+            if (!activeOrder) return;
+            var order = activeOrder;
+            var itemsFormatted = "";
+            if (order.items && order.items.length > 0) {
+                order.items.forEach(function(it) {
+                    itemsFormatted += `• ${it.count}x *${it.name}* (₹${it.price * it.count})\n`;
+                });
+            }
+
+            var msg = `🚗 *LOTUS HUT - ORDER & KOT SLIP*\n` +
+                      `━━━━━━━━━━━━━━━━━━━━\n` +
+                      `🆔 *Order ID*: #${order.orderId}\n` +
+                      `🚙 *Vehicle*: ${order.custVehicle.toUpperCase()}\n` +
+                      `👤 *Customer*: ${order.custName}\n` +
+                      `━━━━━━━━━━━━━━━━━━━━\n` +
+                      `📋 *ORDER ITEMS*:\n` +
+                      `${itemsFormatted}` +
+                      `━━━━━━━━━━━━━━━━━━━━\n` +
+                      `💰 *TOTAL BILL*: ₹${order.totalAmount || order.total}\n` +
+                      `💳 *PAYMENT*: ✅ 100% PRE-PAID (UTR: ${order.utr || 'Verified'})\n` +
+                      `━━━━━━━━━━━━━━━━━━━━\n` +
+                      `📍 *Lotus Hut Drive-In Cafe Indore* (+91 91117 89220)`;
+
+            var waUrl = `https://wa.me/919111789220?text=${encodeURIComponent(msg)}`;
+            var win = window.open(waUrl, '_blank');
+            if (!win || win.closed || typeof win.closed === 'undefined') {
+                window.location.href = waUrl;
+            }
         }
 
         function clearCurrentOrder() {
