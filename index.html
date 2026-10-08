@@ -47,54 +47,76 @@
 
         body {
             font-family: var(--font-sans);
-            background-color: var(--bg-night);
+            background-color: #0c0204;
+            background-image: url('bg_ambience_luxury.jpg');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
             color: var(--text-white);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
-            padding-bottom: 110px;
+            padding: 16px 12px 110px;
         }
 
-        /* Fixed Ambience Background */
+        /* Fixed Ambience Background fallback */
         .fixed-bg {
             position: fixed;
             inset: 0;
-            background: linear-gradient(180deg, rgba(10, 2, 4, 0.88) 0%, rgba(10, 2, 4, 0.96) 100%),
-                        url('ambience_night.png') center top / cover no-repeat;
+            background: linear-gradient(180deg, rgba(12, 2, 4, 0.85) 0%, rgba(12, 2, 4, 0.95) 100%);
             z-index: 0;
             pointer-events: none;
-            filter: brightness(0.6);
         }
 
-        /* App Container */
-        .app-container {
+        /* Luxury Framed Container (Exact Shree Kripa Style) */
+        .luxury-frame {
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
+            background-color: rgba(18, 4, 8, 0.94);
+            background-image: url('bg_ambience_luxury.jpg');
+            background-size: cover;
+            background-position: center top;
+            border: 3px solid var(--gold-primary);
+            border-radius: 22px;
+            padding: 24px 16px 20px;
             position: relative;
-            z-index: 2;
-            padding: 14px 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-align: center;
+            overflow: hidden;
+            z-index: 2;
         }
 
-        /* =====================================================================
-           ACTIVE ORDER TOP NOTIFICATION PILL
-           ===================================================================== */
+        /* Inner Hairline Gold Border with Corner Inset */
+        .luxury-frame::before {
+            content: '';
+            position: absolute;
+            inset: 7px;
+            border: 1px solid rgba(212, 175, 55, 0.6);
+            border-radius: 16px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Active Order Pill */
         .active-order-banner {
             width: 100%;
             background: linear-gradient(135deg, #2b050d 0%, #450c18 50%, #1a0307 100%);
             border: 1.5px solid var(--lotus-neon);
             border-radius: 14px;
             padding: 9px 12px;
-            margin-bottom: 12px;
-            display: none; /* Shown dynamically */
+            margin-bottom: 14px;
+            display: none;
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 4px 16px rgba(255, 42, 81, 0.35);
             cursor: pointer;
+            position: relative;
+            z-index: 2;
             animation: pulseBanner 2s infinite;
         }
 
@@ -121,129 +143,253 @@
             border: none;
         }
 
-        /* =====================================================================
-           1. CLEAN STREAMLINED BRAND HERO HEADER
-           ===================================================================== */
-        .brand-header {
-            width: 100%;
-            background: var(--bg-card);
-            border: 2px solid var(--gold-primary);
-            border-radius: 22px;
-            padding: 16px 14px;
-            text-align: center;
+        /* Logo Medallion with Gold Rim & Halo Glow */
+        .logo-wrapper {
             position: relative;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75), 0 0 20px rgba(217, 20, 56, 0.3);
-            backdrop-filter: blur(14px);
-            margin-bottom: 14px;
-            overflow: hidden;
+            margin: 0 auto 6px;
+            display: inline-block;
+            z-index: 3;
         }
 
-        .brand-header::before {
-            content: '';
+        .logo-glow {
             position: absolute;
-            inset: 6px;
-            border: 1px solid rgba(212, 175, 55, 0.45);
-            border-radius: 16px;
-            pointer-events: none;
+            inset: -14px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(242, 216, 135, 0.45) 0%, rgba(212, 175, 55, 0.15) 65%, transparent 80%);
+            animation: pulseGlow 3.5s ease-in-out infinite alternate;
         }
 
-        .header-top {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 10px;
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); opacity: 0.65; }
+            100% { transform: scale(1.08); opacity: 1; }
         }
 
-        .logo-img {
-            width: 62px;
-            height: 62px;
+        .official-logo {
+            width: 86px;
+            height: 86px;
             border-radius: 50%;
             border: 2px solid var(--gold-primary);
-            box-shadow: 0 0 16px rgba(255, 42, 81, 0.5);
+            position: relative;
+            z-index: 2;
             object-fit: cover;
             background: #ffffff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
         }
 
-        .brand-text-wrap {
-            text-align: left;
-        }
-
+        /* Royal Brand Typography */
         .brand-title {
             font-family: var(--font-royal);
-            font-size: 24px;
+            font-size: 27px;
             font-weight: 900;
-            letter-spacing: 1.5px;
+            letter-spacing: 2.2px;
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            line-height: 1.1;
+            line-height: 1.15;
+            margin-bottom: 2px;
+            position: relative;
+            z-index: 2;
         }
 
-        .brand-sub {
-            font-size: 11px;
+        .brand-subname {
+            font-family: var(--font-royal);
+            font-size: 13.5px;
             font-weight: 800;
-            letter-spacing: 2px;
-            color: #ffffff;
-            display: inline-block;
-            background: var(--neon-gradient);
-            padding: 2px 9px;
-            border-radius: 12px;
-            margin-top: 3px;
+            color: var(--gold-light);
+            letter-spacing: 3px;
             text-transform: uppercase;
+            margin-bottom: 3px;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Address & Contact Row */
-        .info-bar {
-            border-top: 1px solid rgba(212, 175, 55, 0.35);
-            padding-top: 10px;
-            margin-top: 8px;
+        .brand-location {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            opacity: 0.95;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Gold Divider Line with Central Rotating Diamond */
+        .gold-divider {
+            width: 82%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px 0 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .gold-divider::before,
+        .gold-divider::after {
+            content: '';
+            flex: 1;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+        }
+
+        .gold-diamond {
+            width: 8px;
+            height: 8px;
+            background: var(--gold-light);
+            transform: rotate(45deg);
+            margin: 0 10px;
+            box-shadow: 0 0 8px rgba(242, 216, 135, 0.6);
+        }
+
+        /* Ambience Showcase Strip (Exact Shree Kripa 3-photo grid) */
+        .ambience-showcase {
+            width: 100%;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ambience-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            margin-bottom: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .ambience-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+
+        .ambience-thumb {
+            height: 74px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1.5px solid rgba(212, 175, 55, 0.5);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+        }
+
+        .ambience-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Action Buttons Row */
+        .action-buttons-row {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-action-hero {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 9px 6px;
+            border-radius: 12px;
+            font-size: 11.5px;
+            font-weight: 800;
+            text-decoration: none;
+            border: 1.2px solid var(--gold-primary);
+            background: rgba(212, 175, 55, 0.12);
+            color: var(--gold-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-hero:hover {
+            background: var(--gold-gradient);
+            color: #0c0204;
+        }
+
+        .btn-action-hero.call-hero {
+            border-color: var(--lotus-neon);
+            background: rgba(217, 20, 56, 0.25);
+            color: #ffffff;
+        }
+
+        .btn-action-hero.wa-hero {
+            border-color: #25d366;
+            background: rgba(37, 211, 102, 0.2);
+            color: #55ef88;
+        }
+
+        /* Bottom Info Box & Phone Link (Exact Shree Kripa Style) */
+        .info-box {
+            width: 100%;
+            background: rgba(14, 3, 6, 0.94);
+            border: 1.5px solid var(--gold-primary);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-top: 14px;
+            margin-bottom: 10px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            align-items: center;
+            gap: 7px;
+            position: relative;
+            z-index: 2;
         }
 
-        .info-row {
-            display: flex;
+        .address-line {
+            font-size: 11.5px;
+            color: #eef5f5;
+            line-height: 1.4;
+        }
+
+        .phone-link {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            font-size: 12.5px;
+            gap: 7px;
             color: var(--gold-light);
-            font-weight: 600;
+            font-size: 13.5px;
+            font-weight: 800;
+            text-decoration: none;
+            padding: 6px 16px;
+            border-radius: 10px;
+            background: rgba(212, 175, 55, 0.16);
+            border: 1px solid rgba(212, 175, 55, 0.45);
         }
 
-        .header-action-buttons {
+        .phone-link:hover {
+            background: var(--gold-gradient);
+            color: #0c0204;
+        }
+
+        .footer-thanks {
             display: flex;
+            align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-top: 8px;
-        }
-
-        .header-btn {
-            background: rgba(45, 12, 18, 0.9);
-            border: 1px solid var(--gold-primary);
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 800;
-            padding: 6px 12px;
-            border-radius: 12px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .header-btn.call-btn {
-            background: var(--neon-gradient);
-            border-color: #ffffff;
-        }
-
-        .header-btn.qr-btn {
-            background: rgba(212, 175, 55, 0.2);
+            font-family: var(--font-royal);
+            font-size: 13px;
             color: var(--gold-light);
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .sparkle-icon {
+            color: var(--gold-primary);
         }
 
         /* =====================================================================
@@ -971,7 +1117,7 @@
 
     <div class="fixed-bg"></div>
 
-    <div class="app-container">
+    <div class="luxury-frame">
 
         <!-- ACTIVE ORDER TOP BANNER (Shown if customer placed an order) -->
         <div class="active-order-banner" id="activeOrderBanner" onclick="openReceiptModal()">
@@ -982,53 +1128,50 @@
             <button class="active-banner-btn">View Receipt 🧾</button>
         </div>
 
-        <!-- 1. BRAND HERO HEADER (QR, Address & Contact prominently displayed) -->
-        <header class="brand-header">
-            <div class="header-top">
-                <img src="logo.png" alt="Lotus Hut Logo" class="logo-img">
-                <div class="brand-text-wrap">
-                    <h1 class="brand-title">LOTUS HUT</h1>
-                    <div class="brand-sub">THE DRIVE IN CAFE</div>
-                </div>
-            </div>
+        <!-- 1. OFFICIAL CIRCULAR LOGO WITH 24K GOLD RIM & HALO GLOW -->
+        <div class="logo-wrapper">
+            <div class="logo-glow"></div>
+            <img src="logo.png" alt="Lotus Hut The Drive In Cafe Logo" class="official-logo">
+        </div>
 
-            <!-- Address & Contact -->
-            <div class="info-bar">
-                <div class="info-row">
-                    <span>📍</span>
-                    <span>Lotus Hut, The Drive In Cafe, Indore</span>
-                </div>
-                <div class="info-row" style="color: #ffffff; font-weight: 800;">
-                    <span>📞 Contact & Helpline:</span>
-                    <span style="color: var(--gold-light); font-size: 14px;">+91 91117 89220</span>
-                </div>
-            </div>
+        <!-- 2. ROYAL BRAND TITLE & TAGLINE (Exact Shree Kripa Style) -->
+        <h1 class="brand-title">LOTUS HUT</h1>
+        <div class="brand-subname">THE DRIVE IN CAFE</div>
+        <div class="brand-location">100% PURE VEG • DRIVE-IN SERVICE • INDORE</div>
 
-            <!-- Quick Action Buttons: Call, WhatsApp, Show QR -->
-            <div class="header-action-buttons">
-                <a href="tel:9111789220" class="header-btn call-btn">
-                    <span>📞</span> Call Cafe
-                </a>
-                <a href="https://wa.me/919111789220" target="_blank" class="header-btn" style="background: rgba(37, 211, 102, 0.25); border-color: #25d366;">
-                    <span>💬</span> WhatsApp
-                </a>
-                <button class="header-btn qr-btn" onclick="openQrModal()">
-                    <span>📱</span> Show QR
-                </button>
-            </div>
-        </header>
+        <!-- 3. GOLD DIVIDER LINE WITH CENTRAL ROTATING DIAMOND -->
+        <div class="gold-divider">
+            <div class="gold-diamond"></div>
+        </div>
 
-        <!-- 2. SEARCH BAR -->
+        <!-- 4. AMBIENCE SHOWCASE STRIP (From uploaded restaurant interior photos) -->
+        <div class="ambience-showcase">
+            <div class="ambience-label"><span>✦</span> OUR DRIVE-IN CAFE AMBIENCE <span>✦</span></div>
+            <div class="ambience-grid">
+                <div class="ambience-thumb"><img src="ambience_front.png" alt="Lotus Hut Front Ambience"></div>
+                <div class="ambience-thumb"><img src="board_neon.png" alt="Lotus Hut Neon Sign"></div>
+                <div class="ambience-thumb"><img src="ambience_night.png" alt="Lotus Hut Night Ambience"></div>
+            </div>
+        </div>
+
+        <!-- 5. QUICK ACTION BUTTONS ROW: Call, WhatsApp, Show QR -->
+        <div class="action-buttons-row">
+            <a href="tel:9111789220" class="btn-action-hero call-hero"><span>📞</span> Call Cafe</a>
+            <a href="https://wa.me/919111789220" target="_blank" class="btn-action-hero wa-hero"><span>💬</span> WhatsApp</a>
+            <button class="btn-action-hero qr-hero" onclick="openQrModal()"><span>📱</span> Show QR</button>
+        </div>
+
+        <!-- 6. LIVE SEARCH BAR -->
         <div class="search-wrap">
             <span class="search-icon">🔍</span>
             <input type="text" id="searchInput" class="search-input" placeholder="Search coffee, shake, burger, pizza, fries..." oninput="handleSearch(this.value)">
         </div>
 
-        <!-- 3. CATEGORY SCROLL CHIPS -->
+        <!-- 7. CATEGORY SCROLL CHIPS -->
         <div class="category-scroll" id="categoryChips"></div>
 
-        <!-- CATEGORY TITLE & COUNT ROW -->
-        <div class="category-header-row" id="categoryHeaderRow" style="display: flex; align-items: center; justify-content: space-between; margin: 12px 4px 8px; padding: 0 2px;">
+        <!-- 8. CATEGORY TITLE & COUNT ROW -->
+        <div class="category-header-row" id="categoryHeaderRow" style="display: flex; align-items: center; justify-content: space-between; margin: 12px 4px 8px; padding: 0 2px; width: 100%;">
             <div style="font-family: var(--font-royal); font-size: 15px; font-weight: 800; color: var(--gold-light); display: flex; align-items: center; gap: 6px;" id="categoryHeading">
                 ✨ All Dishes & Delights
             </div>
@@ -1037,19 +1180,29 @@
             </div>
         </div>
 
-        <!-- 4. DISHES LIST -->
+        <!-- 9. FULL DIGITAL DISHES LIST (Complete Menu from menu-data.js) -->
         <main class="dishes-list" id="dishesList"></main>
 
-        <!-- 5. FOOTER -->
-        <footer class="app-footer">
-            <strong style="color: var(--gold-light); font-size: 12px;">LOTUS HUT • THE DRIVE IN CAFE</strong><br>
-            <span>Indore • Helpline: +91 91117 89220</span>
-            <div class="footer-links">
-                <a href="standee.html" class="footer-link">🖼️ Printable Standee</a>
-                <span>•</span>
-                <a href="staff.html" class="footer-link">👨‍🍳 Staff Portal</a>
-            </div>
-        </footer>
+        <!-- 10. BOTTOM INFO BOX (Address & Helpline - Exact Shree Kripa Style) -->
+        <div class="info-box">
+            <div class="address-line">📍 Lotus Hut, The Drive In Cafe, Indore</div>
+            <a href="tel:9111789220" class="phone-link">
+                <span>📞 Call / Helpline: +91 91117 89220</span>
+            </a>
+        </div>
+
+        <!-- 11. SPARKLE THANK-YOU FOOTER -->
+        <div class="footer-thanks">
+            <span class="sparkle-icon">✦</span>
+            <span>Thank you for dining with Lotus Hut!</span>
+            <span class="sparkle-icon">✦</span>
+        </div>
+
+        <div class="footer-links" style="margin-top: 10px; margin-bottom: 24px;">
+            <a href="standee.html" class="footer-link">🖼️ Printable Standee</a>
+            <span style="color: rgba(212, 175, 55, 0.4);">•</span>
+            <a href="staff.html" class="footer-link">👨‍🍳 Staff Order Desk</a>
+        </div>
 
     </div>
 
