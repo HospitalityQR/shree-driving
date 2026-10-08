@@ -133,7 +133,7 @@ def build_luxury_standee(qr_menu_img, width=1200, height=1800, output_path="tabl
             print("Logo error:", e)
 
     # 4. Brand Typography
-    font_title = get_font(56, bold=True)
+    font_title = get_font(58, bold=True)
     font_sub = get_font(26, bold=True)
     font_callout = get_font(34, bold=True)
     font_hindi = get_font(26, bold=True, hindi=True)
@@ -152,109 +152,86 @@ def build_luxury_standee(qr_menu_img, width=1200, height=1800, output_path="tabl
     pill_pad_x = 24
     pill_pad_y = 8
     draw.rounded_rectangle(
-        [(sx - pill_pad_x, 345 - pill_pad_y), (sx + sw + pill_pad_x, 345 + (s_bbox[3] - s_bbox[1]) + pill_pad_y)],
+        [(sx - pill_pad_x, 350 - pill_pad_y), (sx + sw + pill_pad_x, 350 + (s_bbox[3] - s_bbox[1]) + pill_pad_y)],
         radius=18,
         fill="#d91438",
         outline="#ff2a51",
         width=2
     )
-    draw.text((sx, 345), s_text, fill="#ffffff", font=font_sub)
-
-    # Tagline
-    tag_text = "CAR PARKING SERVICE  •  GOURMET COFFEE  •  FAST BITES"
-    tag_bbox = draw.textbbox((0, 0), tag_text, font=get_font(20, bold=True))
-    tag_x = (width - (tag_bbox[2] - tag_bbox[0])) // 2
-    draw.text((tag_x, 405), tag_text, fill="#e8c7cf", font=get_font(20, bold=True))
+    draw.text((sx, 350), s_text, fill="#ffffff", font=font_sub)
 
     # Divider Line
-    draw.line([(width // 4, 445), (3 * width // 4, 445)], fill="#d4af37", width=2)
+    draw.line([(width // 4, 415), (3 * width // 4, 415)], fill="#d4af37", width=2)
 
     # 5. Main Action Callout
-    c_text = "SCAN FROM YOUR CAR TO ORDER"
+    c_text = "SCAN TO VIEW MENU & ORDER FROM CAR"
     c_bbox = draw.textbbox((0, 0), c_text, font=font_callout)
     cx = (width - (c_bbox[2] - c_bbox[0])) // 2
-    draw.text((cx, 470), c_text, fill="#ffffff", font=font_callout)
+    draw.text((cx, 440), c_text, fill="#ffffff", font=font_callout)
 
-    c_hi = "अपनी कार से सीधे डिजिटल मेन्यू ऑर्डर करें"
+    c_hi = "अपनी कार से डिजिटल मेन्यू देखें और ऑर्डर करें"
     c_hi_bbox = draw.textbbox((0, 0), c_hi, font=font_hindi)
     chx = (width - (c_hi_bbox[2] - c_hi_bbox[0])) // 2
-    draw.text((chx, 520), c_hi, fill="#fbe69b", font=font_hindi)
+    draw.text((chx, 490), c_hi, fill="#fbe69b", font=font_hindi)
 
-    # 6. Center QR Code Frame
-    qr_display_size = 560
+    # 6. Center QR Code Frame (Enlarged and crisp)
+    qr_display_size = 620
     qr_resized = qr_menu_img.resize((qr_display_size, qr_display_size), Image.Resampling.LANCZOS)
     qrx = (width - qr_display_size) // 2
-    qry = 580
+    qry = 550
 
-    frame_pad = 22
+    frame_pad = 26
     draw.rounded_rectangle(
         [(qrx - frame_pad, qry - frame_pad), (qrx + qr_display_size + frame_pad, qry + qr_display_size + frame_pad)],
-        radius=26,
+        radius=30,
         fill="#ffffff",
         outline="#d4af37",
-        width=6
+        width=7
     )
     canvas.paste(qr_resized, (qrx, qry), qr_resized)
 
-    # 7. UPI Payment Highlight Card
-    upi_card_top = 1210
-    upi_card_w = 820
-    upi_card_h = 175
-    ucx = (width - upi_card_w) // 2
+    # 7. Payment Apps Supported Row
+    pay_top = 1250
+    pay_w = 880
+    pay_h = 100
+    px = (width - pay_w) // 2
     draw.rounded_rectangle(
-        [(ucx, upi_card_top), (ucx + upi_card_w, upi_card_top + upi_card_h)],
-        radius=20,
+        [(px, pay_top), (px + pay_w, pay_top + pay_h)],
+        radius=18,
         fill="#1e060c",
         outline="#d4af37",
+        width=2
+    )
+    pay_text1 = "PAY VIA ANY APP: PHONEPE • GPAY • PAYTM • WHATSAPP • CASH"
+    p1_b = draw.textbbox((0, 0), pay_text1, font=get_font(21, bold=True))
+    draw.text(((width - (p1_b[2] - p1_b[0])) // 2, pay_top + 18), pay_text1, fill="#fbe69b", font=get_font(21, bold=True))
+
+    pay_text2 = "UPI ID: 9111789220@upi  •  Helpline: 9111789220"
+    p2_b = draw.textbbox((0, 0), pay_text2, font=get_font(18, bold=False))
+    draw.text(((width - (p2_b[2] - p2_b[0])) // 2, pay_top + 55), pay_text2, fill="#ffffff", font=get_font(18, bold=False))
+
+    # 8. Address & Contact Box
+    addr_top = 1400
+    draw.line([(width // 4, addr_top), (3 * width // 4, addr_top)], fill="#d4af37", width=2)
+
+    a_text = "📍 Lotus Hut, The Drive In Cafe, Indore"
+    ab = draw.textbbox((0, 0), a_text, font=get_font(28, bold=True))
+    draw.text(((width - (ab[2] - ab[0])) // 2, addr_top + 30), a_text, fill="#fbe69b", font=get_font(28, bold=True))
+
+    c_box_w = 780
+    c_box_h = 90
+    cbx = (width - c_box_w) // 2
+    cby = addr_top + 85
+    draw.rounded_rectangle(
+        [(cbx, cby), (cbx + c_box_w, cby + c_box_h)],
+        radius=18,
+        fill="#d91438",
+        outline="#ff2a51",
         width=3
     )
-
-    upi_label = "INSTANT UPI PAYMENT (GPAY / PHONEPE / PAYTM)"
-    draw.text((ucx + 35, upi_card_top + 18), upi_label, fill="#fbe69b", font=get_font(21, bold=True))
-
-    upi_num = "PAY DIRECTLY TO: 9111789220"
-    draw.text((ucx + 35, upi_card_top + 54), upi_num, fill="#ffffff", font=get_font(34, bold=True))
-
-    upi_sub = "UPI ID: 9111789220@upi  •  Cash Accepted at Car Delivery"
-    draw.text((ucx + 35, upi_card_top + 110), upi_sub, fill="#d6b8be", font=get_font(20, bold=False))
-
-    # 8. Steps Row
-    steps_y = 1420
-    steps = [
-        "1. Scan QR",
-        "2. Add Car No.",
-        "3. WhatsApp Order",
-        "4. Served at Car"
-    ]
-    step_w = width // len(steps)
-    for i, s in enumerate(steps):
-        sx = i * step_w + 10
-        draw.rounded_rectangle(
-            [(sx + 10, steps_y), (sx + step_w - 20, steps_y + 60)],
-            radius=12,
-            fill="#2c0912",
-            outline="#fbe69b",
-            width=1
-        )
-        sb = draw.textbbox((0, 0), s, font=get_font(18, bold=True))
-        stx = sx + 10 + (step_w - 30 - (sb[2] - sb[0])) // 2
-        draw.text((stx, steps_y + 18), s, fill="#ffffff", font=get_font(18, bold=True))
-
-    # 9. Footer Info
-    foot_y = 1520
-    draw.line([(width // 4, foot_y), (3 * width // 4, foot_y)], fill="#d4af37", width=1)
-
-    f_text1 = "LOTUS HUT  •  THE DRIVE IN CAFE  •  INDORE"
-    f1_b = draw.textbbox((0, 0), f_text1, font=get_font(22, bold=True))
-    draw.text(((width - (f1_b[2] - f1_b[0])) // 2, foot_y + 20), f_text1, fill="#fbe69b", font=get_font(22, bold=True))
-
-    f_text2 = "Direct Helpline & Service Staff: +91 91117 89220"
-    f2_b = draw.textbbox((0, 0), f_text2, font=get_font(26, bold=True))
-    draw.text(((width - (f2_b[2] - f2_b[0])) // 2, foot_y + 60), f_text2, fill="#ffffff", font=get_font(26, bold=True))
-
-    f_text3 = "Fresh Preparation Time: 15-20 Min  •  Pure Quality Ingredients"
-    f3_b = draw.textbbox((0, 0), f_text3, font=get_font(18, bold=False))
-    draw.text(((width - (f3_b[2] - f3_b[0])) // 2, foot_y + 110), f_text3, fill="#c9a4ac", font=get_font(18, bold=False))
+    c_call = "📞 CALL & WHATSAPP: +91 91117 89220"
+    cc_b = draw.textbbox((0, 0), c_call, font=get_font(30, bold=True))
+    draw.text(((width - (cc_b[2] - cc_b[0])) // 2, cby + 24), c_call, fill="#ffffff", font=get_font(30, bold=True))
 
     # Save
     canvas.convert("RGB").save(output_path, "PNG", quality=95)
