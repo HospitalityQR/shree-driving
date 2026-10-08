@@ -14,6 +14,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Razorpay Automated Bank Verification Gateway -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Realtime Cloud PubSub Sync (HiveMQ WebSocket) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
 
     <style>
         :root {
@@ -1856,6 +1858,15 @@
                 localStorage.setItem('lotus_hut_all_orders', JSON.stringify(allOrders.slice(0, 50)));
             } catch (e) {}
 
+            // Broadcast new order to staff screen immediately (same device / tabs)
+            try {
+                var orderBc = new BroadcastChannel('lotus_hut_orders');
+                orderBc.postMessage({ type: 'NEW_ORDER', order: orderObj });
+            } catch (e) {}
+
+            // Broadcast new order across devices via Realtime Cloud Sync
+            broadcastCloudOrder(orderObj);
+
             // Clear tray & close modal
             cart = {};
             saveCart();
@@ -1867,6 +1878,26 @@
 
             // Launch WhatsApp
             window.open(waUrl, '_blank');
+        }
+
+        // Cross-device realtime cloud broadcast (HiveMQ WebSocket)
+        function broadcastCloudOrder(order) {
+            try {
+                if (typeof Paho === 'undefined') return;
+                var clientId = "lotus_cust_" + Math.random().toString(16).substr(2, 8);
+                var client = new Paho.MQTT.Client("broker.hivemq.com", 8884, clientId);
+                client.connect({
+                    useSSL: true,
+                    timeout: 4,
+                    onSuccess: function() {
+                        var msg = new Paho.MQTT.Message(JSON.stringify(order));
+                        msg.destinationName = "lotus_hut_indore_orders_9111789220";
+                        client.send(msg);
+                        setTimeout(function() { try { client.disconnect(); } catch(e){} }, 800);
+                    },
+                    onFailure: function() {}
+                });
+            } catch (e) {}
         }
 
         // 8. ACTIVE ORDER PERSISTENCE & RECEIPT MODAL

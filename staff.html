@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Realtime Cloud PubSub Sync (HiveMQ WebSocket) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
 
     <style>
         :root {
@@ -441,9 +443,31 @@
             margin-top: 4px;
             justify-content: center;
         }
+
+        @keyframes pulseOrderToast {
+            0% { transform: scale(1); box-shadow: 0 0 14px rgba(255, 42, 81, 0.5); }
+            100% { transform: scale(1.02); box-shadow: 0 0 30px rgba(255, 42, 81, 0.95); }
+        }
     </style>
 </head>
 <body>
+
+    <!-- FLOATING 3-SEC ORDER ALERT TOAST -->
+    <div id="newOrderAlertPopup" style="display:none; position:fixed; top:14px; left:12px; right:12px; z-index:9999; background:linear-gradient(135deg, #8a0518 0%, #d91438 50%, #590410 100%); border:2px solid #fff280; border-radius:18px; padding:14px 16px; box-shadow:0 12px 36px rgba(217,20,56,0.7); animation:pulseOrderToast 1s infinite alternate;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <span style="font-size:32px;">🔔</span>
+                <div>
+                    <div style="font-size:11.5px; font-weight:800; color:#fff280; text-transform:uppercase; letter-spacing:1px;">🚨 NAYA ORDER AAYA HAI!</div>
+                    <div style="font-size:18px; font-weight:900; color:#fff;" id="alertToastVehicle">MP 09 AB 1234</div>
+                    <div style="font-size:12px; color:#ffe6eb;" id="alertToastMeta">Total: ₹0 • 100% Pre-Paid</div>
+                </div>
+            </div>
+            <button onclick="dismissNewOrderToast()" style="background:#fff; color:#8a0518; border:none; border-radius:10px; padding:10px 14px; font-weight:900; font-size:12.5px; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.4);">
+                OK ✓
+            </button>
+        </div>
+    </div>
 
     <div class="staff-container">
 
@@ -466,9 +490,18 @@
             </div>
         </header>
 
-        <!-- Audio Indicator -->
-        <div class="audio-indicator">
-            <span>🔊 Audio Chimes Enabled</span> • <span>Helpline: 9111789220</span>
+        <!-- Sound & Voice Alert Status Bar (3-Sec Ring + "New Order" Voice) -->
+        <div class="audio-indicator" id="audioStatusIndicator" onclick="testOrderAlertSound()" style="cursor: pointer; background: rgba(37,211,102,0.14); border: 1.5px solid #25d366; padding: 10px 14px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.5);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 22px;">🔔</span>
+                <div style="text-align: left;">
+                    <div style="color: #55ef88; font-size: 12.5px; font-weight: 800;">3-Sec Ring + "New Order" Voice: ACTIVE</div>
+                    <div style="font-size: 11px; color: #d6b8be;">Tap to test sound & voice alert (Helpline: 9111789220)</div>
+                </div>
+            </div>
+            <button style="padding: 7px 12px; border-radius: 9px; border: 1.2px solid var(--gold-primary); background: linear-gradient(135deg, rgba(212,175,55,0.3) 0%, rgba(45,12,18,0.95) 100%); color: var(--gold-light); font-size: 11.5px; font-weight: 800; cursor: pointer;">
+                ▶ Test Ring
+            </button>
         </div>
 
         <!-- Filter Tabs -->
@@ -539,14 +572,49 @@
         var orderChannel = null;
         try {
             orderChannel = new BroadcastChannel('lotus_hut_orders');
+            orderChannel.onmessage = function(event) {
+                if (event.data && event.data.type === 'NEW_ORDER') {
+                    handleIncomingNewOrder(event.data.order);
+                }
+            };
         } catch (e) {}
+
+        // Cross-tab LocalStorage sync listener
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'lotus_hut_all_orders' && e.newValue) {
+                try {
+                    var updated = JSON.parse(e.newValue);
+                    if (updated && updated.length > 0) {
+                        var newest = updated[0];
+                        handleIncomingNewOrder(newest);
+                    }
+                } catch (err) {}
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', function() {
             loadOrders();
             checkUrlOrderParam();
+            initCloudRealtimeSync();
+            if ('speechSynthesis' in window && window.speechSynthesis.getVoices) {
+                window.speechSynthesis.getVoices();
+            }
         });
 
-        // 1. Check if order was passed via WhatsApp Link Query Parameter (?order=...)
+        // 1. Central Incoming Order Handler (Triggers 3-Sec Ring + Voice Announcement)
+        function handleIncomingNewOrder(incomingOrder) {
+            if (!incomingOrder || !incomingOrder.orderId) return;
+
+            var exists = ordersList.find(o => o.orderId === incomingOrder.orderId);
+            if (!exists) {
+                ordersList.unshift(incomingOrder);
+                saveOrders();
+                renderOrders();
+                triggerNewOrderAlert(incomingOrder);
+            }
+        }
+
+        // 2. Check if order was passed via WhatsApp Link Query Parameter (?order=...)
         function checkUrlOrderParam() {
             var params = new URLSearchParams(window.location.search);
             var orderDataEncoded = params.get('order');
@@ -554,15 +622,7 @@
                 try {
                     var jsonStr = decodeURIComponent(escape(atob(decodeURIComponent(orderDataEncoded))));
                     var incomingOrder = JSON.parse(jsonStr);
-
-                    // Check if already in list
-                    var exists = ordersList.find(o => o.orderId === incomingOrder.orderId);
-                    if (!exists) {
-                        ordersList.unshift(incomingOrder);
-                        saveOrders();
-                        playAudioChime('new_order');
-                    }
-                    renderOrders();
+                    handleIncomingNewOrder(incomingOrder);
                 } catch (e) {
                     console.error('Error parsing order param', e);
                 }
@@ -1093,58 +1153,225 @@
                     { id: "bt_2", name: "Peri Peri Masala Fries", price: 130, count: 1 }
                 ],
                 totalAmount: 650,
-                paymentMode: "UPI Paid (9111789220)",
+                paymentMode: "100% PRE-PAID (PhonePe)",
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
                 status: 'PENDING'
             };
 
-            ordersList.unshift(sampleOrder);
-            saveOrders();
-            playAudioChime('new_order');
-            renderOrders();
-            alert(`Sample Test Order #${sampleOrder.orderId} for vehicle ${sampleOrder.custVehicle} created! Notice the RED Accept button.`);
+            handleIncomingNewOrder(sampleOrder);
         }
 
-        // 7. Audio Synthesizer (No external sound files required)
-        function playAudioChime(type) {
-            try {
-                var AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                var ctx = new AudioContext();
+        // =====================================================================
+        // 7. REAL-TIME ALERT SYSTEM: 3-SECOND RING + "NEW ORDER" VOICE
+        // =====================================================================
+        var staffAudioCtx = null;
 
-                if (type === 'new_order') {
-                    // Double Ding
-                    playTone(ctx, 587.33, 0, 0.15); // D5
-                    playTone(ctx, 880, 0.18, 0.35);  // A5
-                } else if (type === 'accept') {
-                    // Ascending Chime
-                    playTone(ctx, 523.25, 0, 0.12); // C5
-                    playTone(ctx, 659.25, 0.12, 0.12); // E5
-                    playTone(ctx, 783.99, 0.24, 0.28); // G5
-                } else if (type === 'done') {
-                    // Victory Fanfare
-                    playTone(ctx, 523.25, 0, 0.1);
-                    playTone(ctx, 659.25, 0.1, 0.1);
-                    playTone(ctx, 783.99, 0.2, 0.1);
-                    playTone(ctx, 1046.50, 0.3, 0.4); // C6
+        function getStaffAudioContext() {
+            if (!staffAudioCtx) {
+                var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    staffAudioCtx = new AudioContextClass();
                 }
+            }
+            if (staffAudioCtx && staffAudioCtx.state === 'suspended') {
+                staffAudioCtx.resume();
+            }
+            return staffAudioCtx;
+        }
+
+        // Unlock browser audio upon first screen touch/click
+        function unlockAudioContext() {
+            getStaffAudioContext();
+            if ('speechSynthesis' in window) {
+                var dummy = new SpeechSynthesisUtterance('');
+                window.speechSynthesis.speak(dummy);
+            }
+        }
+        window.addEventListener('click', unlockAudioContext, { once: false });
+        window.addEventListener('touchstart', unlockAudioContext, { once: false });
+
+        // A. 3-Second Loud Restaurant Alarm Bell
+        function playThreeSecondOrderRing() {
+            try {
+                var ctx = getStaffAudioContext();
+                if (!ctx) return;
+
+                // Rings continuously across 3.0 seconds at intervals:
+                // 0.0s, 0.5s, 1.0s, 1.5s, 2.0s, 2.5s (Finishes ringing at 3.0 seconds)
+                var pulseTimes = [0.0, 0.5, 1.0, 1.5, 2.0, 2.5];
+
+                pulseTimes.forEach(function(offset) {
+                    // Bright harmonic chime chords (A5 880Hz, E6 1318Hz, A6 1760Hz)
+                    playHarmonicTone(ctx, 880, offset, 0.38);
+                    playHarmonicTone(ctx, 1318.51, offset + 0.05, 0.32);
+                    playHarmonicTone(ctx, 1760, offset + 0.10, 0.26);
+                });
+            } catch (e) {
+                console.error("Audio ring error", e);
+            }
+        }
+
+        function playHarmonicTone(ctx, freq, delay, duration) {
+            try {
+                var startTime = ctx.currentTime + delay;
+                var osc = ctx.createOscillator();
+                var gain = ctx.createGain();
+
+                osc.type = 'triangle'; // Resonant brass/bell timbre
+                osc.frequency.setValueAtTime(freq, startTime);
+
+                gain.gain.setValueAtTime(0.5, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(startTime);
+                osc.stop(startTime + duration);
             } catch (e) {}
         }
 
-        function playTone(ctx, freq, delay, duration) {
-            var osc = ctx.createOscillator();
-            var gain = ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.value = freq;
-            osc.connect(gain);
-            gain.connect(ctx.destination);
+        // B. Clear Voice Announcement: "New Order! New Order!"
+        function speakNewOrderVoice(order) {
+            if (!('speechSynthesis' in window)) return;
+            try {
+                window.speechSynthesis.cancel(); // Clear previous speech queue
 
-            var startTime = ctx.currentTime + delay;
-            gain.gain.setValueAtTime(0.3, startTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+                var vehicleNumber = (order && order.custVehicle) ? order.custVehicle : '';
+                var speechPhrase = "New order! New order!";
+                if (vehicleNumber) {
+                    speechPhrase = "New order! Vehicle " + vehicleNumber;
+                }
 
-            osc.start(startTime);
-            osc.stop(startTime + duration);
+                var utter = new SpeechSynthesisUtterance(speechPhrase);
+                utter.rate = 0.95;
+                utter.pitch = 1.1;
+                utter.volume = 1.0;
+
+                // Try to select preferred voice
+                var voices = window.speechSynthesis.getVoices();
+                if (voices && voices.length > 0) {
+                    var preferred = voices.find(v => v.lang === 'en-IN' || v.lang === 'hi-IN') ||
+                                    voices.find(v => v.lang.startsWith('en'));
+                    if (preferred) utter.voice = preferred;
+                }
+
+                // Voice speaks at 1.1s so the bell chime catches attention first
+                setTimeout(function() {
+                    window.speechSynthesis.speak(utter);
+                }, 1100);
+
+                // Voice repeats "New Order!" at 2.8s as the 3-second ring completes
+                setTimeout(function() {
+                    var secondUtter = new SpeechSynthesisUtterance("New order!");
+                    secondUtter.rate = 1.0;
+                    secondUtter.pitch = 1.15;
+                    if (utter.voice) secondUtter.voice = utter.voice;
+                    window.speechSynthesis.speak(secondUtter);
+                }, 2800);
+            } catch (e) {
+                console.error("Speech synthesis error", e);
+            }
+        }
+
+        // C. Central 3-Sec Ring + Voice Alert Function
+        function triggerNewOrderAlert(order) {
+            // 1. 3-Second Bell Ring
+            playThreeSecondOrderRing();
+
+            // 2. Voice: "New order!"
+            speakNewOrderVoice(order);
+
+            // 3. Vibration for mobile devices
+            if (navigator.vibrate) {
+                try {
+                    navigator.vibrate([400, 200, 400, 200, 400, 200, 400]);
+                } catch (e) {}
+            }
+
+            // 4. Pop-up visual banner
+            showNewOrderToast(order);
+        }
+
+        // D. Visual Pop-up Banner Toast
+        function showNewOrderToast(order) {
+            var toast = document.getElementById('newOrderAlertPopup');
+            var veh = document.getElementById('alertToastVehicle');
+            var meta = document.getElementById('alertToastMeta');
+            if (toast) {
+                if (veh) veh.innerText = (order && order.custVehicle) ? order.custVehicle.toUpperCase() : 'VEHICLE ORDER';
+                if (meta) meta.innerText = `Total: ₹${(order && order.totalAmount) || 0} • ${(order && order.paymentMode) || 'Pre-Paid'}`;
+                toast.style.display = 'block';
+
+                setTimeout(function() {
+                    toast.style.display = 'none';
+                }, 8000);
+            }
+        }
+
+        function dismissNewOrderToast() {
+            var toast = document.getElementById('newOrderAlertPopup');
+            if (toast) toast.style.display = 'none';
+        }
+
+        // E. Manual Test Ring & Voice Button Handler
+        function testOrderAlertSound() {
+            getStaffAudioContext();
+            var testSample = { custVehicle: "MP 09 TEST 1234", totalAmount: 450, paymentMode: "100% PRE-PAID" };
+            triggerNewOrderAlert(testSample);
+        }
+
+        // F. Cross-Device Realtime Cloud Sync via HiveMQ WebSocket
+        function initCloudRealtimeSync() {
+            try {
+                if (typeof Paho === 'undefined') return;
+                var clientId = "lotus_staff_" + Math.random().toString(16).substr(2, 8);
+                var client = new Paho.MQTT.Client("broker.hivemq.com", 8884, clientId);
+
+                client.onMessageArrived = function(message) {
+                    try {
+                        var incomingOrder = JSON.parse(message.payloadString);
+                        handleIncomingNewOrder(incomingOrder);
+                    } catch (err) {}
+                };
+
+                client.onConnectionLost = function() {
+                    setTimeout(initCloudRealtimeSync, 5000);
+                };
+
+                client.connect({
+                    useSSL: true,
+                    timeout: 6,
+                    keepAliveInterval: 30,
+                    onSuccess: function() {
+                        client.subscribe("lotus_hut_indore_orders_9111789220");
+                    },
+                    onFailure: function() {
+                        setTimeout(initCloudRealtimeSync, 10000);
+                    }
+                });
+            } catch (e) {
+                console.error("Cloud sync init error", e);
+            }
+        }
+
+        // Standard Accept & Done Chimes
+        function playAudioChime(type) {
+            try {
+                var ctx = getStaffAudioContext();
+                if (!ctx) return;
+
+                if (type === 'accept') {
+                    playHarmonicTone(ctx, 523.25, 0, 0.12); // C5
+                    playHarmonicTone(ctx, 659.25, 0.12, 0.12); // E5
+                    playHarmonicTone(ctx, 783.99, 0.24, 0.28); // G5
+                } else if (type === 'done') {
+                    playHarmonicTone(ctx, 523.25, 0, 0.1);
+                    playHarmonicTone(ctx, 659.25, 0.1, 0.1);
+                    playHarmonicTone(ctx, 783.99, 0.2, 0.1);
+                    playHarmonicTone(ctx, 1046.50, 0.3, 0.4); // C6
+                }
+            } catch (e) {}
         }
     </script>
 </body>
