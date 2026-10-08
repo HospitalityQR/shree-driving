@@ -1139,23 +1139,43 @@
                     <span id="verificationStatusPill" class="verification-status-pill unverified">⚠️ Payment Required</span>
                 </div>
                 <div id="verificationInputArea">
-                    <div style="font-size: 11px; color: var(--gold-light);">Enter 12-Digit UPI Reference / UTR Number:</div>
+                    <!-- Anti-Fraud Warning Banner -->
+                    <div style="background: rgba(217, 20, 56, 0.2); border: 1px solid var(--lotus-neon); border-radius: 8px; padding: 6px 10px; margin-bottom: 8px; font-size: 11px; color: #ffb3c1;">
+                        🛡️ <strong>Anti-Fraud Security:</strong> Fake UTR daalne par order cancel ho jayega. Counter Soundbox aur Bank SMS se har payment match hoti hai.
+                    </div>
+
+                    <div style="font-size: 11px; color: var(--gold-light);">1. Enter 12-Digit UPI Reference / UTR Number *:</div>
                     <div class="utr-input-group">
                         <input type="text" id="utrNumberInput" class="utr-input" placeholder="e.g. 428190382910" maxlength="12" pattern="\d{12}">
-                        <button class="btn-verify-check" onclick="verifyPaymentAutomatic()">
-                            <span>Verify</span> ✓
-                        </button>
                     </div>
-                    <div class="verification-note">
-                        💡 Payment verify hone ke baad hi order WhatsApp par jayega. UTR number aapke PhonePe/GPay screen ya SMS me milta hai.
+
+                    <!-- 2. Screenshot Upload Proof -->
+                    <div style="margin-top: 10px;">
+                        <div style="font-size: 11px; color: var(--gold-light); margin-bottom: 4px;">
+                            2. Upload Payment Screenshot (PhonePe/GPay रसीद) *:
+                        </div>
+                        <label for="paymentScreenshotInput" id="uploadLabelBtn" style="display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border: 1.5px dashed var(--gold-primary); border-radius: 10px; background: rgba(0,0,0,0.6); cursor: pointer; color: var(--gold-light); font-size: 12px; font-weight: 700; transition: all 0.2s ease;">
+                            <span>📸</span> <span id="uploadLabelText">Attach Screenshot / Camera Photo</span>
+                        </label>
+                        <input type="file" id="paymentScreenshotInput" accept="image/*" style="display: none;" onchange="handleScreenshotUpload(event)">
+                        
+                        <div id="screenshotPreviewWrap" style="display: none; margin-top: 8px; text-align: center;">
+                            <img id="screenshotPreviewImg" src="" alt="Screenshot" style="max-height: 110px; border-radius: 8px; border: 2px solid #25d366; box-shadow: 0 4px 12px rgba(0,0,0,0.6);">
+                            <div style="font-size: 11px; color: #55ef88; font-weight: 800; margin-top: 3px;">✅ Screenshot Attached!</div>
+                        </div>
                     </div>
+
+                    <!-- Verify Button -->
+                    <button class="btn-verify-check" onclick="verifyPaymentAutomatic()" style="width: 100%; margin-top: 10px; justify-content: center; padding: 11px; font-size: 13px;">
+                        <span>🔒 Verify Payment & Unlock WhatsApp Order</span>
+                    </button>
                 </div>
                 <div id="verificationSuccessArea" style="display: none; padding-top: 6px;">
-                    <div style="color: #55ef88; font-weight: 800; font-size: 13px;">
-                        ✅ Payment Verified & Confirmed!
+                    <div style="color: #55ef88; font-weight: 800; font-size: 13.5px;">
+                        ✅ Payment Proof & UTR Confirmed!
                     </div>
                     <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;" id="verifiedUtrDisplay">
-                        UTR: 428190382910 • Ready to Send
+                        UTR: 428190382910 • Screenshot Proof Ready
                     </div>
                 </div>
             </div>
@@ -1514,6 +1534,30 @@
             }
         }
 
+        var uploadedScreenshotData = null;
+
+        function handleScreenshotUpload(event) {
+            var file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert("Please upload a valid image file (PNG, JPG, JPEG)!");
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedScreenshotData = e.target.result;
+                var img = document.getElementById('screenshotPreviewImg');
+                var wrap = document.getElementById('screenshotPreviewWrap');
+                var labelText = document.getElementById('uploadLabelText');
+                if (img) img.src = uploadedScreenshotData;
+                if (wrap) wrap.style.display = 'block';
+                if (labelText) labelText.innerText = 'Change / Re-upload Screenshot';
+            };
+            reader.readAsDataURL(file);
+        }
+
         // 6. AUTOMATIC PAYMENT VERIFICATION (STRICT PREPAID ONLY)
         function verifyPaymentAutomatic() {
             var utrInput = document.getElementById('utrNumberInput');
@@ -1521,7 +1565,7 @@
             var utrVal = rawVal.replace(/[^0-9]/g, '');
 
             if (!utrVal || utrVal.length !== 12) {
-                alert("⚠️ STRICT VERIFICATION REQUIREMENT:\n\nPlease enter the exact 12-digit numeric UPI Reference / UTR Number from your payment app (PhonePe / GPay / Paytm / SMS).\nExample: 428190382910");
+                alert("⚠️ 12-DIGIT UTR NUMBER REQUIRED:\n\nPlease enter the exact 12-digit numeric UPI Reference / UTR Number from your payment app (PhonePe / GPay / Paytm / SMS).\nExample: 428190382910");
                 utrInput.focus();
                 return;
             }
@@ -1533,20 +1577,26 @@
                 return;
             }
 
+            // Strict anti-fraud rule: Screenshot proof is mandatory!
+            if (!uploadedScreenshotData) {
+                alert("⚠️ PAYMENT SCREENSHOT PROOF REQUIRED!\n\nAnti-Fraud Security Rule:\nFake orders prevent karne ke liye PhonePe/GPay ka payment screenshot upload karna zaroori hai.\n\nKripya neeche 'Attach Screenshot' par click karke screenshot chunein.");
+                return;
+            }
+
             var pill = document.getElementById('verificationStatusPill');
             var stats = calculateCartTotals();
 
             // Verification animation
             pill.className = 'verification-status-pill unverified';
-            pill.innerText = '⏳ Verifying with UPI Bank...';
+            pill.innerText = '⏳ Verifying UTR & Screenshot Proof...';
 
             setTimeout(function() {
                 pill.className = 'verification-status-pill verified';
-                pill.innerText = '✅ Payment Verified & Confirmed!';
+                pill.innerText = '✅ Payment Proof & UTR Confirmed!';
 
                 document.getElementById('verificationInputArea').style.display = 'none';
                 document.getElementById('verificationSuccessArea').style.display = 'block';
-                document.getElementById('verifiedUtrDisplay').innerText = `UTR: ${utrVal} • Paid ₹${stats.total} via ${selectedPaymentApp}`;
+                document.getElementById('verifiedUtrDisplay').innerText = `UTR: ${utrVal} • Screenshot Attached • ₹${stats.total} (${selectedPaymentApp})`;
 
                 isPaymentVerified = true;
                 verifiedUtr = utrVal;
@@ -1558,8 +1608,17 @@
         function resetVerification() {
             isPaymentVerified = false;
             verifiedUtr = '';
+            uploadedScreenshotData = null;
+
             var input = document.getElementById('utrNumberInput');
             if (input) input.value = '';
+            var previewWrap = document.getElementById('screenshotPreviewWrap');
+            if (previewWrap) previewWrap.style.display = 'none';
+            var uploadLabel = document.getElementById('uploadLabelText');
+            if (uploadLabel) uploadLabel.innerText = 'Attach Screenshot / Camera Photo';
+            var fileInput = document.getElementById('paymentScreenshotInput');
+            if (fileInput) fileInput.value = '';
+
             var inArea = document.getElementById('verificationInputArea');
             if (inArea) inArea.style.display = 'block';
             var sArea = document.getElementById('verificationSuccessArea');
@@ -1685,12 +1744,11 @@
                         `${itemsText}` +
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `💰 *TOTAL BILL*: ₹${stats.total}\n` +
-                        `💳 *PAYMENT*: ${paymentModeText}\n` +
-                        `🔢 *UPI UTR / REF*: ${verifiedUtr}\n`;
-
-            if (orderObj.custNote) {
-                waMsg += `📝 *Note*: ${orderObj.custNote}\n`;
-            }
+                        `🔢 *UPI UTR / REF*: ${verifiedUtr}\n` +
+                        `📸 *SCREENSHOT PROOF*: ${uploadedScreenshotData ? '✅ Attached by Customer (Please attach photo in WhatsApp)' : 'None'}\n` +
+                        `━━━━━━━━━━━━━━━━━━━━\n` +
+                        `⚠️ *COUNTER SECURITY CHECK*:\n` +
+                        `👉 Match with Soundbox / Bank SMS for ₹${stats.total} from ${custName} before preparing food!\n`;
 
             waMsg += `━━━━━━━━━━━━━━━━━━━━\n` +
                      `👨‍🍳 *STAFF ACCEPT & KOT LINK*:\n` +
