@@ -444,28 +444,130 @@
             justify-content: center;
         }
 
-        @keyframes pulseOrderToast {
-            0% { transform: scale(1); box-shadow: 0 0 14px rgba(255, 42, 81, 0.5); }
-            100% { transform: scale(1.02); box-shadow: 0 0 30px rgba(255, 42, 81, 0.95); }
+        @keyframes zoomInAlert {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes shakeBell {
+            0% { transform: rotate(-18deg); }
+            50% { transform: rotate(18deg); }
+            100% { transform: rotate(-18deg); }
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .sonic-wave {
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            border: 2px solid #ff2a51;
+            opacity: 0.8;
+            animation: sonicPulse 1.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        .sonic-wave.delay {
+            animation-delay: 0.9s;
+        }
+
+        @keyframes sonicPulse {
+            0% { transform: scale(0.6); opacity: 0.9; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        .blinking-dot {
+            animation: blinkDot 0.8s infinite alternate;
+        }
+
+        @keyframes blinkDot {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* High-Tech Equalizer Wave on Header */
+        .sound-wave-bars {
+            display: inline-flex;
+            align-items: flex-end;
+            gap: 2.5px;
+            height: 14px;
+        }
+
+        .sound-bar {
+            width: 3px;
+            background: #55ef88;
+            border-radius: 2px;
+            animation: barJump 1.2s ease-in-out infinite;
+        }
+
+        .sound-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
+        .sound-bar:nth-child(2) { height: 12px; animation-delay: 0.3s; }
+        .sound-bar:nth-child(3) { height: 8px; animation-delay: 0.2s; }
+        .sound-bar:nth-child(4) { height: 14px; animation-delay: 0.4s; }
+        .sound-bar:nth-child(5) { height: 7px; animation-delay: 0.15s; }
+
+        @keyframes barJump {
+            0%, 100% { transform: scaleY(0.4); }
+            50% { transform: scaleY(1); }
         }
     </style>
 </head>
 <body>
 
-    <!-- FLOATING 3-SEC ORDER ALERT TOAST -->
-    <div id="newOrderAlertPopup" style="display:none; position:fixed; top:14px; left:12px; right:12px; z-index:9999; background:linear-gradient(135deg, #8a0518 0%, #d91438 50%, #590410 100%); border:2px solid #fff280; border-radius:18px; padding:14px 16px; box-shadow:0 12px 36px rgba(217,20,56,0.7); animation:pulseOrderToast 1s infinite alternate;">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-            <div style="display:flex; align-items:center; gap:12px;">
-                <span style="font-size:32px;">🔔</span>
-                <div>
-                    <div style="font-size:11.5px; font-weight:800; color:#fff280; text-transform:uppercase; letter-spacing:1px;">🚨 NAYA ORDER AAYA HAI!</div>
-                    <div style="font-size:18px; font-weight:900; color:#fff;" id="alertToastVehicle">MP 09 AB 1234</div>
-                    <div style="font-size:12px; color:#ffe6eb;" id="alertToastMeta">Total: ₹0 • 100% Pre-Paid</div>
+    <!-- ULTRA HIGH-TECH INCOMING ORDER POPUP MODAL -->
+    <div id="newOrderAlertPopup" style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(10,2,4,0.92); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); align-items:center; justify-content:center; padding:16px;">
+        <div style="width:100%; max-width:440px; background:linear-gradient(135deg, rgba(30,7,14,0.98) 0%, rgba(55,10,20,0.95) 50%, rgba(18,4,8,0.98) 100%); border:2.5px solid var(--lotus-neon); border-radius:24px; padding:24px 20px; box-shadow:0 0 50px rgba(255,42,81,0.6), inset 0 0 20px rgba(212,175,55,0.2); text-align:center; position:relative; overflow:hidden; animation:zoomInAlert 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+            
+            <!-- Neon Ambient Glow Ray -->
+            <div style="position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle, rgba(255,42,81,0.15) 0%, transparent 60%); pointer-events:none; animation:rotateGlow 8s linear infinite;"></div>
+
+            <!-- Pulsing 3D Bell with Expanding Waves -->
+            <div style="position:relative; display:inline-block; margin-bottom:12px;">
+                <div class="sonic-wave"></div>
+                <div class="sonic-wave delay"></div>
+                <div style="width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg, #ff2a51 0%, #d91438 100%); display:flex; align-items:center; justify-content:center; font-size:36px; box-shadow:0 8px 24px rgba(217,20,56,0.6); animation:shakeBell 0.8s ease-in-out infinite alternate; position:relative; z-index:2;">
+                    🔔
                 </div>
             </div>
-            <button onclick="dismissNewOrderToast()" style="background:#fff; color:#8a0518; border:none; border-radius:10px; padding:10px 14px; font-weight:900; font-size:12.5px; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.4);">
-                OK ✓
-            </button>
+
+            <!-- Title & Live Tag -->
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,42,81,0.25); border:1px solid #ff2a51; padding:4px 12px; border-radius:20px; margin-bottom:10px;">
+                <span class="blinking-dot" style="color:#ff2a51;">●</span>
+                <span style="font-size:11px; font-weight:900; color:#ffb3c1; letter-spacing:1px; text-transform:uppercase;">LIVE NEW ORDER FROM CUSTOMER</span>
+            </div>
+
+            <!-- Vehicle License Plate (Metallic IND Style) -->
+            <div style="background:#fff; border:3px solid #111; border-radius:12px; padding:8px 14px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 6px 20px rgba(0,0,0,0.7);">
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="font-size:10px; font-weight:900; color:#002244; line-height:1; border-right:1.5px solid #002244; padding-right:5px;">IND<br>🇮🇳</span>
+                    <span id="alertToastVehicle" style="font-size:22px; font-weight:900; color:#111; letter-spacing:3px; font-family:monospace;">MP 09 AB 1234</span>
+                </div>
+                <span id="alertToastSpot" style="font-size:11px; font-weight:800; background:#eee; color:#333; padding:3px 8px; border-radius:6px;">Drive-In Bay</span>
+            </div>
+
+            <!-- Amount & Payment Status -->
+            <div style="background:rgba(12,2,4,0.85); border:1.5px solid rgba(212,175,55,0.4); border-radius:14px; padding:12px 14px; margin-bottom:14px;">
+                <div style="font-size:11px; color:#d6b8be; text-transform:uppercase; letter-spacing:0.5px;">Order Total & Status</div>
+                <div id="alertToastAmount" style="font-size:26px; font-weight:900; color:#55ef88; margin:2px 0;">₹0</div>
+                <div id="alertToastMeta" style="font-size:12px; color:var(--gold-light); font-weight:700;">100% PRE-PAID • PhonePe</div>
+            </div>
+
+            <!-- Customer & Item Summary -->
+            <div id="alertToastItemsSummary" style="font-size:12.5px; color:#ffe6eb; margin-bottom:16px; line-height:1.4; max-height:80px; overflow-y:auto; text-align:left; background:rgba(0,0,0,0.4); padding:8px 12px; border-radius:10px; border:1px dashed rgba(255,255,255,0.15);">
+                Dishes preparing...
+            </div>
+
+            <!-- Dual Action Buttons -->
+            <div style="display:flex; gap:10px;">
+                <button onclick="dismissNewOrderToast()" style="flex:1; padding:13px; border-radius:14px; border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.08); color:#fff; font-size:13px; font-weight:800; cursor:pointer;">
+                    Close Window ✕
+                </button>
+                <button id="alertAcceptBtn" onclick="quickAcceptFromAlert()" style="flex:1.6; padding:13px; border-radius:14px; border:none; background:linear-gradient(135deg, #2fe673 0%, #25d366 50%, #158a3c 100%); color:#fff; font-size:14px; font-weight:900; cursor:pointer; box-shadow:0 6px 20px rgba(37,211,102,0.5); display:flex; align-items:center; justify-content:center; gap:6px;">
+                    <span>✓</span> Accept Order (तैयार करें)
+                </button>
+            </div>
         </div>
     </div>
 
@@ -490,16 +592,30 @@
             </div>
         </header>
 
-        <!-- Sound & Voice Alert Status Bar (3-Sec Ring + "New Order" Voice) -->
-        <div class="audio-indicator" id="audioStatusIndicator" onclick="testOrderAlertSound()" style="cursor: pointer; background: rgba(37,211,102,0.14); border: 1.5px solid #25d366; padding: 10px 14px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.5);">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 22px;">🔔</span>
+        <!-- High-Tech Counter Terminal Radar HUD -->
+        <div class="audio-indicator" id="audioStatusIndicator" onclick="testOrderAlertSound()" style="cursor: pointer; background: linear-gradient(135deg, rgba(20,5,10,0.95) 0%, rgba(35,8,16,0.95) 100%); border: 2px solid #25d366; padding: 12px 16px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; box-shadow: 0 4px 20px rgba(37,211,102,0.2);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(37,211,102,0.18); border: 1.5px solid #25d366; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    🔔
+                </div>
                 <div style="text-align: left;">
-                    <div style="color: #55ef88; font-size: 12.5px; font-weight: 800;">3-Sec Ring + "New Order" Voice: ACTIVE</div>
-                    <div style="font-size: 11px; color: #d6b8be;">Tap to test sound & voice alert (Helpline: 9111789220)</div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span class="blinking-dot" style="color: #25d366;">●</span>
+                        <strong style="color: #55ef88; font-size: 13px; letter-spacing: 0.3px;">LIVE ORDER RADAR: ONLINE</strong>
+                        <div class="sound-wave-bars">
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                        </div>
+                    </div>
+                    <div style="font-size: 11px; color: #d6b8be; margin-top: 2px;">
+                        Customer WhatsApp bhejte hi yahan 3-sec ring & "New Order" voice bajegi
+                    </div>
                 </div>
             </div>
-            <button style="padding: 7px 12px; border-radius: 9px; border: 1.2px solid var(--gold-primary); background: linear-gradient(135deg, rgba(212,175,55,0.3) 0%, rgba(45,12,18,0.95) 100%); color: var(--gold-light); font-size: 11.5px; font-weight: 800; cursor: pointer;">
+            <button style="padding: 8px 14px; border-radius: 10px; border: 1.4px solid var(--gold-primary); background: linear-gradient(135deg, rgba(212,175,55,0.35) 0%, rgba(45,12,18,0.95) 100%); color: var(--gold-light); font-size: 12px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.4); white-space: nowrap;">
                 ▶ Test Ring
             </button>
         </div>
@@ -1293,20 +1409,39 @@
             showNewOrderToast(order);
         }
 
-        // D. Visual Pop-up Banner Toast
+        // D. Visual Cyber-Royal Modal Alert
+        var activeAlertOrderId = null;
+
         function showNewOrderToast(order) {
             var toast = document.getElementById('newOrderAlertPopup');
-            var veh = document.getElementById('alertToastVehicle');
-            var meta = document.getElementById('alertToastMeta');
-            if (toast) {
-                if (veh) veh.innerText = (order && order.custVehicle) ? order.custVehicle.toUpperCase() : 'VEHICLE ORDER';
-                if (meta) meta.innerText = `Total: ₹${(order && order.totalAmount) || 0} • ${(order && order.paymentMode) || 'Pre-Paid'}`;
-                toast.style.display = 'block';
+            if (!toast) return;
 
-                setTimeout(function() {
-                    toast.style.display = 'none';
-                }, 8000);
+            activeAlertOrderId = order.orderId;
+
+            var veh = document.getElementById('alertToastVehicle');
+            var spot = document.getElementById('alertToastSpot');
+            var amt = document.getElementById('alertToastAmount');
+            var meta = document.getElementById('alertToastMeta');
+            var itemsBox = document.getElementById('alertToastItemsSummary');
+
+            if (veh) veh.innerText = (order && order.custVehicle) ? order.custVehicle.toUpperCase() : 'VEHICLE ORDER';
+            if (spot) spot.innerText = (order && order.custSpot) ? order.custSpot : 'Drive-In Bay';
+            if (amt) amt.innerText = `₹${(order && order.totalAmount) || 0}`;
+            if (meta) meta.innerText = `${(order && order.paymentMode) || '100% PRE-PAID'} • ${(order && order.custName) || 'Customer'}`;
+
+            if (itemsBox) {
+                var summary = "";
+                if (order.items && order.items.length > 0) {
+                    order.items.forEach(function(it) {
+                        summary += `<div style="margin-bottom:3px;">• <strong>${it.count}x</strong> ${it.name} (₹${it.price * it.count})</div>`;
+                    });
+                } else {
+                    summary = "Dishes preparing fresh...";
+                }
+                itemsBox.innerHTML = summary;
             }
+
+            toast.style.display = 'flex';
         }
 
         function dismissNewOrderToast() {
@@ -1314,46 +1449,105 @@
             if (toast) toast.style.display = 'none';
         }
 
+        function quickAcceptFromAlert() {
+            dismissNewOrderToast();
+            if (activeAlertOrderId) {
+                handleAcceptOrder(activeAlertOrderId);
+            }
+        }
+
         // E. Manual Test Ring & Voice Button Handler
         function testOrderAlertSound() {
             getStaffAudioContext();
-            var testSample = { custVehicle: "MP 09 TEST 1234", totalAmount: 450, paymentMode: "100% PRE-PAID" };
+            var testSample = {
+                orderId: "TEST-" + Math.floor(1000 + Math.random() * 9000),
+                custName: "VIP Test Customer",
+                custVehicle: "MP 09 CZ 4521",
+                custSpot: "Drive-In Bay 1",
+                totalAmount: 450,
+                paymentMode: "100% PRE-PAID (PhonePe)",
+                items: [
+                    { name: "Lotus Special Cold Coffee", count: 2, price: 150 },
+                    { name: "Crispy Veg Burger", count: 1, price: 150 }
+                ]
+            };
             triggerNewOrderAlert(testSample);
         }
 
-        // F. Cross-Device Realtime Cloud Sync via HiveMQ WebSocket
+        // F. Instant Cross-Device Realtime Cloud Sync (Native SSE + HiveMQ MQTT Backup)
+        var sseEventSource = null;
+
         function initCloudRealtimeSync() {
+            // 1. Native EventSource (Server-Sent Events) — Instant & 100% reliable
             try {
-                if (typeof Paho === 'undefined') return;
-                var clientId = "lotus_staff_" + Math.random().toString(16).substr(2, 8);
-                var client = new Paho.MQTT.Client("broker.hivemq.com", 8884, clientId);
+                if (sseEventSource) sseEventSource.close();
+                sseEventSource = new EventSource('https://ntfy.sh/lotushut_orders_9111789220/sse');
 
-                client.onMessageArrived = function(message) {
+                sseEventSource.onmessage = function(event) {
                     try {
-                        var incomingOrder = JSON.parse(message.payloadString);
-                        handleIncomingNewOrder(incomingOrder);
-                    } catch (err) {}
+                        var parsed = JSON.parse(event.data);
+                        // ntfy wraps JSON payload inside 'message' property
+                        var orderData = parsed.message ? JSON.parse(parsed.message) : parsed;
+                        if (orderData && orderData.orderId) {
+                            handleIncomingNewOrder(orderData);
+                        }
+                    } catch (e) {}
                 };
 
-                client.onConnectionLost = function() {
-                    setTimeout(initCloudRealtimeSync, 5000);
+                sseEventSource.onerror = function() {
+                    console.log("SSE reconnecting...");
                 };
-
-                client.connect({
-                    useSSL: true,
-                    timeout: 6,
-                    keepAliveInterval: 30,
-                    onSuccess: function() {
-                        client.subscribe("lotus_hut_indore_orders_9111789220");
-                    },
-                    onFailure: function() {
-                        setTimeout(initCloudRealtimeSync, 10000);
-                    }
-                });
             } catch (e) {
-                console.error("Cloud sync init error", e);
+                console.error("SSE connection error", e);
             }
+
+            // 2. Secondary HiveMQ MQTT WebSocket backup
+            try {
+                if (typeof Paho !== 'undefined') {
+                    var clientId = "lotus_staff_" + Math.random().toString(16).substr(2, 8);
+                    var client = new Paho.MQTT.Client("broker.hivemq.com", 8884, clientId);
+
+                    client.onMessageArrived = function(message) {
+                        try {
+                            var incomingOrder = JSON.parse(message.payloadString);
+                            handleIncomingNewOrder(incomingOrder);
+                        } catch (err) {}
+                    };
+
+                    client.onConnectionLost = function() {
+                        setTimeout(initCloudRealtimeSync, 5000);
+                    };
+
+                    client.connect({
+                        useSSL: true,
+                        timeout: 6,
+                        keepAliveInterval: 30,
+                        onSuccess: function() {
+                            client.subscribe("lotus_hut_indore_orders_9111789220");
+                        },
+                        onFailure: function() {}
+                    });
+                }
+            } catch (e) {}
+
+            // 3. Keep Counter Screen Awake (Screen WakeLock API)
+            requestScreenWakeLock();
         }
+
+        // Screen WakeLock: Keeps phone screen active while on counter desk
+        var staffWakeLock = null;
+        async function requestScreenWakeLock() {
+            try {
+                if ('wakeLock' in navigator) {
+                    staffWakeLock = await navigator.wakeLock.request('screen');
+                }
+            } catch (err) {}
+        }
+        document.addEventListener('visibilitychange', function() {
+            if (staffWakeLock !== null && document.visibilityState === 'visible') {
+                requestScreenWakeLock();
+            }
+        });
 
         // Standard Accept & Done Chimes
         function playAudioChime(type) {
