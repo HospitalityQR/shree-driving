@@ -1027,6 +1027,16 @@
         <!-- 3. CATEGORY SCROLL CHIPS -->
         <div class="category-scroll" id="categoryChips"></div>
 
+        <!-- CATEGORY TITLE & COUNT ROW -->
+        <div class="category-header-row" id="categoryHeaderRow" style="display: flex; align-items: center; justify-content: space-between; margin: 12px 4px 8px; padding: 0 2px;">
+            <div style="font-family: var(--font-royal); font-size: 15px; font-weight: 800; color: var(--gold-light); display: flex; align-items: center; gap: 6px;" id="categoryHeading">
+                ✨ All Dishes & Delights
+            </div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--gold-light); background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.35); padding: 3px 10px; border-radius: 12px;" id="categoryCount">
+                0 Items
+            </div>
+        </div>
+
         <!-- 4. DISHES LIST -->
         <main class="dishes-list" id="dishesList"></main>
 
@@ -1316,6 +1326,8 @@
         // 2. Render Dishes
         function renderDishes() {
             var container = document.getElementById('dishesList');
+            var heading = document.getElementById('categoryHeading');
+            var countEl = document.getElementById('categoryCount');
             if (!container || typeof MENU_DATA === 'undefined') return;
 
             var filtered = MENU_DATA.filter(function(item) {
@@ -1327,12 +1339,23 @@
                 return matchCategory && matchSearch;
             });
 
+            // Update category title & count in header
+            if (typeof MENU_CATEGORIES !== 'undefined') {
+                var currentCatObj = MENU_CATEGORIES.find(c => c.id === currentCategory);
+                if (heading) {
+                    heading.innerHTML = `<span>${currentCatObj ? currentCatObj.icon : '✨'}</span> ${searchQuery ? 'Search Results' : (currentCatObj ? currentCatObj.name : 'All Items')}`;
+                }
+                if (countEl) {
+                    countEl.innerText = `${filtered.length} Items`;
+                }
+            }
+
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
-                        <div style="font-size: 36px; margin-bottom: 6px;">🍽️</div>
-                        <h3 style="color: var(--gold-light);">No items found</h3>
-                        <p style="font-size: 12px;">Try searching for coffee, burger or pizza</p>
+                        <div style="font-size: 38px; margin-bottom: 8px;">🍽️</div>
+                        <h3 style="color: var(--gold-light); margin-bottom: 6px;">No dishes found</h3>
+                        <p style="font-size: 13px;">Try searching for coffee, shake, burger, pizza or fries</p>
                     </div>
                 `;
                 return;
@@ -1356,17 +1379,23 @@
                 `;
 
                 html += `
-                    <div class="dish-card">
+                    <div class="dish-card" id="dish_${item.id}">
                         <div class="dish-info">
-                            <div class="dish-header-row">
+                            <div class="dish-header-row" style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
                                 <div class="veg-symbol"><div class="veg-dot"></div></div>
                                 ${badgeHtml}
                             </div>
-                            <h3 class="dish-name">${item.name}</h3>
-                            <p class="dish-desc">${item.desc || ''}</p>
+                            <h3 class="dish-name" style="font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 2px;">${item.name}</h3>
+                            ${item.nameHi ? `<div class="dish-name-hi" style="font-size: 12px; color: var(--gold-light); font-weight: 600; margin-bottom: 3px;">${item.nameHi}</div>` : ''}
+                            <p class="dish-desc" style="font-size: 11.5px; color: var(--text-muted); line-height: 1.35; margin-bottom: 6px;">${item.desc || ''}</p>
+                            <div class="dish-meta-bottom" style="display: flex; align-items: center; gap: 8px; font-size: 10.5px; color: #cfafb6;">
+                                <span>⏱️ ${item.prepTime || '10-15 Min'}</span>
+                                <span>•</span>
+                                <span>🚗 Car Delivery</span>
+                            </div>
                         </div>
-                        <div class="dish-right">
-                            <div class="dish-price">₹${item.price}</div>
+                        <div class="dish-right" style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 8px;">
+                            <div class="dish-price" style="font-size: 17px; font-weight: 900; color: var(--gold-light);">₹${item.price}</div>
                             ${actionControl}
                         </div>
                     </div>
@@ -1548,6 +1577,8 @@
             } else {
                 alert("UPI ID: 9111789220@upi");
             }
+        }
+
         // 5b. RAZORPAY 100% AUTOMATED BANK VERIFICATION (REAL HANDSHAKE)
         function launchRazorpayCheckout() {
             var stats = calculateCartTotals();
