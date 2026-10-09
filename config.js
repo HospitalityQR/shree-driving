@@ -22,7 +22,7 @@ window.RESTAURANT_CONFIG = {
     // 3. Direct UPI Payment Details (9111789220)
     upiNumber: "9111789220",
     upiId: "9111789220@ybl",
-    upiPayeeName: "Lotus Hut The Drive In Cafe",
+    upiPayeeName: "ANSH CHHAJED",
     
     // 4. Hosted Landing Page & Live URL
     landingPageUrl: "https://hospitalityqr.github.io/shree-driving/?v=9",

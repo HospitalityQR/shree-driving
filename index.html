@@ -1770,11 +1770,10 @@
             </div>
         </div>
 
-        <!-- 5. QUICK ACTION BUTTONS ROW: Call, WhatsApp, Show QR -->
+        <!-- 5. QUICK ACTION BUTTONS ROW: Call, WhatsApp -->
         <div class="action-buttons-row">
             <a href="tel:9111789220" class="btn-action-hero call-hero"><span>📞</span> Call Cafe</a>
             <a href="https://wa.me/919111789220" target="_blank" class="btn-action-hero wa-hero"><span>💬</span> WhatsApp</a>
-            <button class="btn-action-hero qr-hero" onclick="openQrModal()"><span>📱</span> Show QR</button>
         </div>
 
         <!-- 6. LIVE SEARCH BAR -->
@@ -2684,8 +2683,8 @@
             }
 
             var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220@ybl";
-            var payeeName = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "Lotus Hut The Drive In Cafe";
-            var note = `Order #${orderId} ${custVehicle.toUpperCase()}`;
+            var payeeName = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "ANSH CHHAJED";
+            var note = "Lotus Hut Cafe";
             var baseUpiQuery = `pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${stats.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;
 
             // 0. OFFICIAL PAYMENT GATEWAY CHECK (Exact Swiggy / Zomato Bank Auto-Verification)
@@ -2747,12 +2746,14 @@
             }
 
             // 2. Direct UPI App (PhonePe, Google Pay, Paytm)
-            var appUris = {
-                'PhonePe': `phonepe://pay?${baseUpiQuery}`,
-                'Google Pay': `tez://upi/pay?${baseUpiQuery}`,
-                'Paytm': `paytmmp://pay?${baseUpiQuery}`
-            };
+            // On iOS devices, universal upi:// scheme avoids sandbox and security declines
             var universalUpi = `upi://pay?${baseUpiQuery}`;
+            var isIos = isMobile() && /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            var appUris = {
+                'PhonePe': isIos ? universalUpi : `phonepe://pay?${baseUpiQuery}`,
+                'Google Pay': isIos ? universalUpi : `tez://upi/pay?${baseUpiQuery}`,
+                'Paytm': isIos ? universalUpi : `paytmmp://pay?${baseUpiQuery}`
+            };
             var chosenUri = appUris[selectedPaymentApp] || universalUpi;
 
             // Record timestamp when app was launched
