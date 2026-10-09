@@ -37,7 +37,7 @@ window.RESTAURANT_CONFIG = {
     // 6. Service Details
     defaultPrepTime: "15-20 Min",
     currency: "₹",
-    allowCashAtCar: false, // Strict Prepaid Only
+    allowCashAtCar: true, // Cash at Car Enabled
     allowDirectUpi: true,
 
     // 7. Instant Bank Verification Gateway (Razorpay)

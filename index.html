@@ -740,23 +740,68 @@
             justify-content: center;
         }
 
+        .selected-items-box {
+            background: rgba(18, 4, 8, 0.95);
+            border: 1.5px solid rgba(212, 175, 55, 0.4);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .items-box-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.25);
+        }
+
+        .items-count-badge {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold-light);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
         .sheet-items-list {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            max-height: 22vh;
+            max-height: 28vh;
             overflow-y: auto;
-            margin-bottom: 12px;
         }
 
         .sheet-item-row {
-            background: rgba(28, 8, 14, 0.85);
+            background: rgba(35, 10, 18, 0.85);
             border: 1px solid rgba(212, 175, 55, 0.25);
             border-radius: 10px;
-            padding: 8px 10px;
+            padding: 9px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
+        }
+
+        .item-del-btn {
+            background: rgba(255, 60, 80, 0.15);
+            border: 1px solid rgba(255, 60, 80, 0.35);
+            color: #ff8595;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .item-del-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 60, 80, 0.3);
         }
 
         /* Customer Form */
@@ -1804,8 +1849,18 @@
             <button class="sheet-close-btn" onclick="closeCartModal()">✕</button>
         </div>
 
-        <!-- Selected Items Tray -->
-        <div class="sheet-items-list" id="sheetItemsList"></div>
+        <!-- Selected Items Tray (Summary with Quantity Steppers & Delete Buttons) -->
+        <div class="selected-items-box">
+            <div class="items-box-header">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 15px;">🛒</span>
+                    <strong style="color: var(--gold-light); font-size: 13.5px;">Selected Dishes</strong>
+                    <span class="items-count-badge" id="trayItemsCountBadge">0 items</span>
+                </div>
+                <button type="button" onclick="clearWholeCart()" style="background: none; border: none; color: #ff9fb0; font-size: 11px; cursor: pointer; text-decoration: underline; font-weight: 700;">Clear All ✕</button>
+            </div>
+            <div class="sheet-items-list" id="sheetItemsList"></div>
+        </div>
 
         <!-- STEP 1: CUSTOMER & VEHICLE DETAILS -->
         <div class="form-box">
@@ -1907,17 +1962,29 @@
                         </div>
                         <div class="upi-radio-dot"></div>
                     </div>
+
+                    <!-- 5. Cash at Car (Pay on Delivery) -->
+                    <div class="upi-select-row" id="optCash" onclick="selectUpiAppInTray('Cash at Car')">
+                        <div class="upi-select-left">
+                            <span class="upi-app-icon">💵</span>
+                            <div>
+                                <div class="upi-app-title">Cash at Car (Pay to Server)</div>
+                                <div class="upi-app-desc">Car me khana aane par server ko cash dein</div>
+                            </div>
+                        </div>
+                        <div class="upi-radio-dot"></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- PROCEED TO PAY CTA BUTTON -->
+            <!-- PROCEED TO PAY / PLACE ORDER CTA BUTTON -->
             <button class="btn-gateway-pay" id="mainGatewayPayBtn" onclick="handleDirectUpiPayment()" style="margin-top: 14px;">
                 <div class="pay-btn-content">
-                    <span class="pay-btn-title">⚡ Proceed to Pay <span id="payBtnAmount">₹0</span> via <span id="payBtnAppName">PhonePe</span></span>
-                    <span class="pay-btn-sub">🔒 Bank Verified • Automatic Confirmation</span>
+                    <span class="pay-btn-title" id="mainPayBtnTitle">⚡ Proceed to Pay <span id="payBtnAmount">₹0</span> via <span id="payBtnAppName">PhonePe</span></span>
+                    <span class="pay-btn-sub" id="mainPayBtnSub">🔒 Bank Verified • Automatic Confirmation</span>
                 </div>
                 <div class="pay-btn-action">
-                    <span>Pay</span> ➔
+                    <span>Confirm</span> ➔
                 </div>
             </button>
 
@@ -2346,6 +2413,38 @@
             renderDishes();
             updateFloatingCartBar();
             renderSheetItems();
+
+            var stats = calculateCartTotals();
+            if (stats.count === 0) {
+                closeCartModal();
+            } else {
+                setupPaymentLinks(stats.total);
+            }
+        }
+
+        function removeItemFromCart(itemId) {
+            delete cart[itemId];
+            saveCart();
+            renderDishes();
+            updateFloatingCartBar();
+            renderSheetItems();
+
+            var stats = calculateCartTotals();
+            if (stats.count === 0) {
+                closeCartModal();
+            } else {
+                setupPaymentLinks(stats.total);
+            }
+        }
+
+        function clearWholeCart() {
+            if (confirm("Kya aap tray ke saare items hatana chahte hain?")) {
+                cart = {};
+                saveCart();
+                renderDishes();
+                updateFloatingCartBar();
+                closeCartModal();
+            }
         }
 
         function saveCart() {
@@ -2403,8 +2502,10 @@
             // Autofill customer details if stored previously
             var savedName = localStorage.getItem('lotus_hut_cust_name');
             var savedVehicle = localStorage.getItem('lotus_hut_cust_vehicle');
+            var savedPhone = localStorage.getItem('lotus_hut_cust_phone');
             if (savedName) document.getElementById('custNameInput').value = savedName;
             if (savedVehicle) document.getElementById('custVehicleInput').value = savedVehicle;
+            if (savedPhone) document.getElementById('custPhoneInput').value = savedPhone;
 
             document.getElementById('modalOverlay').classList.add('open');
             document.getElementById('cartModal').classList.add('open');
@@ -2417,6 +2518,23 @@
 
         function renderSheetItems() {
             var listEl = document.getElementById('sheetItemsList');
+            var badgeEl = document.getElementById('trayItemsCountBadge');
+            if (!listEl) return;
+
+            var stats = calculateCartTotals();
+            if (badgeEl) badgeEl.innerText = `${stats.count} item${stats.count !== 1 ? 's' : ''}`;
+
+            if (stats.count === 0) {
+                listEl.innerHTML = `
+                    <div style="text-align: center; padding: 18px 10px; color: var(--text-muted);">
+                        <div style="font-size: 24px; margin-bottom: 4px;">🍽️</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #fff;">Tray is empty</div>
+                        <div style="font-size: 11px;">Please add dishes from menu to continue.</div>
+                    </div>
+                `;
+                return;
+            }
+
             var html = '';
             for (var id in cart) {
                 var count = cart[id];
@@ -2424,17 +2542,22 @@
                 if (dish && count > 0) {
                     html += `
                         <div class="sheet-item-row">
-                            <div>
-                                <div style="font-size: 13px; font-weight: 800;">${dish.name}</div>
-                                <div style="font-size: 11px; color: var(--gold-light);">₹${dish.price} each</div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <div class="veg-symbol" style="width: 12px; height: 12px; padding: 1.5px;"><div class="veg-dot" style="width: 5px; height: 5px;"></div></div>
+                                    <div style="font-size: 13.5px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${dish.name}</div>
+                                </div>
+                                <div style="font-size: 11px; color: var(--gold-light); margin-top: 2px;">
+                                    ₹${dish.price} × ${count} = <strong>₹${dish.price * count}</strong>
+                                </div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 14px; font-weight: 800; color: var(--gold-light);">₹${dish.price * count}</span>
-                                <div class="qty-controls" style="border-width: 1px;">
-                                    <button class="qty-btn" style="width: 26px; height: 26px;" onclick="updateItemQty('${dish.id}', -1)">−</button>
-                                    <span class="qty-val" style="font-size: 12px; min-width: 16px;">${count}</span>
-                                    <button class="qty-btn" style="width: 26px; height: 26px;" onclick="updateItemQty('${dish.id}', 1)">+</button>
+                                <div class="qty-controls" style="border-width: 1.5px;">
+                                    <button class="qty-btn" style="width: 28px; height: 28px; font-size: 15px;" onclick="updateItemQty('${dish.id}', -1)" title="Kam karein (−)">−</button>
+                                    <span class="qty-val" style="font-size: 13px; min-width: 20px; font-weight: 900;">${count}</span>
+                                    <button class="qty-btn" style="width: 28px; height: 28px; font-size: 15px;" onclick="updateItemQty('${dish.id}', 1)" title="Badhayein (+)">+</button>
                                 </div>
+                                <button type="button" class="item-del-btn" onclick="removeItemFromCart('${dish.id}')" title="Item hatayein (Delete)">🗑️</button>
                             </div>
                         </div>
                     `;
@@ -2460,20 +2583,31 @@
             var appEl = document.getElementById('payBtnAppName');
             if (appEl) appEl.innerText = selectedPaymentApp;
 
+            var btnTitle = document.getElementById('mainPayBtnTitle');
+            var btnSub = document.getElementById('mainPayBtnSub');
+
+            if (selectedPaymentApp === 'Cash at Car') {
+                if (btnTitle) btnTitle.innerHTML = `💵 Place Order with Cash <span id="payBtnAmount">₹${amount}</span>`;
+                if (btnSub) btnSub.innerText = `🍽️ Direct Kitchen Order • Pay Cash to Server at Car`;
+            } else {
+                if (btnTitle) btnTitle.innerHTML = `⚡ Proceed to Pay <span id="payBtnAmount">₹${amount}</span> via <span id="payBtnAppName">${selectedPaymentApp}</span>`;
+                if (btnSub) btnSub.innerText = `🔒 Bank Verified • Automatic Confirmation`;
+            }
         }
 
         function isMobile() {
             return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         }
 
-        // Selection of UPI App within the single unified container in the cart tray
+        // Selection of UPI / Cash Payment Option within the single unified container in the cart tray
         function selectUpiAppInTray(appName) {
             selectedPaymentApp = appName;
             var rows = {
                 'PhonePe': 'optPhonePe',
                 'Google Pay': 'optGPay',
                 'Paytm': 'optPaytm',
-                'Scan UPI QR': 'optScanQR'
+                'Scan UPI QR': 'optScanQR',
+                'Cash at Car': 'optCash'
             };
             for (var k in rows) {
                 var el = document.getElementById(rows[k]);
@@ -2482,8 +2616,8 @@
             var selEl = document.getElementById(rows[appName]);
             if (selEl) selEl.classList.add('selected');
 
-            var btnAppEl = document.getElementById('payBtnAppName');
-            if (btnAppEl) btnAppEl.innerText = appName;
+            var stats = calculateCartTotals();
+            setupPaymentLinks(stats.total);
         }
 
         function showPaymentStatusToast(msg, type) {
@@ -2540,6 +2674,14 @@
             var orderId = "LH-" + Math.floor(1000 + Math.random() * 9000);
             var custSpot = (document.getElementById('custSpotInput') ? document.getElementById('custSpotInput').value.trim() : '') || 'Driveway / Parking';
             var custNote = (document.getElementById('custNoteInput') ? document.getElementById('custNoteInput').value.trim() : '');
+
+            // 0. CASH AT CAR OPTION (Pay cash directly to server at car)
+            if (selectedPaymentApp === 'Cash at Car') {
+                var cashTxnId = "CASH_" + Date.now().toString().slice(-6);
+                confirmPaymentAndPlaceOrder("CASH (Pay at Car)", cashTxnId);
+                showPaymentStatusToast("✅ Cash Order Placed! Staff will collect payment at your car.", "success");
+                return;
+            }
 
             var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220@ybl";
             var payeeName = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "Lotus Hut The Drive In Cafe";
@@ -2913,7 +3055,7 @@
                 items: itemsList,
                 totalAmount: stats.total,
                 total: stats.total,
-                paymentMode: `DIRECT UPI (${paymentApp})`,
+                paymentMode: (overrideApp && overrideApp.includes('CASH')) ? 'CASH (Pay at Car)' : `DIRECT UPI (${paymentApp})`,
                 isCounterVerified: false,
                 utr: verifiedPaymentId,
                 timestamp: `${timeStr}, ${dateStr}`,
@@ -2953,7 +3095,7 @@
             document.getElementById('successVehicleDisplay').innerText = orderObj.custVehicle.toUpperCase();
             document.getElementById('successNameDisplay').innerText = orderObj.custName;
             document.getElementById('successTotalDisplay').innerText = `₹${orderObj.totalAmount}`;
-            document.getElementById('successPaymentAppDisplay').innerText = `${paymentApp} (Txn Ref: ${verifiedPaymentId})`;
+            document.getElementById('successPaymentAppDisplay').innerText = (overrideApp && overrideApp.includes('CASH')) ? 'CASH (Pay at Car - Server Collection)' : `${paymentApp} (Txn Ref: ${verifiedPaymentId})`;
 
             var successModal = document.getElementById('orderSuccessModal');
             if (successModal) {
@@ -2987,7 +3129,7 @@
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `💰 *TOTAL BILL*: ₹${orderObj.totalAmount}\n` +
                         `💳 *PAYMENT*: ${orderObj.paymentMode}\n` +
-                        `🔢 *Transaction ID*: ${orderObj.utr || orderObj.secToken}\n` +
+                        (orderObj.paymentMode.includes('CASH') ? `💵 *CASH COLLECTION*: Please collect ₹${orderObj.totalAmount} cash at car\n` : `🔢 *Transaction ID*: ${orderObj.utr || orderObj.secToken}\n`) +
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `🔔 *Verification*: Cafe Soundbox (+91 91117 89220)\n` +
                         `🙏 *Lotus Hut The Drive-In Cafe Indore*`;
