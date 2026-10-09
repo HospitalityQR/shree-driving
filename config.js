@@ -21,7 +21,7 @@ window.RESTAURANT_CONFIG = {
     
     // 3. Direct UPI Payment Details (9111789220)
     upiNumber: "9111789220",
-    upiId: "9111789220@ybl",
+    upiId: "9111789220-4@ybl",
     upiPayeeName: "ANSH CHHAJED",
     
     // 4. Hosted Landing Page & Live URL

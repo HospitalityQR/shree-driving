@@ -2020,7 +2020,7 @@
             <div style="background: rgba(212, 175, 55, 0.12); border: 1.5px solid var(--gold-primary); border-radius: 14px; padding: 12px; margin-bottom: 14px;">
                 <div style="font-size: 11px; color: #d6b8be;">Total Amount to Pay:</div>
                 <div style="font-size: 26px; font-weight: 900; color: var(--gold-light);" id="radarAmountDisplay">₹0</div>
-                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: Lotus Hut (9111789220@ybl)</div>
+                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: Lotus Hut (9111789220-4@ybl)</div>
             </div>
 
             <!-- Live Processing Radar -->
@@ -2069,7 +2069,7 @@
             <div style="background: rgba(212, 175, 55, 0.12); border: 1.5px solid var(--gold-primary); border-radius: 14px; padding: 10px 12px; margin-bottom: 12px;">
                 <div style="font-size: 11px; color: #d6b8be;">Total Amount to Pay:</div>
                 <div style="font-size: 28px; font-weight: 900; color: var(--gold-light); line-height: 1.2;" id="upiModalAmountDisplay">₹270</div>
-                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: ANSH CHHAJED (9111789220@ybl)</div>
+                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: ANSH CHHAJED (9111789220-4@ybl)</div>
             </div>
 
             <!-- Dynamic QR Code Container -->
@@ -2086,7 +2086,7 @@
 
             <!-- 1-Tap Copy Action Buttons (Recommended by PhonePe & Paytm) -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
-                <button type="button" onclick="copyUpiDetails('9111789220@ybl', 'UPI ID')" style="background: rgba(212, 175, 55, 0.18); border: 1.5px solid var(--gold-primary); color: #fbe69b; border-radius: 10px; padding: 9px 6px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                <button type="button" onclick="copyUpiDetails('9111789220-4@ybl', 'UPI ID')" style="background: rgba(212, 175, 55, 0.18); border: 1.5px solid var(--gold-primary); color: #fbe69b; border-radius: 10px; padding: 9px 6px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
                     <span>📋 Copy UPI ID</span>
                 </button>
                 <button type="button" onclick="copyUpiDetails('9111789220', 'Mobile Number')" style="background: rgba(212, 175, 55, 0.18); border: 1.5px solid var(--gold-primary); color: #fbe69b; border-radius: 10px; padding: 9px 6px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
@@ -2707,7 +2707,7 @@
                 return;
             }
 
-            var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220@ybl";
+            var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220-4@ybl";
             var payeeName = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "ANSH CHHAJED";
             var note = "Lotus Hut Cafe";
             var baseUpiQuery = `pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${stats.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;

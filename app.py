@@ -36,7 +36,7 @@ RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "rzp_test_secret_lotushut
 CURRENCY = os.getenv("CURRENCY", "INR")
 RESTAURANT_NAME = os.getenv("RESTAURANT_NAME", "Lotus Hut — The Drive In Cafe")
 STORE_PHONE = os.getenv("STORE_PHONE", "9111789220")
-STORE_UPI_ID = os.getenv("STORE_UPI_ID", "9111789220@ybl")
+STORE_UPI_ID = os.getenv("STORE_UPI_ID", "9111789220-4@ybl")
 
 # 2. Try initializing Razorpay Client
 razorpay_client = None
