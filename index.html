@@ -12,8 +12,6 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Razorpay Automated Bank Verification Gateway -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <!-- Realtime Cloud PubSub Sync (HiveMQ WebSocket) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
 
@@ -1079,62 +1077,31 @@
             to { opacity: 1; transform: translate(-50%, 0); }
         }
 
-        /* AUTOMATIC PAYMENT VERIFICATION BOX */
-        .verification-card {
-            background: rgba(15, 3, 6, 0.95);
-            border: 2px solid var(--gold-primary);
-            border-radius: 14px;
-            padding: 12px;
-            margin-top: 12px;
-            text-align: left;
-        }
-
-        .verification-header {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--gold-light);
+        /* DIRECT UPI & QR PAYMENT MODAL */
+        .upi-pay-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 2, 4, 0.94);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            z-index: 520;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 6px;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeInModal 0.2s ease;
         }
 
-        .verification-status-pill {
-            font-size: 10.5px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: 800;
-        }
-
-        .verification-status-pill.unverified {
-            background: rgba(217, 20, 56, 0.3);
-            border: 1px solid var(--lotus-neon);
-            color: #ff9fb0;
-        }
-
-        .verification-status-pill.verified {
-            background: rgba(37, 211, 102, 0.25);
-            border: 1px solid #25d366;
-            color: #55ef88;
-        }
-
-        .utr-input-group {
-            display: flex;
-            gap: 6px;
-            margin-top: 8px;
-        }
-
-        .utr-input {
-            flex: 1;
-            padding: 9px 10px;
-            border-radius: 10px;
-            border: 1.4px solid rgba(212, 175, 55, 0.5);
-            background: #000000;
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: 700;
-            outline: none;
-            letter-spacing: 1px;
+        .upi-pay-card {
+            width: 100%;
+            max-width: 360px;
+            background: rgba(22, 5, 10, 0.98);
+            border: 2px solid var(--gold-primary);
+            border-radius: 24px;
+            padding: 22px 18px 20px;
+            text-align: center;
+            box-shadow: 0 24px 70px rgba(0,0,0,0.95), 0 0 35px rgba(212, 175, 55, 0.2);
+            animation: modalScaleUp 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         /* Pay & Order Action Buttons */
@@ -1834,6 +1801,54 @@
     <div class="payment-toast" id="paymentStatusToast"></div>
 
     <!-- =====================================================================
+       DIRECT UPI & APP QR MODAL (Zero Razorpay Errors)
+       ===================================================================== -->
+    <div class="upi-pay-modal" id="upiPayModal" style="display: none;">
+        <div class="upi-pay-card">
+            <!-- Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="upiModalAppIcon" style="font-size: 24px;">🟣</span>
+                    <div style="text-align: left;">
+                        <div style="font-size: 15px; font-weight: 900; color: #ffffff;" id="upiModalAppTitle">Pay via PhonePe</div>
+                        <div style="font-size: 11px; color: var(--gold-light);" id="upiModalOrderId">Order #LH-2918</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeUpiPayModal()" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; cursor: pointer;">✕</button>
+            </div>
+
+            <!-- Amount Banner -->
+            <div style="background: rgba(212, 175, 55, 0.12); border: 1.5px solid var(--gold-primary); border-radius: 14px; padding: 12px; margin-bottom: 14px;">
+                <div style="font-size: 11px; color: #d6b8be;">Total Amount to Pay:</div>
+                <div style="font-size: 26px; font-weight: 900; color: var(--gold-light);" id="upiModalAmountDisplay">₹270</div>
+                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: Lotus Hut (9111789220@upi)</div>
+            </div>
+
+            <!-- Dynamic QR Code Container -->
+            <div style="background: #ffffff; padding: 12px; border-radius: 16px; display: inline-block; margin-bottom: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6);">
+                <img id="upiModalQrImg" src="" alt="UPI QR Code" style="width: 200px; height: 200px; display: block; border-radius: 8px;">
+            </div>
+
+            <div style="font-size: 12.5px; color: #ffffff; font-weight: 700; margin-bottom: 4px;">
+                Scan with <span id="upiModalAppTag">PhonePe / Google Pay / Paytm</span>
+            </div>
+            <div style="font-size: 11px; color: #d6b8be; margin-bottom: 14px;">
+                Apne phone se QR scan karke pay karein ya direct app kholein
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <a id="upiModalDirectAppBtn" href="#" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; text-decoration: none;">
+                    <span>⚡ Open <span id="upiModalBtnAppName">PhonePe</span> App Directly</span>
+                </a>
+                <button type="button" onclick="confirmModalPaymentDone()" class="btn-close-success-view" style="margin-top: 0; background: rgba(212, 175, 55, 0.15); border-color: var(--gold-primary); color: #fff; padding: 10px;">
+                    <span>✅ Payment Done — Send WhatsApp Slip</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
        ZOMATO / SWIGGY STYLE ORDER CONFIRMATION SUCCESS MODAL
        ===================================================================== -->
     <div class="order-success-modal" id="orderSuccessModal">
@@ -2372,59 +2387,69 @@
                 return;
             }
 
-            // 2. DESKTOP OR CARDS/QR/NETBANKING: OPEN RAZORPAY GATEWAY OR UNIVERSAL UPI
-            if (typeof Razorpay === 'undefined') {
-                var universalUpi = `upi://pay?${baseUpiQuery}`;
-                window.location.href = universalUpi;
-                return;
-            }
+            // 2. DESKTOP OR CARDS/QR/NETBANKING: OPEN DIRECT UPI & QR MODAL (Zero Third-Party Errors)
+            openUpiPayModal(orderId, stats.total, selectedPaymentApp, targetUri, baseUpiQuery, true);
+        }
 
-            var rzpKey = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.razorpayKeyId) || "rzp_test_1DP5mmOlF5G5ag";
+        // Direct UPI & QR Modal Controller
+        function openUpiPayModal(orderId, amount, appName, directUri, baseUpiQuery, showNow) {
+            var modal = document.getElementById('upiPayModal');
+            if (!modal) return;
 
-            var options = {
-                key: rzpKey,
-                amount: Math.round(stats.total * 100),
-                currency: "INR",
-                name: "Lotus Hut — The Drive In Cafe",
-                description: `Vehicle: ${custVehicle.toUpperCase()} • ${selectedPaymentApp} Order`,
-                image: "logo.png",
-                prefill: {
-                    name: custName,
-                    contact: custPhone,
-                    email: "drivein@lotushut.in",
-                    method: 'upi'
-                },
-                theme: {
-                    color: "#d91438"
-                },
-                modal: {
-                    backdropclose: false,
-                    escape: false,
-                    handleback: true,
-                    ondismiss: function() {
-                        showPaymentStatusToast("⚠️ Payment Incomplete / Cancelled. Order NOT placed.", "warn");
-                    }
-                },
-                handler: function(response) {
-                    if (response && response.razorpay_payment_id) {
-                        confirmPaymentAndPlaceOrder(selectedPaymentApp, response.razorpay_payment_id);
-                    } else {
-                        showPaymentStatusToast("❌ Verification failed: No payment ID returned from bank.", "error");
-                    }
-                }
+            var iconMap = {
+                'PhonePe': '🟣',
+                'Google Pay': '🔵',
+                'Paytm': '🔷',
+                'Cards / QR / NetBanking': '💳'
             };
 
-            try {
-                var rzp = new Razorpay(options);
-                rzp.on('payment.failed', function(resp) {
-                    showPaymentStatusToast(`❌ Payment Failed: ${resp.error.description || 'Transaction declined by bank'}. Order NOT placed.`, "error");
-                });
-                rzp.open();
-            } catch (err) {
-                console.error("Razorpay open error:", err);
-                var universalUpi = `upi://pay?${baseUpiQuery}`;
-                window.location.href = universalUpi;
+            var iconEl = document.getElementById('upiModalAppIcon');
+            if (iconEl) iconEl.innerText = iconMap[appName] || '📱';
+
+            var titleEl = document.getElementById('upiModalAppTitle');
+            if (titleEl) titleEl.innerText = `Pay via ${appName}`;
+
+            var orderIdEl = document.getElementById('upiModalOrderId');
+            if (orderIdEl) orderIdEl.innerText = `Order #${orderId}`;
+
+            var amtEl = document.getElementById('upiModalAmountDisplay');
+            if (amtEl) amtEl.innerText = `₹${amount}`;
+
+            var tagEl = document.getElementById('upiModalAppTag');
+            if (tagEl) tagEl.innerText = appName;
+
+            var btnAppEl = document.getElementById('upiModalBtnAppName');
+            if (btnAppEl) btnAppEl.innerText = appName;
+
+            var directBtn = document.getElementById('upiModalDirectAppBtn');
+            if (directBtn) {
+                directBtn.href = directUri;
+                directBtn.onclick = function() {
+                    showPaymentStatusToast(`⚡ Opening ${appName}...`, 'warn');
+                };
             }
+
+            // Dynamic QR Code for exact amount, payee and note
+            var universalUpi = `upi://pay?${baseUpiQuery}`;
+            var qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${encodeURIComponent(universalUpi)}`;
+            var qrImg = document.getElementById('upiModalQrImg');
+            if (qrImg) {
+                qrImg.src = qrImgUrl;
+            }
+
+            if (showNow) {
+                modal.style.display = 'flex';
+            }
+        }
+
+        function closeUpiPayModal() {
+            var modal = document.getElementById('upiPayModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function confirmModalPaymentDone() {
+            closeUpiPayModal();
+            checkAndConfirmPendingAppPayment();
         }
 
         // Automatic Return Listener from PhonePe / Google Pay / Paytm
