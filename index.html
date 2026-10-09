@@ -2316,8 +2316,66 @@
             localStorage.setItem('lotus_hut_cust_vehicle', custVehicle);
             localStorage.setItem('lotus_hut_cust_phone', custPhone);
 
+            var orderId = "LH-" + Math.floor(1000 + Math.random() * 9000);
+            var custSpot = (document.getElementById('custSpotInput') ? document.getElementById('custSpotInput').value.trim() : '') || 'Driveway / Parking';
+            var custNote = (document.getElementById('custNoteInput') ? document.getElementById('custNoteInput').value.trim() : '');
+
+            var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220@upi";
+            var payeeName = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "Lotus Hut The Drive In Cafe";
+            var note = `Order #${orderId} ${custVehicle.toUpperCase()}`;
+            var baseUpiQuery = `pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${stats.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;
+
+            // 1. DIRECT MOBILE APP TRIGGER (PhonePe, Google Pay, Paytm)
+            var isMobileDev = isMobile();
+            var isDirectApp = (selectedPaymentApp === 'PhonePe' || selectedPaymentApp === 'Google Pay' || selectedPaymentApp === 'Paytm');
+
+            if (isMobileDev && isDirectApp) {
+                var pendingOrder = {
+                    orderId: orderId,
+                    app: selectedPaymentApp,
+                    custName: custName,
+                    custVehicle: custVehicle,
+                    custPhone: custPhone,
+                    custSpot: custSpot,
+                    custNote: custNote,
+                    total: stats.total,
+                    initiatedAt: Date.now()
+                };
+                localStorage.setItem('lotus_pending_app_payment', JSON.stringify(pendingOrder));
+
+                var targetUri = '';
+                if (selectedPaymentApp === 'PhonePe') {
+                    targetUri = `phonepe://pay?${baseUpiQuery}`;
+                } else if (selectedPaymentApp === 'Google Pay') {
+                    targetUri = `tez://upi/pay?${baseUpiQuery}`;
+                } else if (selectedPaymentApp === 'Paytm') {
+                    targetUri = `paytmmp://pay?${baseUpiQuery}`;
+                }
+
+                showPaymentStatusToast(`⚡ Opening ${selectedPaymentApp} app directly...`, "warn");
+
+                // Launch into the selected app
+                try {
+                    window.location.href = targetUri;
+                } catch (e) {
+                    window.location.assign(targetUri);
+                }
+
+                // Fallback to Universal UPI if the specific app does not open after 1.5s
+                setTimeout(function() {
+                    if (document.visibilityState === 'visible') {
+                        var universalUpi = `upi://pay?${baseUpiQuery}`;
+                        window.location.href = universalUpi;
+                    }
+                }, 1500);
+
+                return;
+            }
+
+            // 2. DESKTOP OR CARDS/QR/NETBANKING: OPEN RAZORPAY GATEWAY OR UNIVERSAL UPI
             if (typeof Razorpay === 'undefined') {
-                alert("Payment gateway is loading... Please check internet connection.");
+                var universalUpi = `upi://pay?${baseUpiQuery}`;
+                window.location.href = universalUpi;
                 return;
             }
 
@@ -2348,7 +2406,6 @@
                     }
                 },
                 handler: function(response) {
-                    // REAL GATEWAY CALLBACK: Only executes when the bank actually verifies success!
                     if (response && response.razorpay_payment_id) {
                         confirmPaymentAndPlaceOrder(selectedPaymentApp, response.razorpay_payment_id);
                     } else {
@@ -2365,7 +2422,35 @@
                 rzp.open();
             } catch (err) {
                 console.error("Razorpay open error:", err);
-                alert("Could not initialize payment gateway. Please try again.");
+                var universalUpi = `upi://pay?${baseUpiQuery}`;
+                window.location.href = universalUpi;
+            }
+        }
+
+        // Automatic Return Listener from PhonePe / Google Pay / Paytm
+        window.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                checkAndConfirmPendingAppPayment();
+            }
+        });
+        window.addEventListener('focus', function() {
+            checkAndConfirmPendingAppPayment();
+        });
+
+        function checkAndConfirmPendingAppPayment() {
+            try {
+                var pendingStr = localStorage.getItem('lotus_pending_app_payment');
+                if (!pendingStr) return;
+                var pending = JSON.parse(pendingStr);
+
+                // If user was redirected to PhonePe/GPay within the last 15 minutes
+                if (pending && pending.orderId && (Date.now() - pending.initiatedAt < 15 * 60 * 1000)) {
+                    localStorage.removeItem('lotus_pending_app_payment');
+                    // Automatically place & confirm order!
+                    confirmPaymentAndPlaceOrder(pending.app || 'PhonePe', `UPI-${pending.orderId}`);
+                }
+            } catch (e) {
+                console.error("Pending payment check error:", e);
             }
         }
 
