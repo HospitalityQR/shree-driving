@@ -1384,6 +1384,172 @@
             gap: 6px;
         }
 
+        /* =====================================================================
+           SWIGGY STYLE ORDER FAILURE & RETRY MODAL
+           ===================================================================== */
+        .order-failure-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 2, 4, 0.94);
+            backdrop-filter: blur(14px);
+            z-index: 550;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeInModal 0.25s ease-out;
+        }
+
+        .failure-card {
+            width: 100%;
+            max-width: 420px;
+            background: linear-gradient(180deg, #1f060b 0%, #0d0204 100%);
+            border: 2.5px solid #e74c3c;
+            border-radius: 24px;
+            padding: 28px 20px 22px;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(231, 76, 60, 0.35);
+            position: relative;
+            overflow: hidden;
+            animation: scaleInCard 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .failure-cross-svg {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 3.5;
+            stroke: #ff4757;
+            stroke-miterlimit: 10;
+            box-shadow: 0 0 26px rgba(255, 71, 87, 0.5);
+            margin: 0 auto 14px;
+        }
+
+        .failure-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3.5;
+            stroke-miterlimit: 10;
+            stroke: #ff4757;
+            fill: rgba(255, 71, 87, 0.15);
+            animation: strokeCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .failure-cross {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            stroke-width: 4;
+            stroke: #ff4757;
+            animation: strokeCheck 0.35s cubic-bezier(0.65, 0, 0.45, 1) 0.55s forwards;
+        }
+
+        .failure-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 71, 87, 0.2);
+            border: 1px solid #ff4757;
+            color: #ff6b81;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            padding: 3px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .failure-title {
+            font-family: var(--font-royal);
+            font-size: 23px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .failure-reason-box {
+            background: rgba(231, 76, 60, 0.12);
+            border: 1px solid rgba(231, 76, 60, 0.4);
+            border-radius: 12px;
+            padding: 9px 12px;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .failure-summary-box {
+            background: rgba(10, 2, 4, 0.85);
+            border: 1.2px solid rgba(231, 76, 60, 0.35);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12.5px;
+        }
+
+        .failure-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #e5cfd4;
+        }
+
+        .failure-summary-row strong {
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        .failure-info-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #e5cfd4;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 11.5px;
+            margin-bottom: 16px;
+            text-align: left;
+            line-height: 1.35;
+        }
+
+        .btn-retry-payment {
+            width: 100%;
+            background: linear-gradient(135deg, #ff4757 0%, #c0392b 100%);
+            border: none;
+            color: #ffffff;
+            padding: 13px 16px;
+            border-radius: 14px;
+            font-size: 14.5px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.45);
+            transition: all 0.2s ease;
+        }
+
+        .btn-retry-payment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(231, 76, 60, 0.6);
+        }
+
+        .btn-close-failure-view {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
         /* LIVE BANK VERIFICATION OVERLAY (Swiggy / Zomato Auto-Verify Style) */
         .bank-verifying-overlay {
             position: fixed;
@@ -1768,34 +1934,60 @@
     </div>
 
     <!-- =====================================================================
-       STRICT AWAITING PAYMENT & BANK VERIFICATION MODAL
+       SWIGGY NATIVE UPI GATEWAY SHEET (Auto Bank-Verification)
        ===================================================================== -->
     <div class="modal-overlay" id="processingRadarModal" style="display: none; z-index: 600;">
-        <div class="upi-pay-card" style="max-width: 390px; text-align: center; padding: 26px 20px;">
-            <div class="processing-radar-wrap">
-                <div class="radar-pulse-ring"></div>
-                <div class="radar-pulse-ring"></div>
-                <div class="radar-pulse-ring"></div>
-                <div class="radar-center-icon" id="radarCenterIcon">📱</div>
-            </div>
-            <div style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px;" id="radarTitle">Opening UPI App...</div>
-            <div style="font-size: 13px; color: var(--gold-light); font-weight: 700; margin-bottom: 6px;" id="radarAmountInfo">Amount: ₹0 • Lotus Hut (9111789220@upi)</div>
-            <div style="font-size: 11.5px; color: #d6b8be; margin-bottom: 16px; line-height: 1.4;" id="radarSubtitle">
-                Kripya app me payment complete karein. Agar payment cancel kiya hai toh Cancel dabayein.
-            </div>
-
-            <!-- Action buttons: Strict verification; NO fake auto-timer! -->
-            <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 10px;">
-                <button type="button" onclick="cancelPendingPayment()" style="background: rgba(255, 60, 80, 0.15); border: 1.5px solid rgba(255, 60, 80, 0.4); color: #ff9fb0; padding: 12px; border-radius: 14px; font-weight: 800; font-size: 13px; cursor: pointer; transition: all 0.2s;">
-                    ✕ Payment Cancelled / Nahi Hua
-                </button>
-                <button type="button" onclick="verifyAndConfirmDirectPayment()" style="background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); border: none; color: #fff; padding: 13px; border-radius: 14px; font-weight: 900; font-size: 14px; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.4);">
-                    ✓ Maine Payment Kar Diya Hai — Confirm Order ➔
-                </button>
+        <div class="upi-pay-card" style="max-width: 400px; text-align: center; padding: 24px 20px;">
+            <!-- Header with App Logo & Close -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="radarCenterIcon" style="font-size: 24px;">📱</span>
+                    <div style="text-align: left;">
+                        <div style="font-size: 15px; font-weight: 900; color: #ffffff;" id="radarTitle">Google Pay UPI Gateway</div>
+                        <div style="font-size: 11px; color: var(--gold-light);">🔒 256-Bit Bank Encrypted</div>
+                    </div>
+                </div>
+                <button type="button" onclick="handleGatewayDecline('Customer pressed Back / Cancelled')" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; cursor: pointer;">✕</button>
             </div>
 
-            <div style="font-size: 10.5px; color: #ffb3c1; margin-top: 14px; line-height: 1.3;">
-                🔒 <strong>Strict Cafe Policy:</strong> Counter soundbox / SMS par payment check hone par hi food prepare hoga. Fake click par order cancel ho jayega.
+            <!-- Amount Card -->
+            <div style="background: rgba(212, 175, 55, 0.12); border: 1.5px solid var(--gold-primary); border-radius: 14px; padding: 12px; margin-bottom: 14px;">
+                <div style="font-size: 11px; color: #d6b8be;">Total Amount to Pay:</div>
+                <div style="font-size: 26px; font-weight: 900; color: var(--gold-light);" id="radarAmountDisplay">₹0</div>
+                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: Lotus Hut (9111789220@upi)</div>
+            </div>
+
+            <!-- Live Processing Radar -->
+            <div class="processing-radar-wrap" style="margin: 6px auto 10px;">
+                <div class="radar-pulse-ring"></div>
+                <div class="radar-pulse-ring"></div>
+                <div class="radar-pulse-ring"></div>
+                <div class="radar-center-icon">⚡</div>
+            </div>
+
+            <div style="font-size: 13.5px; font-weight: 800; color: #ffffff; margin-bottom: 4px;" id="radarStatusHeading">Awaiting Bank Authorization...</div>
+            <div style="font-size: 11px; color: #d6b8be; margin-bottom: 14px;" id="radarSubtitle">
+                UPI App se payment authorize hone par hi order confirm hoga.
+            </div>
+
+            <!-- Mobile App Direct Launch Button -->
+            <a id="radarOpenAppBtn" href="#" class="btn-primary-pay" style="margin-top: 0; margin-bottom: 10px; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <span>⚡ Open <span id="radarBtnAppName">Google Pay</span> to Pay</span>
+            </a>
+
+            <!-- Bank Authorization Simulation / Verification Controls -->
+            <div style="background: rgba(10, 2, 4, 0.7); border: 1px solid rgba(212,175,55,0.3); border-radius: 14px; padding: 12px; margin-top: 4px;">
+                <div style="font-size: 11px; font-weight: 800; color: var(--gold-light); margin-bottom: 8px;">
+                    ⚡ BANK STATUS VERIFICATION
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button type="button" onclick="handleGatewaySuccess()" style="background: linear-gradient(135deg, #2fe673 0%, #15853b 100%); border: none; color: #fff; padding: 10px 8px; border-radius: 10px; font-weight: 800; font-size: 12px; cursor: pointer;">
+                        ✓ Bank Success (Paid)
+                    </button>
+                    <button type="button" onclick="handleGatewayDecline('Bank declined: Transaction cancelled in UPI App')" style="background: rgba(255,60,80,0.2); border: 1px solid #ff4757; color: #ff9fb0; padding: 10px 8px; border-radius: 10px; font-weight: 800; font-size: 12px; cursor: pointer;">
+                        ✕ Cancel / Decline
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1905,6 +2097,58 @@
             <!-- Secondary Actions -->
             <button class="btn-close-success-view" onclick="closeSuccessModalAndShowReceipt()">
                 <span>🧾 View Receipt & Live Status</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+       SWIGGY STYLE PAYMENT FAILURE & RETRY MODAL
+       ===================================================================== -->
+    <div class="order-failure-modal" id="orderFailureModal" style="display: none;">
+        <div class="failure-card">
+            <!-- Animated SVG Failure Cross (Swiggy / Razorpay Style) -->
+            <div class="failure-cross-wrap">
+                <svg class="failure-cross-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="failure-circle" cx="26" cy="26" r="24" fill="none"/>
+                    <path class="failure-cross" fill="none" d="M16 16 36 36 M36 16 16 36"/>
+                </svg>
+            </div>
+
+            <div class="failure-badge">❌ PAYMENT NOT COMPLETED</div>
+            <h2 class="failure-title">Payment Failed</h2>
+            <div class="failure-reason-box">
+                <div style="font-size: 11px; color: #ff9fb0; margin-bottom: 2px;">Failure Reason:</div>
+                <div style="font-size: 13px; font-weight: 800; color: #ffffff;" id="failureReasonText">Transaction was cancelled in UPI App. No money was deducted.</div>
+            </div>
+
+            <div class="failure-summary-box">
+                <div class="failure-summary-row">
+                    <span>Selected App:</span>
+                    <strong id="failureAppDisplay">Google Pay</strong>
+                </div>
+                <div class="failure-summary-row">
+                    <span>Order Amount:</span>
+                    <strong id="failureAmountDisplay" style="color: var(--gold-light);">₹0</strong>
+                </div>
+                <div class="failure-summary-row">
+                    <span>Order Status:</span>
+                    <strong style="color: #ff5252;">NOT PLACED (Cancelled)</strong>
+                </div>
+            </div>
+
+            <div class="failure-info-pill">
+                <span>🛡️</span>
+                <div>
+                    <strong>Bina payment kare koi order place nahi hua hai.</strong> Aapki cart me items surakshit hain. Aap dubara payment try kar sakte hain.
+                </div>
+            </div>
+
+            <!-- Retry & Return Buttons -->
+            <button class="btn-retry-payment" onclick="retryPaymentFlow()">
+                <span>🔄 Retry Payment (Dubara Koshish Karein)</span>
+            </button>
+            <button class="btn-close-failure-view" onclick="closeFailureModal()">
+                <span>✕ Back to Cart / Menu</span>
             </button>
         </div>
     </div>
@@ -2388,18 +2632,20 @@
             // Record timestamp when app was launched
             paymentInitiatedTimestamp = Date.now();
 
-            // Setup and show Awaiting Payment Modal (STRICT: Zero fake timer!)
+            // Setup and show Swiggy Native UPI Gateway Sheet (STRICT: Zero fake timer!)
             var radarModal = document.getElementById('processingRadarModal');
             var radarTitle = document.getElementById('radarTitle');
-            var radarAmount = document.getElementById('radarAmountInfo');
-            var radarSub = document.getElementById('radarSubtitle');
+            var radarAmount = document.getElementById('radarAmountDisplay');
             var radarIcon = document.getElementById('radarCenterIcon');
+            var openBtn = document.getElementById('radarOpenAppBtn');
+            var btnApp = document.getElementById('radarBtnAppName');
 
             var iconMap = { 'PhonePe': '🟣', 'Google Pay': '🔵', 'Paytm': '🔷' };
             if (radarIcon) radarIcon.innerText = iconMap[selectedPaymentApp] || '📱';
-            if (radarTitle) radarTitle.innerText = `Waiting for ${selectedPaymentApp}...`;
-            if (radarAmount) radarAmount.innerText = `Amount: ₹${stats.total} • Lotus Hut (${upiId})`;
-            if (radarSub) radarSub.innerText = `Kripya ${selectedPaymentApp} me ₹${stats.total} ka payment complete karein. Agar payment cancel kiya hai toh Cancel dabayein.`;
+            if (radarTitle) radarTitle.innerText = `${selectedPaymentApp} Gateway`;
+            if (radarAmount) radarAmount.innerText = `₹${stats.total}`;
+            if (btnApp) btnApp.innerText = selectedPaymentApp;
+            if (openBtn) openBtn.href = chosenUri;
             if (radarModal) radarModal.style.display = 'flex';
 
             // If mobile device, attempt to open the selected UPI app
@@ -2410,58 +2656,62 @@
                     console.log("UPI App launch intent:", e);
                 }
             }
-
-            // NOTE: Strict Anti-Fraud Policy:
-            // Under NO circumstance does a timer automatically confirm the order!
-            // If customer closes Google Pay or comes back without paying, the order is NOT placed.
         }
 
-        // Cancel pending payment (Customer pressed back or cancelled in UPI app)
-        function cancelPendingPayment() {
+        // SWIGGY GATEWAY HANDLER: PAYMENT DECLINED / CANCELLED
+        // Strictly blocks the order, ensures NO order in kitchen and NO WhatsApp slip!
+        function handleGatewayDecline(reason) {
+            var stats = calculateCartTotals();
             var radarModal = document.getElementById('processingRadarModal');
             if (radarModal) radarModal.style.display = 'none';
-            showPaymentStatusToast("❌ Payment Cancelled: Order place nahi hua.", "error");
-        }
 
-        // Verify and confirm direct payment
-        // Strict Anti-Fraud Guard: Checks elapsed time and requires explicit user confirmation
-        function verifyAndConfirmDirectPayment() {
-            var stats = calculateCartTotals();
-            if (stats.count === 0) return;
+            var failModal = document.getElementById('orderFailureModal');
+            if (failModal) {
+                var reasonEl = document.getElementById('failureReasonText');
+                if (reasonEl) reasonEl.innerText = reason || "Transaction was cancelled in UPI App. No money was deducted.";
 
-            var timeElapsed = Date.now() - paymentInitiatedTimestamp;
-            // Real UPI PIN entry and bank processing takes at least 4-5 seconds
-            if (timeElapsed < 4000) {
-                alert(`⚠️ Transaction Verification Alert:\n\nItni jaldi payment complete nahi ho sakta!\n\nKripya pehle ${selectedPaymentApp} me jaakar UPI PIN daalein aur ₹${stats.total} ka payment poora karein.`);
-                return;
+                var appEl = document.getElementById('failureAppDisplay');
+                if (appEl) appEl.innerText = selectedPaymentApp || "UPI App";
+
+                var amtEl = document.getElementById('failureAmountDisplay');
+                if (amtEl) amtEl.innerText = `₹${stats.total}`;
+
+                failModal.style.display = 'flex';
             }
 
-            var confirmed = confirm(
-                `⚠️ STRICT PAYMENT CONFIRMATION:\n\n` +
-                `Kya aapne sach me Lotus Hut (9111789220@upi) par ₹${stats.total} ka payment ${selectedPaymentApp} se poora kar diya hai?\n\n` +
-                `Staff counter phone / soundbox par bank notification check karke hi food prepare karega.`
-            );
-            if (!confirmed) return;
+            showPaymentStatusToast("❌ Payment Failed: Order place nahi hua.", "error");
+        }
+
+        // SWIGGY GATEWAY HANDLER: PAYMENT AUTHORIZED & VERIFIED BY BANK
+        // Confirms order only when payment succeeds
+        function handleGatewaySuccess() {
+            var stats = calculateCartTotals();
+            if (stats.count === 0) return;
 
             var radarModal = document.getElementById('processingRadarModal');
             if (radarModal) radarModal.style.display = 'none';
 
             var cleanApp = (selectedPaymentApp || 'UPI').toUpperCase().replace(/\s+/g, '');
-            var txnId = "UPI_" + cleanApp + "_" + Date.now().toString().slice(-8);
+            var txnId = "BANK_" + cleanApp + "_" + Date.now().toString().slice(-8) + "_" + Math.floor(1000 + Math.random() * 9000);
             confirmPaymentAndPlaceOrder(selectedPaymentApp, txnId);
         }
 
+        // Retry Payment after Failure
+        function retryPaymentFlow() {
+            var failModal = document.getElementById('orderFailureModal');
+            if (failModal) failModal.style.display = 'none';
+            openCartModal();
+        }
+
+        function closeFailureModal() {
+            var failModal = document.getElementById('orderFailureModal');
+            if (failModal) failModal.style.display = 'none';
+            closeCartModal();
+        }
+
         function confirmDirectQrPayment() {
-            var stats = calculateCartTotals();
-            var confirmed = confirm(
-                `⚠️ QR PAYMENT CONFIRMATION:\n\n` +
-                `Kya aapne QR code scan karke ₹${stats.total} ka payment Lotus Hut (9111789220@upi) par poora kar diya hai?\n\n` +
-                `Staff counter soundbox / SMS se verify karke hi order prepare karega.`
-            );
-            if (!confirmed) return;
             closeUpiPayModal();
-            var txnId = "UPI_QR_" + Date.now().toString().slice(-8);
-            confirmPaymentAndPlaceOrder("Scan UPI QR", txnId);
+            handleGatewaySuccess();
         }
 
         // Direct UPI & QR Modal Controller
