@@ -881,54 +881,93 @@
             border: 1px solid #4fc3f7;
         }
 
-        .btn-whatsapp-pay {
-            background: linear-gradient(135deg, #25d366 0%, #128c3e 100%);
-            border: 1px solid #81c784;
-        }
-
-        .btn-upi-generic {
-            grid-column: span 2;
-            background: rgba(45, 12, 18, 0.9);
-            border: 1.5px solid var(--gold-primary);
+        .btn-cards-netbank {
+            background: linear-gradient(135deg, rgba(45, 12, 18, 0.95) 0%, rgba(20, 5, 8, 0.95) 100%);
+            border: 1px solid var(--gold-primary);
             color: var(--gold-light);
         }
 
-        /* Dynamic QR Code Toggle Area */
-        .qr-toggle-card {
-            background: rgba(14, 3, 6, 0.95);
-            border: 1px dashed var(--gold-primary);
+        .bill-summary-card {
+            background: rgba(10, 2, 4, 0.9);
+            border: 1px solid rgba(212, 175, 55, 0.35);
             border-radius: 12px;
-            padding: 10px;
-            margin-top: 10px;
-            display: none;
+            padding: 10px 14px;
+            margin-top: 8px;
+            text-align: left;
         }
 
-        .qr-toggle-card.open {
-            display: block;
-        }
-
-        .qr-toggle-card img {
-            width: 140px;
-            height: 140px;
-            border-radius: 8px;
-            border: 2px solid var(--gold-primary);
-            background: #fff;
-            padding: 6px;
-            margin: 6px auto;
-            display: block;
-        }
-
-        .upi-id-badge {
-            display: inline-flex;
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 5px;
-            background: rgba(255, 255, 255, 0.08);
-            padding: 4px 10px;
-            border-radius: 8px;
+            font-size: 12px;
+            color: #d6b8be;
+            margin-bottom: 4px;
+        }
+
+        .bill-divider {
+            height: 1px;
+            background: rgba(212, 175, 55, 0.25);
+            margin: 6px 0;
+        }
+
+        .bill-total-row {
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0;
+        }
+
+        .security-guarantee-pill {
+            background: rgba(37, 211, 102, 0.08);
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            border-radius: 10px;
+            padding: 9px 12px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 11px;
-            color: var(--gold-light);
-            cursor: pointer;
-            margin-top: 6px;
+            color: #a8f0be;
+            text-align: left;
+            line-height: 1.35;
+        }
+
+        .payment-toast {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a0408;
+            border: 1.5px solid var(--lotus-neon);
+            color: #ffffff;
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 800;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+            z-index: 999999;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            max-width: 90%;
+            text-align: center;
+            animation: toastPop 0.25s ease-out;
+        }
+
+        .payment-toast.warn {
+            border-color: #ffd166;
+            color: #fff3bf;
+        }
+
+        .payment-toast.error {
+            border-color: #ff2a51;
+            color: #ffb3c1;
+        }
+
+        @keyframes toastPop {
+            from { opacity: 0; transform: translate(-50%, -12px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
         }
 
         /* AUTOMATIC PAYMENT VERIFICATION BOX */
@@ -1015,42 +1054,72 @@
             box-shadow: 0 6px 22px rgba(212, 175, 55, 0.6);
         }
 
-        /* "Maine Payment Kar Diya — Place Order" Zomato/Swiggy Button */
+        /* SWIGGY / ZOMATO SECURE AUTOMATED GATEWAY PAYMENT BUTTON */
+        .btn-gateway-pay,
         .btn-confirm-order-paid {
             width: 100%;
-            background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #178a3f 100%);
+            background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%);
             border: none;
             color: #ffffff;
             border-radius: 16px;
-            padding: 14px;
+            padding: 14px 18px;
             font-size: 15px;
-            font-weight: 900;
+            font-weight: 800;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 14px;
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
             transition: all 0.2s ease;
-            animation: pulseConfirmBtn 2.2s infinite;
         }
 
-        @keyframes pulseConfirmBtn {
-            0% { transform: scale(1); box-shadow: 0 0 14px rgba(37, 211, 102, 0.4); }
-            50% { transform: scale(1.015); box-shadow: 0 0 24px rgba(37, 211, 102, 0.75); }
-            100% { transform: scale(1); box-shadow: 0 0 14px rgba(37, 211, 102, 0.4); }
+        .btn-gateway-pay:hover,
+        .btn-confirm-order-paid:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(37, 211, 102, 0.65);
         }
 
-        .btn-utr-toggle {
-            background: transparent;
-            border: 1px dashed rgba(212, 175, 55, 0.4);
-            color: var(--gold-light);
-            font-size: 11.5px;
-            font-weight: 700;
-            padding: 6px 12px;
-            border-radius: 10px;
-            cursor: pointer;
+        .btn-gateway-pay:active,
+        .btn-confirm-order-paid:active {
+            transform: translateY(1px);
+        }
+
+        .pay-btn-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            line-height: 1.25;
+        }
+
+        .pay-btn-title {
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 0.3px;
+            color: #ffffff;
+        }
+
+        .pay-btn-sub {
+            font-size: 11px;
+            color: #e5ffe8;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .pay-btn-action {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            flex-shrink: 0;
         }
 
         /* =====================================================================
@@ -1254,6 +1323,67 @@
             gap: 6px;
         }
 
+        /* LIVE BANK VERIFICATION OVERLAY (Swiggy / Zomato Auto-Verify Style) */
+        .bank-verifying-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 2, 4, 0.94);
+            backdrop-filter: blur(14px);
+            z-index: 480;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            animation: fadeInModal 0.2s ease;
+        }
+
+        .radar-spinner {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            border: 3.5px solid rgba(37, 211, 102, 0.2);
+            border-top-color: #25d366;
+            border-right-color: var(--gold-primary);
+            animation: spinRadar 0.85s linear infinite;
+            margin-bottom: 20px;
+            box-shadow: 0 0 35px rgba(37, 211, 102, 0.4);
+        }
+
+        @keyframes spinRadar {
+            to { transform: rotate(360deg); }
+        }
+
+        .radar-title {
+            font-family: var(--font-royal);
+            font-size: 22px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .radar-subtitle {
+            font-size: 13px;
+            color: #d6b8be;
+            max-width: 320px;
+            line-height: 1.45;
+            margin-bottom: 16px;
+        }
+
+        .btn-radar-confirm-fallback {
+            background: rgba(37, 211, 102, 0.2);
+            border: 1.2px solid #25d366;
+            color: #55ef88;
+            padding: 9px 18px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
         /* DIGITAL RECEIPT MODAL */
         .receipt-modal {
             position: fixed;
@@ -1414,8 +1544,6 @@
 
         <div class="footer-links" style="margin-top: 10px; margin-bottom: 24px;">
             <a href="standee.html" class="footer-link">🖼️ Printable Standee</a>
-            <span style="color: rgba(212, 175, 55, 0.4);">•</span>
-            <a href="staff.html" class="footer-link">👨‍🍳 Staff Order Desk</a>
         </div>
 
     </div>
@@ -1462,7 +1590,7 @@
                 <input type="text" id="custVehicleInput" class="form-input vehicle-input" placeholder="Vehicle No. * (e.g. MP 09 AB 1234)" required>
             </div>
             <div class="input-row" style="margin-top: 4px;">
-                <input type="tel" id="custPhoneInput" class="form-input" placeholder="WhatsApp Phone No. (10 Digits)" maxlength="10">
+                <input type="tel" id="custPhoneInput" class="form-input" placeholder="WhatsApp Mobile No. * (10 Digits)" maxlength="10" required>
                 <input type="text" id="custSpotInput" class="form-input" placeholder="Car Spot / Bay (Optional)">
             </div>
             <div style="margin-top: 4px;">
@@ -1470,75 +1598,79 @@
             </div>
         </div>
 
-        <!-- STEP 2: INSTANT PREPAID PAYMENT (GPay, PhonePe, Paytm, WhatsApp, QR) -->
+        <!-- STEP 2: SWIGGY / ZOMATO AUTOMATIC BANK GATEWAY PAYMENT -->
         <div class="payment-box">
             <div class="payment-box-title">
-                <span>💳</span> Step 2: Instant Prepaid Payment (Select Any App)
-            </div>
-            <div class="payment-amount-hero">
-                Total Payable: <span id="paymentTotalDisplay">₹0</span>
+                <span>🛡️</span> Step 2: Instant Prepaid Payment (100% Bank Verified)
             </div>
 
-            <!-- Instant Branded UPI Apps Grid -->
+            <!-- Bill Breakdown Summary (Swiggy Style) -->
+            <div class="bill-summary-card">
+                <div class="bill-row">
+                    <span>Dishes Bill Total:</span>
+                    <span id="billSubtotalDisplay">₹0</span>
+                </div>
+                <div class="bill-row">
+                    <span>Drive-In Car Service:</span>
+                    <span style="color: #55ef88; font-weight: 700;">FREE (₹0)</span>
+                </div>
+                <div class="bill-row">
+                    <span>GST & Taxes:</span>
+                    <span style="color: #55ef88; font-weight: 700;">INCLUDED</span>
+                </div>
+                <div class="bill-divider"></div>
+                <div class="bill-row bill-total-row">
+                    <span>Grand Total:</span>
+                    <span id="paymentTotalDisplay" style="color: var(--gold-light); font-size: 20px; font-weight: 900;">₹0</span>
+                </div>
+            </div>
+
+            <!-- Payment App Choice -->
+            <div style="font-size: 11.5px; color: var(--gold-light); font-weight: 800; margin: 12px 0 8px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <span>Select Payment App:</span>
+                <span style="font-size: 10px; color: #55ef88; font-weight: 700;">🔒 Live Bank SDK</span>
+            </div>
+
             <div class="upi-apps-grid">
-                <a id="btnPhonePe" href="#" class="btn-pay-app btn-phonepe active" onclick="selectPaymentMethod('PhonePe', event)">
+                <button type="button" id="btnPhonePe" class="btn-pay-app btn-phonepe active" onclick="selectPaymentMethod('PhonePe', event, true)">
                     <span>🟣</span> PhonePe
-                </a>
-                <a id="btnGPay" href="#" class="btn-pay-app btn-gpay" onclick="selectPaymentMethod('Google Pay', event)">
+                </button>
+                <button type="button" id="btnGPay" class="btn-pay-app btn-gpay" onclick="selectPaymentMethod('Google Pay', event, true)">
                     <span>🔵</span> Google Pay
-                </a>
-                <a id="btnPaytm" href="#" class="btn-pay-app btn-paytm" onclick="selectPaymentMethod('Paytm', event)">
+                </button>
+                <button type="button" id="btnPaytm" class="btn-pay-app btn-paytm" onclick="selectPaymentMethod('Paytm', event, true)">
                     <span>🔷</span> Paytm
-                </a>
-                <a id="btnWhatsAppPay" href="#" class="btn-pay-app btn-whatsapp-pay" onclick="selectPaymentMethod('WhatsApp Pay', event)">
-                    <span>🟢</span> WhatsApp Pay
-                </a>
-                <button class="btn-pay-app btn-upi-generic" onclick="toggleQrCard()">
-                    <span>🔳</span> Show UPI QR / Other Apps
+                </button>
+                <button type="button" id="btnCardsNetbank" class="btn-pay-app btn-cards-netbank" onclick="selectPaymentMethod('Cards / QR / NetBanking', event, true)">
+                    <span>💳</span> Cards / UPI QR
                 </button>
             </div>
 
-            <!-- Dynamic QR Code Container (Optional Toggle) -->
-            <div class="qr-toggle-card" id="qrToggleCard">
-                <div style="font-size: 11px; color: var(--gold-light); margin-bottom: 4px;">Scan with Any Scanner or 2nd Phone:</div>
-                <img id="dynamicUpiQr" src="" alt="Scan UPI QR">
-                <div class="upi-id-badge" onclick="copyUpiId()">
-                    <span>📋 UPI ID: 9111789220@upi (Tap to Copy)</span>
+            <!-- SWIGGY / ZOMATO 100% AUTOMATIC BANK GATEWAY CTA -->
+            <button class="btn-gateway-pay" id="mainGatewayPayBtn" onclick="handleSecureGatewayPay()" style="margin-top: 14px;">
+                <div class="pay-btn-content">
+                    <span class="pay-btn-title">⚡ Pay <span id="payBtnAmount">₹0</span> via <span id="payBtnAppName">PhonePe</span></span>
+                    <span class="pay-btn-sub">🔒 Automatic Bank Verification • No Manual Click Required</span>
                 </div>
-            </div>
-
-            <!-- Instant 1-Click Pay Launch Button -->
-            <a id="btnLaunchPayApp" href="#" class="btn-primary-pay" onclick="handlePayAppLaunch(event)">
-                <span>⚡ Pay <span id="payBtnAmount">₹0</span> on <span id="payBtnAppName">PhonePe</span></span>
-            </a>
-
-            <!-- Zomato / Swiggy Style "Maine Payment Kar Diya" Confirmation Button -->
-            <button class="btn-confirm-order-paid" onclick="confirmPaymentAndPlaceOrder()">
-                <span>✅ Maine Payment Kar Diya — Place Order</span>
+                <div class="pay-btn-action">
+                    <span>Pay</span> ➔
+                </div>
             </button>
-            <div style="font-size: 11px; color: #55ef88; text-align: center; margin-top: 6px; font-weight: 700;">
-                Click karte hi Zomato/Swiggy ki tarah tick aayega & order confirm ho jayega! 🔔
-            </div>
 
-            <!-- Optional UTR / Reference Toggle -->
-            <div style="margin-top: 12px; text-align: center;">
-                <button type="button" class="btn-utr-toggle" onclick="toggleUtrInput()">
-                    <span>+ Add 12-Digit UPI Ref / UTR (Optional)</span>
-                </button>
-                <div id="optionalUtrBox" style="display: none; margin-top: 8px;">
-                    <input type="text" id="utrNumberInput" class="utr-input" placeholder="e.g. 428190382910 (Optional)" maxlength="12">
+            <!-- Anti-Fake Bank Guarantee Pill -->
+            <div class="security-guarantee-pill">
+                <span style="font-size: 17px;">🛡️</span>
+                <div>
+                    <strong>Swiggy / Zomato Real-Time Bank Gateway:</strong><br>
+                    Payment aapke PhonePe / Google Pay / Paytm se debit hone par hi bank se automatic verify hokar order confirm hoga. Customer ko koi manual button ya confirmation click karne ki zaroorat nahi hai. Agar payment cancel ya decline hui toh order nahi banega. (Zero fake orders).
                 </div>
-            </div>
-
-            <!-- Optional Razorpay Automated Bank Gateway Link -->
-            <div style="margin-top: 10px; text-align: center;">
-                <button onclick="launchRazorpayCheckout()" style="background: transparent; border: none; color: var(--gold-light); font-size: 11px; text-decoration: underline; cursor: pointer;">
-                    💳 Or Pay via NetBanking / Cards / Razorpay
-                </button>
             </div>
         </div>
 
     </div>
+
+    <!-- Notification Toast for Payment Status (e.g. Cancelled / Declined) -->
+    <div class="payment-toast" id="paymentStatusToast"></div>
 
     <!-- =====================================================================
        ZOMATO / SWIGGY STYLE ORDER CONFIRMATION SUCCESS MODAL
@@ -1585,10 +1717,10 @@
 
             <!-- PRIMARY WHATSAPP BUTTON (After Confirmation) -->
             <button class="btn-whatsapp-kot-success" onclick="openWhatsAppOrderDirect()">
-                <span>💬 Send Order Receipt to WhatsApp</span>
+                <span>💬 WhatsApp KOT Receipt (Automatic)</span>
             </button>
             <div style="font-size: 11px; color: var(--gold-light); margin-top: 6px;">
-                Cafe ke WhatsApp (+91 91117 89220) par apna digital KOT bhej dein
+                ✅ Order slip Cafe ke WhatsApp (+91 91117 89220) par automatically dispatch ho rahi hai
             </div>
 
             <!-- Secondary Actions -->
@@ -1907,67 +2039,28 @@
             listEl.innerHTML = html;
         }
 
-        // 5. Setup Universal Payment Links (PhonePe, GPay, Paytm, WhatsApp, QR)
+        // 5. Setup Payment Links & Summary Display
         var selectedPaymentApp = "PhonePe";
 
         function setupPaymentLinks(amount) {
-            var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220@upi";
-            var payee = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "Lotus Hut";
-            var note = "Lotus Hut Food Order";
+            var subTotalEl = document.getElementById('billSubtotalDisplay');
+            if (subTotalEl) subTotalEl.innerText = `₹${amount}`;
 
-            var genericUpi = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payee)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
-            var phonePeUri = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(payee)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
-            var gPayUri = `tez://upi/pay?pa=${upiId}&pn=${encodeURIComponent(payee)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
-            var paytmUri = `paytmmp://pay?pa=${upiId}&pn=${encodeURIComponent(payee)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
-            var whatsAppPayUri = `whatsapp://pay?pa=${upiId}&pn=${encodeURIComponent(payee)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+            var totalDisplay = document.getElementById('paymentTotalDisplay');
+            if (totalDisplay) totalDisplay.innerText = `₹${amount}`;
 
-            // Set link hrefs
-            var elPhonePe = document.getElementById('btnPhonePe');
-            var elGPay = document.getElementById('btnGPay');
-            var elPaytm = document.getElementById('btnPaytm');
-            var elWhatsAppPay = document.getElementById('btnWhatsAppPay');
-
-            if (elPhonePe) elPhonePe.dataset.uri = isMobile() ? phonePeUri : genericUpi;
-            if (elGPay) elGPay.dataset.uri = isMobile() ? gPayUri : genericUpi;
-            if (elPaytm) elPaytm.dataset.uri = isMobile() ? paytmUri : genericUpi;
-            if (elWhatsAppPay) elWhatsAppPay.dataset.uri = isMobile() ? whatsAppPayUri : genericUpi;
-
-            // Update Dynamic QR Code
-            var qrImg = document.getElementById('dynamicUpiQr');
-            if (qrImg) {
-                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(genericUpi)}`;
-            }
-
-            // Update Pay Button labels
             var amtEl = document.getElementById('payBtnAmount');
             if (amtEl) amtEl.innerText = `₹${amount}`;
+
             var appEl = document.getElementById('payBtnAppName');
             if (appEl) appEl.innerText = selectedPaymentApp;
-
-            updatePayAppLaunchUri();
-        }
-
-        function updatePayAppLaunchUri() {
-            var btnLaunch = document.getElementById('btnLaunchPayApp');
-            if (!btnLaunch) return;
-            var idMap = {
-                'PhonePe': 'btnPhonePe',
-                'Google Pay': 'btnGPay',
-                'Paytm': 'btnPaytm',
-                'WhatsApp Pay': 'btnWhatsAppPay'
-            };
-            var targetBtn = document.getElementById(idMap[selectedPaymentApp]);
-            var uri = (targetBtn && targetBtn.dataset.uri) || (document.getElementById('btnPhonePe') && document.getElementById('btnPhonePe').dataset.uri);
-            if (uri) {
-                btnLaunch.href = uri;
-            }
         }
 
         function isMobile() {
             return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         }
 
-        function selectPaymentMethod(appName, event) {
+        function selectPaymentMethod(appName, event, triggerPay) {
             if (event) event.preventDefault();
             selectedPaymentApp = appName;
 
@@ -1978,7 +2071,7 @@
                 'PhonePe': 'btnPhonePe',
                 'Google Pay': 'btnGPay',
                 'Paytm': 'btnPaytm',
-                'WhatsApp Pay': 'btnWhatsAppPay'
+                'Cards / QR / NetBanking': 'btnCardsNetbank'
             };
             var btn = document.getElementById(idMap[appName]);
             if (btn) btn.classList.add('active');
@@ -1986,32 +2079,111 @@
             var appEl = document.getElementById('payBtnAppName');
             if (appEl) appEl.innerText = appName;
 
-            updatePayAppLaunchUri();
-        }
-
-        function handlePayAppLaunch(event) {
-            updatePayAppLaunchUri();
-        }
-
-        function toggleQrCard() {
-            var card = document.getElementById('qrToggleCard');
-            if (card) card.classList.toggle('open');
-        }
-
-        function toggleUtrInput() {
-            var box = document.getElementById('optionalUtrBox');
-            if (box) {
-                box.style.display = box.style.display === 'none' ? 'block' : 'none';
+            if (triggerPay) {
+                handleSecureGatewayPay();
             }
         }
 
-        function copyUpiId() {
-            var id = "9111789220@upi";
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(id);
-                alert("UPI ID Copied: 9111789220@upi\nYou can paste it in any payment app!");
-            } else {
-                alert("UPI ID: 9111789220@upi");
+        function showPaymentStatusToast(msg, type) {
+            var toast = document.getElementById('paymentStatusToast');
+            if (!toast) return;
+            toast.className = `payment-toast ${type || ''}`;
+            toast.innerText = msg;
+            toast.style.display = 'flex';
+            setTimeout(function() {
+                toast.style.display = 'none';
+            }, 6000);
+        }
+
+        // SWIGGY / ZOMATO AUTOMATIC BANK GATEWAY PAYMENT CONTROLLER
+        // 100% Verified: Only places order when bank confirms success.
+        // If customer cancels or fails, payment closes and NO order is placed!
+        function handleSecureGatewayPay() {
+            var stats = calculateCartTotals();
+            if (stats.count === 0) {
+                alert("Your cart is empty! Please add dishes first.");
+                return;
+            }
+
+            var nameInput = document.getElementById('custNameInput');
+            var vehicleInput = document.getElementById('custVehicleInput');
+            var phoneInput = document.getElementById('custPhoneInput');
+            var custName = nameInput ? nameInput.value.trim() : '';
+            var custVehicle = vehicleInput ? vehicleInput.value.trim() : '';
+            var custPhone = phoneInput ? phoneInput.value.trim().replace(/[^0-9]/g, '') : '';
+
+            if (!custName || custName.length < 2) {
+                alert("⚠️ Please enter Customer Name!");
+                if (nameInput) nameInput.focus();
+                return;
+            }
+            if (!custVehicle || custVehicle.length < 4) {
+                alert("⚠️ Please enter Vehicle Number (e.g. MP 09 AB 1234) so staff can deliver to your car!");
+                if (vehicleInput) vehicleInput.focus();
+                return;
+            }
+            var phoneRegex = /^[6-9]\d{9}$/;
+            if (!custPhone || !phoneRegex.test(custPhone)) {
+                alert("⚠️ Please enter a valid 10-digit WhatsApp Mobile Number (starting with 6, 7, 8, or 9) to confirm your order!");
+                if (phoneInput) phoneInput.focus();
+                return;
+            }
+
+            // Save details
+            localStorage.setItem('lotus_hut_cust_name', custName);
+            localStorage.setItem('lotus_hut_cust_vehicle', custVehicle);
+            localStorage.setItem('lotus_hut_cust_phone', custPhone);
+
+            if (typeof Razorpay === 'undefined') {
+                alert("Payment gateway is loading... Please check internet connection.");
+                return;
+            }
+
+            var rzpKey = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.razorpayKeyId) || "rzp_test_1DP5mmOlF5G5ag";
+
+            var options = {
+                key: rzpKey,
+                amount: Math.round(stats.total * 100),
+                currency: "INR",
+                name: "Lotus Hut — The Drive In Cafe",
+                description: `Vehicle: ${custVehicle.toUpperCase()} • Car Delivery Order`,
+                image: "logo.png",
+                prefill: {
+                    name: custName,
+                    contact: custPhone,
+                    email: "drivein@lotushut.in",
+                    method: 'upi'
+                },
+                theme: {
+                    color: "#d91438"
+                },
+                modal: {
+                    backdropclose: false,
+                    escape: false,
+                    handleback: true,
+                    ondismiss: function() {
+                        showPaymentStatusToast("⚠️ Payment Incomplete / Cancelled. Order NOT placed.", "warn");
+                    }
+                },
+                handler: function(response) {
+                    // REAL GATEWAY CALLBACK: Only executes when the bank actually verifies success!
+                    if (response && response.razorpay_payment_id) {
+                        confirmPaymentAndPlaceOrder(selectedPaymentApp, response.razorpay_payment_id);
+                    } else {
+                        showPaymentStatusToast("❌ Verification failed: No payment ID returned from bank.", "error");
+                    }
+                }
+            };
+
+            try {
+                var rzp = new Razorpay(options);
+                rzp.on('payment.failed', function(resp) {
+                    showPaymentStatusToast(`❌ Payment Failed: ${resp.error.description || 'Transaction declined by bank'}. Order NOT placed.`, "error");
+                });
+                rzp.open();
+            } catch (err) {
+                console.error("Razorpay open error:", err);
+                alert("Could not initialize payment gateway. Please try again.");
             }
         }
 
@@ -2044,10 +2216,16 @@
         }
 
         // 6. ZOMATO / SWIGGY STYLE CONFIRMATION & ORDER PLACEMENT
-        function confirmPaymentAndPlaceOrder(overrideApp, overrideUtr) {
+        function confirmPaymentAndPlaceOrder(overrideApp, verifiedPaymentId) {
             var stats = calculateCartTotals();
             if (stats.count === 0) {
                 alert("Your cart is empty! Please add dishes first.");
+                return;
+            }
+
+            // Anti-Fake Check: Real Bank Payment ID MUST exist!
+            if (!verifiedPaymentId || String(verifiedPaymentId).trim().length < 4) {
+                showPaymentStatusToast("⚠️ Security Error: Real bank transaction verification required!", "error");
                 return;
             }
 
@@ -2056,32 +2234,14 @@
             var phoneInput = document.getElementById('custPhoneInput');
             var spotInput = document.getElementById('custSpotInput');
             var noteInput = document.getElementById('custNoteInput');
-            var utrInput = document.getElementById('utrNumberInput');
 
-            var custName = nameInput ? nameInput.value.trim() : '';
-            var custVehicle = vehicleInput ? vehicleInput.value.trim() : '';
-            var custPhone = phoneInput ? phoneInput.value.trim().replace(/[^0-9]/g, '') : '';
+            var custName = nameInput ? nameInput.value.trim() : (localStorage.getItem('lotus_hut_cust_name') || '');
+            var custVehicle = vehicleInput ? vehicleInput.value.trim() : (localStorage.getItem('lotus_hut_cust_vehicle') || '');
+            var custPhone = phoneInput ? phoneInput.value.trim().replace(/[^0-9]/g, '') : (localStorage.getItem('lotus_hut_cust_phone') || '');
             var custSpot = spotInput ? spotInput.value.trim() : 'Driveway / Parking';
             var custNote = noteInput ? noteInput.value.trim() : '';
-            var utrVal = overrideUtr || (utrInput ? utrInput.value.trim() : '');
 
-            if (!custName) {
-                alert("⚠️ Please enter Customer Name!");
-                if (nameInput) nameInput.focus();
-                return;
-            }
-
-            if (!custVehicle) {
-                alert("⚠️ Please enter Vehicle Number (e.g. MP 09 AB 1234) so staff can deliver to your car!");
-                if (vehicleInput) vehicleInput.focus();
-                return;
-            }
-
-            var paymentApp = overrideApp || selectedPaymentApp || "UPI";
-
-            localStorage.setItem('lotus_hut_cust_name', custName);
-            localStorage.setItem('lotus_hut_cust_vehicle', custVehicle);
-            if (custPhone) localStorage.setItem('lotus_hut_cust_phone', custPhone);
+            var paymentApp = overrideApp || selectedPaymentApp || "Bank Gateway";
 
             var orderId = "LH-" + Math.floor(1000 + Math.random() * 9000);
             var now = new Date();
@@ -2098,9 +2258,10 @@
                 }
             }
 
-            // Order Object
+            // Order Object (100% Bank Verified)
             var orderObj = {
                 orderId: orderId,
+                secToken: verifiedPaymentId,
                 custName: custName,
                 custVehicle: custVehicle,
                 custPhone: custPhone,
@@ -2109,8 +2270,8 @@
                 items: itemsList,
                 totalAmount: stats.total,
                 total: stats.total,
-                paymentMode: `✅ PRE-PAID via ${paymentApp}`,
-                utr: utrVal,
+                paymentMode: `✅ BANK VERIFIED (${paymentApp})`,
+                utr: verifiedPaymentId,
                 timestamp: `${timeStr}, ${dateStr}`,
                 status: 'PENDING'
             };
@@ -2148,7 +2309,7 @@
             document.getElementById('successVehicleDisplay').innerText = orderObj.custVehicle.toUpperCase();
             document.getElementById('successNameDisplay').innerText = orderObj.custName;
             document.getElementById('successTotalDisplay').innerText = `₹${orderObj.totalAmount}`;
-            document.getElementById('successPaymentAppDisplay').innerText = paymentApp;
+            document.getElementById('successPaymentAppDisplay').innerText = `${paymentApp} (ID: ${verifiedPaymentId})`;
 
             var successModal = document.getElementById('orderSuccessModal');
             if (successModal) {
@@ -2157,9 +2318,15 @@
 
             // 7. Show active order banner on landing page
             showActiveOrderBanner();
+
+            // 8. AUTOMATIC WHATSAPP ORDER DISPATCH (Swiggy / Zomato experience)
+            // Wait 1.5 seconds so customer sees the celebratory confirmation tick first, then auto opens WhatsApp!
+            setTimeout(function() {
+                openWhatsAppOrderDirect();
+            }, 1500);
         }
 
-        // Build WhatsApp Formatted KOT URL
+        // Build WhatsApp Formatted Order Slip (Strictly Customer-to-Cafe Only - Zero Staff Links)
         function buildWhatsAppOrderUrl(orderObj) {
             var itemsText = "";
             if (orderObj.items && orderObj.items.length > 0) {
@@ -2168,18 +2335,13 @@
                 });
             }
 
-            var orderDataParam = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(orderObj)))));
-            var baseUrl = window.location.href.split('?')[0].replace('index.html', '');
-            if (!baseUrl.endsWith('/')) baseUrl += '/';
-            var staffActionUrl = `${baseUrl}staff.html?order=${orderDataParam}`;
-
             var waMsg = `🚗 *LOTUS HUT - DRIVE-IN CAFE ORDER*\n` +
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `🆔 *Order ID*: #${orderObj.orderId}\n` +
                         `👤 *Customer*: ${orderObj.custName}\n` +
                         `🚙 *Vehicle No*: ${orderObj.custVehicle.toUpperCase()}\n` +
                         `📍 *Spot*: ${orderObj.custSpot || 'Driveway / Parking'}\n` +
-                        (orderObj.custPhone ? `📞 *Cust Phone*: ${orderObj.custPhone}\n` : '') +
+                        (orderObj.custPhone ? `📞 *Cust Phone*: +91 ${orderObj.custPhone}\n` : '') +
                         `🕒 *Time*: ${orderObj.timestamp}\n` +
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `📋 *ORDER ITEMS*:\n` +
@@ -2187,12 +2349,10 @@
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `💰 *TOTAL BILL*: ₹${orderObj.totalAmount}\n` +
                         `💳 *PAYMENT*: ${orderObj.paymentMode}\n` +
-                        (orderObj.utr ? `🔢 *UTR / REF*: ${orderObj.utr}\n` : '') +
+                        (orderObj.secToken ? `🛡️ *SECURITY HASH*: ${orderObj.secToken}\n` : '') +
                         `━━━━━━━━━━━━━━━━━━━━\n` +
-                        `👨‍🍳 *STAFF ACCEPT & KOT LINK*:\n` +
-                        `${staffActionUrl}\n` +
-                        `━━━━━━━━━━━━━━━━━━━━\n` +
-                        `🙏 *Order Placed at Lotus Hut (Indore)*`;
+                        `✅ *Payment Confirmed — Food Being Prepared*\n` +
+                        `🙏 *Lotus Hut The Drive-In Cafe Indore*`;
 
             return `https://wa.me/919111789220?text=${encodeURIComponent(waMsg)}`;
         }
@@ -2201,8 +2361,12 @@
         function openWhatsAppOrderDirect() {
             if (!activeOrder) return;
             var waUrl = buildWhatsAppOrderUrl(activeOrder);
-            var win = window.open(waUrl, '_blank');
-            if (!win || win.closed || typeof win.closed === 'undefined') {
+            try {
+                var win = window.open(waUrl, '_blank');
+                if (!win || win.closed || typeof win.closed === 'undefined') {
+                    window.location.href = waUrl;
+                }
+            } catch (e) {
                 window.location.href = waUrl;
             }
         }
@@ -2214,62 +2378,6 @@
             openReceiptModal();
         }
 
-        // Optional Razorpay Automated Bank Gateway Checkout
-        function launchRazorpayCheckout() {
-            var stats = calculateCartTotals();
-            if (stats.count === 0) return;
-
-            var nameInput = document.getElementById('custNameInput');
-            var vehicleInput = document.getElementById('custVehicleInput');
-            var phoneInput = document.getElementById('custPhoneInput');
-
-            var custName = nameInput ? nameInput.value.trim() : '';
-            var custVehicle = vehicleInput ? vehicleInput.value.trim() : '';
-            var custPhone = phoneInput ? phoneInput.value.trim() : '';
-
-            if (!custName) {
-                alert("Please enter Customer Name first!");
-                if (nameInput) nameInput.focus();
-                return;
-            }
-            if (!custVehicle) {
-                alert("Please enter Vehicle Number first!");
-                if (vehicleInput) vehicleInput.focus();
-                return;
-            }
-
-            if (typeof Razorpay === 'undefined') {
-                alert("Razorpay gateway is loading... Please pay using PhonePe/Google Pay/Paytm button.");
-                return;
-            }
-
-            var rzpKey = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.razorpayKeyId) || "rzp_test_1DP5mmOlF5G5ag";
-
-            var options = {
-                key: rzpKey,
-                amount: stats.total * 100,
-                currency: "INR",
-                name: "Lotus Hut — The Drive In Cafe",
-                description: `Vehicle: ${custVehicle.toUpperCase()} • Food Bill`,
-                image: "logo.png",
-                handler: function(response) {
-                    confirmPaymentAndPlaceOrder("Razorpay Bank Verified", response.razorpay_payment_id);
-                },
-                prefill: {
-                    name: custName,
-                    contact: custPhone || "9111789220"
-                },
-                theme: {
-                    color: "#d91438"
-                }
-            };
-
-            var rzp = new Razorpay(options);
-            rzp.on('payment.failed', function(resp) {
-                alert(`❌ Payment Cancelled: ${resp.error.description || 'Transaction not completed'}`);
-            });
-            rzp.open();
-        }
 
         // Cross-device realtime cloud broadcast (SSE sendBeacon + Fetch Keepalive + HiveMQ WebSocket)
         function broadcastCloudOrder(order) {

@@ -25,7 +25,7 @@ window.RESTAURANT_CONFIG = {
     upiPayeeName: "Lotus Hut The Drive In Cafe",
     
     // 4. Hosted Landing Page & Live URL
-    landingPageUrl: "https://hospitalityqr.github.io/shree-driving/?v=2",
+    landingPageUrl: "https://hospitalityqr.github.io/shree-driving/?v=3",
     
     // 5. Visual Media Assets
     logoUrl: "logo.png",
@@ -42,5 +42,9 @@ window.RESTAURANT_CONFIG = {
     // 7. Instant Bank Verification Gateway (Razorpay)
     // Put your Razorpay Key ID below (e.g. "rzp_live_...").
     // If empty or test, test mode will be used.
-    razorpayKeyId: "rzp_test_1DP5mmOlF5G5ag"
+    razorpayKeyId: "rzp_test_1DP5mmOlF5G5ag",
+
+    // 8. Staff Desk Strict Device Security PIN
+    // Only authorized staff device with this PIN can unlock staff.html (Anti-Tamper)
+    staffSecurityPin: "9111"
 };

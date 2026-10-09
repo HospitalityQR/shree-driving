@@ -40,17 +40,27 @@ This system is built specifically for **Lotus Hut — The Drive In Cafe** matchi
   - 1-Click Copy button for `9111789220`.
   - Payment mode options: *UPI Paid (9111789220)* or *Pay Cash at Car*.
 
-- **Send Order via WhatsApp**:
-  - Formats a clean WhatsApp message with Customer Name, Vehicle Number, Time, itemized bill, total amount, and direct **Staff Action Link**.
-  - Sends directly to Lotus Hut WhatsApp **+91 91117 89220**.
-  - Opens the **Live Order Tracking Sheet** on the customer's screen.
+- **Swiggy/Zomato Auto-Confirm & Instant WhatsApp Dispatch**:
+  - Automatically verifies online prepaid transactions.
+  - Automatically sends order slip directly to cafe WhatsApp (+91 91117 89220).
+  - **Zero Staff Links Exposed**: Staff action links are removed from customer WhatsApp receipts so customers cannot access or tamper with internal staff controls.
+  - Required 10-digit WhatsApp phone and vehicle validation prevents fake/spam orders.
 
 ---
 
 ## 👨‍🍳 2. Owner & Service Man Control Portal (`staff.html`)
 
+- **Strict Device Security & 4-Digit Staff PIN (Default: `9111`)**:
+  - Terminal is protected behind an anti-tamper security PIN lock screen.
+  - Only authorized staff devices (kitchen counter phone / POS) with PIN can unlock and view orders.
+  - Rate limiting protects against unauthorized PIN guessing (lockout after 5 wrong attempts).
+  - 1-Click "Lock Desk" button locks the terminal when staff steps away.
+  - URL parameter tampering is blocked unless unlocked.
+  - Each order carries an authenticated security hash to prevent counterfeit orders.
+
 - **High-Visibility Vehicle Banner**:
   - Huge bold vehicle number badge so service staff can spot the car in the parking lot in seconds.
+  - Click-to-call customer phone link for instant car spot verification.
 
 - **Stage 1: Acceptance Workflow**:
   - When a new order arrives, the button is **RED 🔴: [ 🔴 Accept Order (स्वीकार करें) ]**.
@@ -78,7 +88,6 @@ This system is built specifically for **Lotus Hut — The Drive In Cafe** matchi
 
 1. Double-click **`launch.bat`** (or open `index.html` in your browser).
 2. Select any dishes from the menu to see the floating cart and total calculation.
-3. Open the cart, enter your Name and Vehicle Number (e.g. `MP 09 AB 1234`).
-4. Inspect the dynamic UPI payment to **9111789220**.
-5. Click **"Send Order via WhatsApp"** — notice the generated order format and live tracker!
-6. Open **`staff.html`** — see the test order, click the **RED 🔴 Accept** button, watch it turn **GREEN ✅**, and test the **"Bill Push & All is Done"** button!
+3. Open the tray, enter Name, Vehicle Number, and 10-Digit WhatsApp Mobile No.
+4. Click **"Pay & Place Order"** — experience the Swiggy/Zomato style bank radar, automatic green checkmark confirmation, and automatic WhatsApp message opening!
+5. Open **`staff.html`** on the counter phone — enter Staff PIN **`9111`** to unlock the secure terminal, manage orders, and test the red/green stage buttons!

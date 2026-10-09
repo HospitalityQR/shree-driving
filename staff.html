@@ -120,6 +120,172 @@
             gap: 4px;
         }
 
+        .btn-lock-terminal {
+            background: linear-gradient(135deg, rgba(217, 20, 56, 0.4) 0%, rgba(45, 12, 18, 0.95) 100%);
+            border: 1.4px solid var(--lotus-neon);
+            color: #ffb3c1;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 4px 12px rgba(217, 20, 56, 0.25);
+        }
+
+        /* STRICT STAFF DEVICE SECURITY PIN MODAL */
+        .staff-lock-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(32, 6, 12, 0.98) 0%, rgba(10, 2, 4, 1) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .staff-lock-card {
+            width: 100%;
+            max-width: 380px;
+            background: rgba(22, 5, 10, 0.96);
+            border: 2px solid var(--gold-primary);
+            border-radius: 24px;
+            padding: 26px 20px 22px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.95), 0 0 35px rgba(212, 175, 55, 0.25);
+            text-align: center;
+            animation: lockPopIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes lockPopIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .shake {
+            animation: shakeKey 0.4s ease-in-out !important;
+        }
+
+        @keyframes shakeKey {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .lock-shield-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            border: 2px solid var(--gold-primary);
+            background: radial-gradient(circle, #550a18 0%, #1a0206 100%);
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+        }
+
+        .lock-title {
+            font-family: var(--font-royal);
+            color: var(--gold-light);
+            font-size: 19px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .lock-subtitle {
+            font-size: 11.5px;
+            color: #ff9fb0;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .pin-dots-display {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .pin-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid var(--gold-primary);
+            background: transparent;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .pin-dot.filled {
+            background: linear-gradient(135deg, #fbe69b 0%, #d4af37 100%);
+            box-shadow: 0 0 12px var(--gold-light);
+            transform: scale(1.15);
+        }
+
+        .pin-keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .pin-key {
+            background: rgba(45, 12, 18, 0.85);
+            border: 1.5px solid rgba(212, 175, 55, 0.35);
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 800;
+            padding: 13px 0;
+            border-radius: 14px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+
+        .pin-key:active {
+            background: var(--gold-primary);
+            color: #0b0204;
+            transform: scale(0.95);
+        }
+
+        .pin-key.key-action {
+            font-size: 14px;
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lock-remember-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 11.5px;
+            color: #e0d0d4;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .lock-remember-wrap input {
+            accent-color: var(--gold-primary);
+            cursor: pointer;
+        }
+
+        .lock-error-text {
+            font-size: 12px;
+            color: #ff4d6d;
+            font-weight: 800;
+            min-height: 18px;
+            margin-bottom: 6px;
+        }
+
         /* Tab Switcher (Current Incoming vs Past) */
         .portal-tabs {
             display: flex;
@@ -469,6 +635,50 @@
         </div>
     </div>
 
+    <!-- =====================================================================
+       STRICT STAFF DEVICE SECURITY PIN MODAL (Anti-Tamper & Anti-Fake)
+       ===================================================================== -->
+    <div class="staff-lock-overlay" id="staffLockOverlay">
+        <div class="staff-lock-card">
+            <div class="lock-shield-icon">🔐</div>
+            <h2 class="lock-title">LOTUS HUT STAFF DESK</h2>
+            <div class="lock-subtitle">Strict Authorized Device Mode Active</div>
+
+            <div class="pin-dots-display">
+                <div class="pin-dot" id="pinDot1"></div>
+                <div class="pin-dot" id="pinDot2"></div>
+                <div class="pin-dot" id="pinDot3"></div>
+                <div class="pin-dot" id="pinDot4"></div>
+            </div>
+
+            <div class="lock-error-text" id="lockErrorMsg">Enter 4-Digit Staff PIN to unlock</div>
+
+            <div class="pin-keypad">
+                <button class="pin-key" onclick="pressPinKey('1')">1</button>
+                <button class="pin-key" onclick="pressPinKey('2')">2</button>
+                <button class="pin-key" onclick="pressPinKey('3')">3</button>
+                <button class="pin-key" onclick="pressPinKey('4')">4</button>
+                <button class="pin-key" onclick="pressPinKey('5')">5</button>
+                <button class="pin-key" onclick="pressPinKey('6')">6</button>
+                <button class="pin-key" onclick="pressPinKey('7')">7</button>
+                <button class="pin-key" onclick="pressPinKey('8')">8</button>
+                <button class="pin-key" onclick="pressPinKey('9')">9</button>
+                <button class="pin-key key-action" onclick="deletePinKey()">⌫</button>
+                <button class="pin-key" onclick="pressPinKey('0')">0</button>
+                <button class="pin-key key-action" onclick="submitPin()" style="background: linear-gradient(135deg, #d4af37 0%, #9a7414 100%); color: #0b0204; font-weight: 900;">🔓</button>
+            </div>
+
+            <label class="lock-remember-wrap">
+                <input type="checkbox" id="rememberStaffDevice" checked>
+                <span>Remember this Staff Device (Counter Phone)</span>
+            </label>
+
+            <div style="font-size: 11px; color: rgba(212, 175, 55, 0.6); margin-top: 6px;">
+                Owner Helpline: +91 91117 89220
+            </div>
+        </div>
+    </div>
+
     <div class="staff-container">
 
         <!-- Top Portal Bar -->
@@ -481,11 +691,11 @@
                 </div>
             </div>
             <div class="header-actions">
-                <a href="index.html" class="btn-portal-nav">
-                    <span>📖</span> Menu
-                </a>
-                <button onclick="createDemoOrder()" class="btn-portal-nav" style="border-color: var(--lotus-neon); background: rgba(217, 20, 56, 0.3);">
-                    <span>+</span> Test
+                <button onclick="lockStaffTerminal()" class="btn-lock-terminal">
+                    <span>🔒</span> Lock Desk
+                </button>
+                <button onclick="testOrderAlertSound()" class="btn-portal-nav" style="border-color: #25d366; background: rgba(37, 211, 102, 0.2);">
+                    <span>🔔</span> Bell
                 </button>
             </div>
         </header>
@@ -568,6 +778,151 @@
         var currentTab = 'active';
         var ordersList = [];
 
+        // =====================================================================
+        // STRICT STAFF DEVICE SECURITY & PIN SYSTEM (Anti-Fake & Anti-Tamper)
+        // =====================================================================
+        var enteredPin = "";
+        var failedAttempts = 0;
+        var lockUntilTime = 0;
+        var isTerminalUnlocked = false;
+
+        function getMasterPin() {
+            if (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.staffSecurityPin) {
+                return String(window.RESTAURANT_CONFIG.staffSecurityPin).trim();
+            }
+            return "9111"; // Default Staff PIN
+        }
+
+        function checkDeviceAuth() {
+            var isAuth = sessionStorage.getItem('lotus_staff_unlocked') === 'true' || 
+                         localStorage.getItem('lotus_staff_authorized_device') === 'true';
+
+            var overlay = document.getElementById('staffLockOverlay');
+            if (isAuth) {
+                isTerminalUnlocked = true;
+                if (overlay) overlay.style.display = 'none';
+                loadOrders();
+                checkUrlOrderParam();
+                initCloudRealtimeSync();
+            } else {
+                isTerminalUnlocked = false;
+                if (overlay) overlay.style.display = 'flex';
+                updatePinDisplay();
+            }
+        }
+
+        function pressPinKey(digit) {
+            if (isLockedOut()) return;
+            if (enteredPin.length < 4) {
+                enteredPin += digit;
+                updatePinDisplay();
+                if (enteredPin.length === 4) {
+                    setTimeout(submitPin, 220);
+                }
+            }
+        }
+
+        function deletePinKey() {
+            if (isLockedOut()) return;
+            if (enteredPin.length > 0) {
+                enteredPin = enteredPin.slice(0, -1);
+                updatePinDisplay();
+            }
+        }
+
+        function isLockedOut() {
+            if (lockUntilTime > Date.now()) {
+                var remaining = Math.ceil((lockUntilTime - Date.now()) / 1000);
+                showPinError(`⚠️ Device locked! Please wait ${remaining}s.`);
+                return true;
+            }
+            return false;
+        }
+
+        function updatePinDisplay() {
+            for (var i = 1; i <= 4; i++) {
+                var dot = document.getElementById(`pinDot${i}`);
+                if (dot) {
+                    if (i <= enteredPin.length) {
+                        dot.classList.add('filled');
+                    } else {
+                        dot.classList.remove('filled');
+                    }
+                }
+            }
+        }
+
+        function showPinError(msg) {
+            var el = document.getElementById('lockErrorMsg');
+            if (el) el.innerText = msg;
+            var card = document.querySelector('.staff-lock-card');
+            if (card) {
+                card.classList.add('shake');
+                setTimeout(function() { card.classList.remove('shake'); }, 500);
+            }
+        }
+
+        function submitPin() {
+            if (isLockedOut()) return;
+            var expectedPin = getMasterPin();
+
+            if (enteredPin === expectedPin) {
+                // PIN CORRECT - UNLOCK DESK
+                isTerminalUnlocked = true;
+                failedAttempts = 0;
+                sessionStorage.setItem('lotus_staff_unlocked', 'true');
+
+                var rem = document.getElementById('rememberStaffDevice');
+                if (rem && rem.checked) {
+                    localStorage.setItem('lotus_staff_authorized_device', 'true');
+                }
+
+                var overlay = document.getElementById('staffLockOverlay');
+                if (overlay) overlay.style.display = 'none';
+
+                playAudioChime('accept');
+                loadOrders();
+                checkUrlOrderParam();
+                initCloudRealtimeSync();
+            } else {
+                // PIN INCORRECT
+                failedAttempts++;
+                enteredPin = "";
+                updatePinDisplay();
+
+                if (failedAttempts >= 5) {
+                    lockUntilTime = Date.now() + 60000;
+                    showPinError("⚠️ 5 incorrect attempts. Device locked for 60 seconds.");
+                } else {
+                    showPinError(`❌ Wrong PIN! (${5 - failedAttempts} attempts remaining)`);
+                }
+            }
+        }
+
+        function lockStaffTerminal() {
+            isTerminalUnlocked = false;
+            sessionStorage.removeItem('lotus_staff_unlocked');
+            localStorage.removeItem('lotus_staff_authorized_device');
+            enteredPin = "";
+            var overlay = document.getElementById('staffLockOverlay');
+            if (overlay) overlay.style.display = 'flex';
+            updatePinDisplay();
+            var errEl = document.getElementById('lockErrorMsg');
+            if (errEl) errEl.innerText = "🔒 Terminal locked. Enter 4-digit PIN to resume.";
+        }
+
+        // Physical Keyboard listener for desktop/POS devices
+        window.addEventListener('keydown', function(e) {
+            if (isTerminalUnlocked) return;
+            if (e.key >= '0' && e.key <= '9') {
+                pressPinKey(e.key);
+            } else if (e.key === 'Backspace') {
+                deletePinKey();
+            } else if (e.key === 'Enter') {
+                submitPin();
+            }
+        });
+
         // Broadcast Channel for live customer sync
         var orderChannel = null;
         try {
@@ -593,9 +948,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            loadOrders();
-            checkUrlOrderParam();
-            initCloudRealtimeSync();
+            checkDeviceAuth();
             if ('speechSynthesis' in window && window.speechSynthesis.getVoices) {
                 window.speechSynthesis.getVoices();
             }
@@ -609,13 +962,16 @@
             if (!exists) {
                 ordersList.unshift(incomingOrder);
                 saveOrders();
-                renderOrders();
-                triggerNewOrderAlert(incomingOrder);
+                if (isTerminalUnlocked) {
+                    renderOrders();
+                    triggerNewOrderAlert(incomingOrder);
+                }
             }
         }
 
-        // 2. Check if order was passed via WhatsApp Link Query Parameter (?order=...)
+        // 2. Check if order was passed via URL parameter (?order=...) - Sanitized & Authenticated Only
         function checkUrlOrderParam() {
+            if (!isTerminalUnlocked) return; // Strict Anti-Tamper Protection
             var params = new URLSearchParams(window.location.search);
             var orderDataEncoded = params.get('order');
             if (orderDataEncoded) {
@@ -626,6 +982,10 @@
                 } catch (e) {
                     console.error('Error parsing order param', e);
                 }
+                // Strip parameter from browser address bar immediately so URL is clean
+                try {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                } catch (e) {}
             }
         }
 
@@ -673,10 +1033,7 @@
                     <div class="empty-orders-card">
                         <div style="font-size: 38px; margin-bottom: 8px;">🚘</div>
                         <h3 style="color: var(--gold-light); margin-bottom: 6px;">No ${currentTab} orders</h3>
-                        <p style="font-size: 13px;">Customer orders sent via WhatsApp will appear here with Vehicle Number!</p>
-                        <button onclick="createDemoOrder()" style="margin-top: 14px; padding: 10px 18px; border-radius: 12px; border: 1px solid var(--gold-primary); background: rgba(217, 20, 56, 0.3); color: #fff; font-weight: 800; cursor: pointer;">
-                            + Create Sample Test Order
-                        </button>
+                        <p style="font-size: 13px;">Customer pre-paid orders will appear here automatically with Vehicle Number & Alert Sound!</p>
                     </div>
                 `;
                 return;
@@ -745,7 +1102,7 @@
                             </div>
                             <div class="order-meta-item">
                                 <strong>Phone</strong>
-                                <span>${order.custPhone || 'Direct Drive-in'}</span>
+                                <span>${order.custPhone ? `<a href="tel:${order.custPhone}" style="color: #55ef88; text-decoration: none; font-weight: 800;">📞 ${order.custPhone}</a>` : 'Direct Drive-in'}</span>
                             </div>
                         </div>
 
@@ -778,7 +1135,7 @@
                                 </span>
                             </div>
                             <div style="font-size: 11px; color: #fff; margin: 4px 0;">
-                                Total: <strong>₹${order.totalAmount}</strong> • UTR: <strong style="color: #fff280;">${order.utr || 'Not Provided'}</strong>
+                                Total: <strong>₹${order.totalAmount}</strong> • Ref/Hash: <strong style="color: #fff280; font-family: monospace;">${order.secToken || order.utr || 'Verified'}</strong>
                             </div>
                             ${!order.isCounterVerified ? `
                                 <button onclick="confirmCounterPayment('${order.orderId}')" style="width: 100%; margin-top: 4px; padding: 8px; border-radius: 8px; border: 1px solid var(--gold-primary); background: linear-gradient(135deg, rgba(212,175,55,0.3) 0%, rgba(45,12,18,0.9) 100%); color: var(--gold-light); font-size: 12px; font-weight: 800; cursor: pointer;">
