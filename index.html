@@ -1841,8 +1841,67 @@
                 <a id="upiModalDirectAppBtn" href="#" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; text-decoration: none;">
                     <span>⚡ Open <span id="upiModalBtnAppName">PhonePe</span> App Directly</span>
                 </a>
-                <button type="button" onclick="confirmModalPaymentDone()" class="btn-close-success-view" style="margin-top: 0; background: rgba(212, 175, 55, 0.15); border-color: var(--gold-primary); color: #fff; padding: 10px;">
-                    <span>✅ Payment Done — Send WhatsApp Slip</span>
+                <button type="button" onclick="openVerifyModalFromUpi()" class="btn-close-success-view" style="margin-top: 0; background: rgba(212, 175, 55, 0.15); border-color: var(--gold-primary); color: #fff; padding: 10px;">
+                    <span>🔍 Pay Kar Diya? Verify & Place Order ➔</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+       STRICT POST-RETURN PAYMENT VERIFICATION MODAL (ANTI-FAKE / NO BLIND AUTO-CONFIRM)
+       ===================================================================== -->
+    <div class="upi-pay-modal" id="paymentVerifyModal" style="display: none; z-index: 550;">
+        <div class="upi-pay-card" style="max-width: 380px;">
+            <!-- Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="verifyModalAppIcon" style="font-size: 24px;">🟣</span>
+                    <div style="text-align: left;">
+                        <div style="font-size: 15px; font-weight: 900; color: #ffffff;" id="verifyModalAppTitle">Payment Verification</div>
+                        <div style="font-size: 11px; color: var(--gold-light);" id="verifyModalOrderId">Order #LH-2918</div>
+                    </div>
+                </div>
+                <button type="button" onclick="cancelPendingPayment()" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; cursor: pointer;">✕</button>
+            </div>
+
+            <!-- Amount Banner -->
+            <div style="background: rgba(212, 175, 55, 0.12); border: 1.5px solid var(--gold-primary); border-radius: 14px; padding: 12px; margin-bottom: 12px;">
+                <div style="font-size: 11px; color: #d6b8be;">Total Bill Payable:</div>
+                <div style="font-size: 26px; font-weight: 900; color: var(--gold-light);" id="verifyModalAmount">₹270</div>
+                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: Lotus Hut (9111789220@upi)</div>
+            </div>
+
+            <!-- Status & Question -->
+            <div style="font-size: 13px; color: #ffffff; font-weight: 700; margin-bottom: 4px;">
+                Aap <span id="verifyModalAppName">PhonePe</span> se wapas aaye hain
+            </div>
+            <div style="font-size: 11px; color: #d6b8be; line-height: 1.4; margin-bottom: 14px;">
+                Kya aapne Lotus Hut ke account me <strong id="verifyModalAmountPrompt" style="color: var(--gold-light);">₹270</strong> successfully pay kiya?
+            </div>
+
+            <!-- Anti-Fake Proof: 12-Digit UTR Box -->
+            <div style="background: rgba(0, 0, 0, 0.35); border: 1.5px dashed var(--gold-primary); border-radius: 14px; padding: 12px; margin-bottom: 14px; text-align: left;">
+                <label style="font-size: 11px; color: var(--gold-light); font-weight: 800; display: block; margin-bottom: 5px;">
+                    🔢 UPI Ref No / 12-Digit UTR (Receipt se):
+                </label>
+                <input type="text" id="verifyUtrInput" placeholder="e.g. 410293847561" maxlength="12" pattern="\d*" inputmode="numeric"
+                    style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(212,175,55,0.4); border-radius: 8px; color: #fff; padding: 9px 12px; font-size: 14px; font-weight: 800; letter-spacing: 1px; outline: none;">
+                <div style="font-size: 10.5px; color: #ff9fb0; margin-top: 5px; line-height: 1.3;">
+                    ⚠️ Anti-Fake Check: PhonePe receipt me 12-digit UTR hota hai. Cafe ke Soundbox / SMS se match hone par hi order banega.
+                </div>
+            </div>
+
+            <!-- 2 Clear Action Buttons -->
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- 1. Positive: Enter UTR & Place Order -->
+                <button type="button" onclick="confirmVerifiedPayment()" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; padding: 12px;">
+                    <span>✅ Haan, Pay Kar Diya — Verify & Place Order</span>
+                </button>
+
+                <!-- 2. Negative: Did Not Pay / Cancel Order -->
+                <button type="button" onclick="cancelPendingPayment()" style="background: rgba(255, 75, 75, 0.15); border: 1.5px solid rgba(255, 75, 75, 0.4); border-radius: 12px; color: #ff6b6b; font-weight: 700; font-size: 12px; padding: 10px; cursor: pointer;">
+                    <span>❌ Nahi, Payment Cancel Ho Gaya (Nahi Hua Pay)</span>
                 </button>
             </div>
         </div>
@@ -2437,6 +2496,25 @@
                 qrImg.src = qrImgUrl;
             }
 
+            // Store pending order details for verification
+            var nameInput = document.getElementById('custNameInput');
+            var vehicleInput = document.getElementById('custVehicleInput');
+            var phoneInput = document.getElementById('custPhoneInput');
+            var spotInput = document.getElementById('custSpotInput');
+            var noteInput = document.getElementById('custNoteInput');
+            var pendingOrder = {
+                orderId: orderId,
+                app: appName,
+                custName: nameInput ? nameInput.value.trim() : (localStorage.getItem('lotus_hut_cust_name') || ''),
+                custVehicle: vehicleInput ? vehicleInput.value.trim() : (localStorage.getItem('lotus_hut_cust_vehicle') || ''),
+                custPhone: phoneInput ? phoneInput.value.trim().replace(/[^0-9]/g, '') : (localStorage.getItem('lotus_hut_cust_phone') || ''),
+                custSpot: (spotInput ? spotInput.value.trim() : '') || 'Driveway / Parking',
+                custNote: (noteInput ? noteInput.value.trim() : ''),
+                total: amount,
+                initiatedAt: Date.now()
+            };
+            localStorage.setItem('lotus_pending_app_payment', JSON.stringify(pendingOrder));
+
             if (showNow) {
                 modal.style.display = 'flex';
             }
@@ -2447,36 +2525,123 @@
             if (modal) modal.style.display = 'none';
         }
 
-        function confirmModalPaymentDone() {
+        // When user finishes scanning QR or wants to proceed to verification
+        function openVerifyModalFromUpi() {
             closeUpiPayModal();
-            checkAndConfirmPendingAppPayment();
+            var pendingStr = localStorage.getItem('lotus_pending_app_payment');
+            if (pendingStr) {
+                promptPaymentVerification(JSON.parse(pendingStr));
+            } else {
+                showPaymentStatusToast("⚠️ Please initiate payment first.", "error");
+            }
         }
 
-        // Automatic Return Listener from PhonePe / Google Pay / Paytm
+        // App Return Listener from PhonePe / Google Pay / Paytm
+        // STRICT RULE: NEVER auto-place order blindly when user returns!
+        // If user pressed Back without paying, they can cancel with 1 click.
+        // To place order, customer must enter 12-digit UTR proof from PhonePe receipt.
         window.addEventListener('visibilitychange', function() {
             if (document.visibilityState === 'visible') {
-                checkAndConfirmPendingAppPayment();
+                checkAndPromptPendingPayment();
             }
         });
         window.addEventListener('focus', function() {
-            checkAndConfirmPendingAppPayment();
+            checkAndPromptPendingPayment();
         });
 
-        function checkAndConfirmPendingAppPayment() {
+        function checkAndPromptPendingPayment() {
             try {
                 var pendingStr = localStorage.getItem('lotus_pending_app_payment');
                 if (!pendingStr) return;
                 var pending = JSON.parse(pendingStr);
 
-                // If user was redirected to PhonePe/GPay within the last 15 minutes
+                // If user returned from PhonePe/GPay within the last 15 minutes
                 if (pending && pending.orderId && (Date.now() - pending.initiatedAt < 15 * 60 * 1000)) {
-                    localStorage.removeItem('lotus_pending_app_payment');
-                    // Automatically place & confirm order!
-                    confirmPaymentAndPlaceOrder(pending.app || 'PhonePe', `UPI-${pending.orderId}`);
+                    // Do NOT auto place order! Open Verification Modal!
+                    promptPaymentVerification(pending);
                 }
             } catch (e) {
                 console.error("Pending payment check error:", e);
             }
+        }
+
+        function promptPaymentVerification(pending) {
+            var modal = document.getElementById('paymentVerifyModal');
+            if (!modal) return;
+
+            var iconMap = {
+                'PhonePe': '🟣',
+                'Google Pay': '🔵',
+                'Paytm': '🔷',
+                'Cards / QR / NetBanking': '💳'
+            };
+
+            var iconEl = document.getElementById('verifyModalAppIcon');
+            if (iconEl) iconEl.innerText = iconMap[pending.app] || '📱';
+
+            var titleEl = document.getElementById('verifyModalAppTitle');
+            if (titleEl) titleEl.innerText = `${pending.app || 'UPI'} Payment Verification`;
+
+            var orderIdEl = document.getElementById('verifyModalOrderId');
+            if (orderIdEl) orderIdEl.innerText = `Order #${pending.orderId}`;
+
+            var amtEl = document.getElementById('verifyModalAmount');
+            if (amtEl) amtEl.innerText = `₹${pending.total}`;
+
+            var appNameEl = document.getElementById('verifyModalAppName');
+            if (appNameEl) appNameEl.innerText = pending.app || 'UPI App';
+
+            var amtPromptEl = document.getElementById('verifyModalAmountPrompt');
+            if (amtPromptEl) amtPromptEl.innerText = `₹${pending.total}`;
+
+            var utrInput = document.getElementById('verifyUtrInput');
+            if (utrInput) {
+                utrInput.value = '';
+                setTimeout(function() { utrInput.focus(); }, 300);
+            }
+
+            // Close QR modal if open
+            closeUpiPayModal();
+            modal.style.display = 'flex';
+        }
+
+        // Action 1: Customer did NOT pay and pressed back / cancelled
+        function cancelPendingPayment() {
+            localStorage.removeItem('lotus_pending_app_payment');
+            var modal = document.getElementById('paymentVerifyModal');
+            if (modal) modal.style.display = 'none';
+            showPaymentStatusToast("❌ Payment Cancelled: Order place nahi hua. Cart me items safe hain.", "error");
+        }
+
+        // Action 2: Customer paid and enters 12-digit UTR from PhonePe receipt
+        function confirmVerifiedPayment() {
+            var pendingStr = localStorage.getItem('lotus_pending_app_payment');
+            if (!pendingStr) {
+                showPaymentStatusToast("⚠️ Session expired. Kripya dobara order karein.", "error");
+                var modal = document.getElementById('paymentVerifyModal');
+                if (modal) modal.style.display = 'none';
+                return;
+            }
+            var pending = JSON.parse(pendingStr);
+
+            var utrInput = document.getElementById('verifyUtrInput');
+            var utr = utrInput ? utrInput.value.trim().replace(/[^0-9]/g, '') : '';
+
+            // STRICT ANTI-FAKE VALIDATION:
+            // Must be 12 digits (Indian UPI UTR standard)
+            if (!utr || utr.length < 10) {
+                alert("⚠️ Kripya PhonePe / Google Pay payment receipt se 12-digit 'UPI Ref No / UTR' enter karein.\n\n(Example: 410293847561)\n\nCafe ke PhonePe Soundbox & SMS me yahi 12-digit UTR aayega, usse match hone par hi kitchen me food banega!");
+                if (utrInput) utrInput.focus();
+                return;
+            }
+
+            // Successfully Verified! Remove pending item and place real order
+            localStorage.removeItem('lotus_pending_app_payment');
+            var modal = document.getElementById('paymentVerifyModal');
+            if (modal) modal.style.display = 'none';
+
+            // Confirm order with strict verified UTR
+            confirmPaymentAndPlaceOrder(pending.app || 'PhonePe', utr);
         }
 
         // Web Audio API Celebratory Sound (Zomato / Swiggy / Google Pay Soundbox Chime)
@@ -2601,7 +2766,7 @@
             document.getElementById('successVehicleDisplay').innerText = orderObj.custVehicle.toUpperCase();
             document.getElementById('successNameDisplay').innerText = orderObj.custName;
             document.getElementById('successTotalDisplay').innerText = `₹${orderObj.totalAmount}`;
-            document.getElementById('successPaymentAppDisplay').innerText = `${paymentApp} (ID: ${verifiedPaymentId})`;
+            document.getElementById('successPaymentAppDisplay').innerText = `${paymentApp} (UTR: ${verifiedPaymentId})`;
 
             var successModal = document.getElementById('orderSuccessModal');
             if (successModal) {
@@ -2641,7 +2806,7 @@
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `💰 *TOTAL BILL*: ₹${orderObj.totalAmount}\n` +
                         `💳 *PAYMENT*: ${orderObj.paymentMode}\n` +
-                        (orderObj.secToken ? `🛡️ *SECURITY HASH*: ${orderObj.secToken}\n` : '') +
+                        `🔢 *UPI UTR / REF NO*: ${orderObj.utr || orderObj.secToken}\n` +
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `✅ *Payment Confirmed — Food Being Prepared*\n` +
                         `🙏 *Lotus Hut The Drive-In Cafe Indore*`;
