@@ -837,54 +837,163 @@
             color: var(--gold-light);
         }
 
-        /* 5 Branded Payment App Buttons */
-        .upi-apps-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 10px;
+        /* 1 CLEAN PAYMENT APP ACCORDION (1 ke andar 4 options) */
+        .payment-app-accordion {
+            background: rgba(18, 5, 8, 0.95);
+            border: 1.5px solid var(--gold-primary);
+            border-radius: 16px;
+            margin-top: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+            transition: all 0.25s ease;
         }
 
-        .btn-pay-app {
-            padding: 10px 8px;
-            border-radius: 12px;
-            border: none;
-            color: #ffffff;
-            font-weight: 800;
-            font-size: 12.5px;
+        .payment-app-accordion-header {
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             cursor: pointer;
+            user-select: none;
+            background: linear-gradient(135deg, rgba(45, 12, 18, 0.85) 0%, rgba(20, 4, 7, 0.95) 100%);
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .payment-app-accordion-header.open {
+            border-bottom-color: rgba(212, 175, 55, 0.35);
+            background: rgba(35, 8, 14, 0.98);
+        }
+
+        .accordion-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+        }
+
+        .accordion-icon-box {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--gold-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            text-decoration: none;
-            transition: transform 0.15s ease;
+            font-size: 20px;
+            flex-shrink: 0;
         }
 
-        .btn-pay-app:active {
-            transform: scale(0.97);
+        .accordion-title-main {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.2px;
         }
 
-        .btn-phonepe {
-            background: linear-gradient(135deg, #6739b6 0%, #4a148c 100%);
-            border: 1px solid #9575cd;
-        }
-
-        .btn-gpay {
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-            border: 1px solid #64b5f6;
-        }
-
-        .btn-paytm {
-            background: linear-gradient(135deg, #00b9f5 0%, #002e6e 100%);
-            border: 1px solid #4fc3f7;
-        }
-
-        .btn-cards-netbank {
-            background: linear-gradient(135deg, rgba(45, 12, 18, 0.95) 0%, rgba(20, 5, 8, 0.95) 100%);
-            border: 1px solid var(--gold-primary);
+        .accordion-subtitle-main {
+            font-size: 11px;
             color: var(--gold-light);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .accordion-chevron {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--gold-light);
+            transition: transform 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .accordion-chevron.rotate {
+            transform: rotate(180deg);
+        }
+
+        /* Expanded 4 Options List */
+        .payment-app-options-list {
+            display: none;
+            padding: 10px;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(12, 2, 4, 0.95);
+            animation: fadeInOptions 0.2s ease;
+        }
+
+        .payment-app-options-list.show {
+            display: flex;
+        }
+
+        @keyframes fadeInOptions {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-option-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 13px;
+            border-radius: 12px;
+            border: 1.2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: #ffffff;
+            text-align: left;
+            width: 100%;
+        }
+
+        .app-option-row:hover,
+        .app-option-row:active {
+            border-color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.12);
+            transform: scale(0.99);
+        }
+
+        .app-option-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-option-badge-icon {
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .app-option-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .app-option-tag {
+            font-size: 10.5px;
+            color: #d1b1b8;
+            margin-top: 1px;
+        }
+
+        .app-option-action {
+            font-size: 11px;
+            font-weight: 800;
+            color: #55ef88;
+            background: rgba(37, 211, 102, 0.12);
+            border: 1px solid rgba(37, 211, 102, 0.35);
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
         }
 
         .bill-summary-card {
@@ -1625,25 +1734,77 @@
                 </div>
             </div>
 
-            <!-- Payment App Choice -->
-            <div style="font-size: 11.5px; color: var(--gold-light); font-weight: 800; margin: 12px 0 8px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
-                <span>Select Payment App:</span>
-                <span style="font-size: 10px; color: #55ef88; font-weight: 700;">🔒 Live Bank SDK</span>
-            </div>
+            <!-- 1 CLEAN PAYMENT ACCORDION (Click 1 to reveal 4 options) -->
+            <div class="payment-app-accordion" id="paymentAccordion">
+                <div class="payment-app-accordion-header" id="paymentAccordionHeader" onclick="togglePaymentAccordion()">
+                    <div class="accordion-header-left">
+                        <div class="accordion-icon-box" id="accordionSelectedIcon">🟣</div>
+                        <div>
+                            <div class="accordion-title-main">Choose UPI / Payment App</div>
+                            <div class="accordion-subtitle-main" id="accordionSelectedText">Selected: PhonePe • Tap to choose app</div>
+                        </div>
+                    </div>
+                    <div class="accordion-chevron" id="accordionChevron">▼</div>
+                </div>
 
-            <div class="upi-apps-grid">
-                <button type="button" id="btnPhonePe" class="btn-pay-app btn-phonepe active" onclick="selectPaymentMethod('PhonePe', event, true)">
-                    <span>🟣</span> PhonePe
-                </button>
-                <button type="button" id="btnGPay" class="btn-pay-app btn-gpay" onclick="selectPaymentMethod('Google Pay', event, true)">
-                    <span>🔵</span> Google Pay
-                </button>
-                <button type="button" id="btnPaytm" class="btn-pay-app btn-paytm" onclick="selectPaymentMethod('Paytm', event, true)">
-                    <span>🔷</span> Paytm
-                </button>
-                <button type="button" id="btnCardsNetbank" class="btn-pay-app btn-cards-netbank" onclick="selectPaymentMethod('Cards / QR / NetBanking', event, true)">
-                    <span>💳</span> Cards / UPI QR
-                </button>
+                <!-- 4 Options inside this 1 container, revealed on click -->
+                <div class="payment-app-options-list" id="paymentAppOptionsList">
+                    <!-- 1. PhonePe -->
+                    <button type="button" class="app-option-row" onclick="chooseAppAndLaunch('PhonePe')">
+                        <div class="app-option-left">
+                            <span class="app-option-badge-icon">🟣</span>
+                            <div>
+                                <div class="app-option-name">PhonePe</div>
+                                <div class="app-option-tag">Direct PhonePe App • Auto-Verify</div>
+                            </div>
+                        </div>
+                        <div class="app-option-action">
+                            <span>Open App</span> ➔
+                        </div>
+                    </button>
+
+                    <!-- 2. Google Pay -->
+                    <button type="button" class="app-option-row" onclick="chooseAppAndLaunch('Google Pay')">
+                        <div class="app-option-left">
+                            <span class="app-option-badge-icon">🔵</span>
+                            <div>
+                                <div class="app-option-name">Google Pay (GPay)</div>
+                                <div class="app-option-tag">Direct GPay App • Auto-Verify</div>
+                            </div>
+                        </div>
+                        <div class="app-option-action">
+                            <span>Open App</span> ➔
+                        </div>
+                    </button>
+
+                    <!-- 3. Paytm -->
+                    <button type="button" class="app-option-row" onclick="chooseAppAndLaunch('Paytm')">
+                        <div class="app-option-left">
+                            <span class="app-option-badge-icon">🔷</span>
+                            <div>
+                                <div class="app-option-name">Paytm</div>
+                                <div class="app-option-tag">Direct Paytm App • Auto-Verify</div>
+                            </div>
+                        </div>
+                        <div class="app-option-action">
+                            <span>Open App</span> ➔
+                        </div>
+                    </button>
+
+                    <!-- 4. Cards / QR / NetBanking -->
+                    <button type="button" class="app-option-row" onclick="chooseAppAndLaunch('Cards / QR / NetBanking')">
+                        <div class="app-option-left">
+                            <span class="app-option-badge-icon">💳</span>
+                            <div>
+                                <div class="app-option-name">Cards / Scan UPI QR / NetBanking</div>
+                                <div class="app-option-tag">Debit/Credit Card & All Banks</div>
+                            </div>
+                        </div>
+                        <div class="app-option-action">
+                            <span>Select</span> ➔
+                        </div>
+                    </button>
+                </div>
             </div>
 
             <!-- SWIGGY / ZOMATO 100% AUTOMATIC BANK GATEWAY CTA -->
@@ -2054,34 +2215,52 @@
 
             var appEl = document.getElementById('payBtnAppName');
             if (appEl) appEl.innerText = selectedPaymentApp;
+
+            var subEl = document.getElementById('accordionSelectedText');
+            if (subEl) subEl.innerText = `Selected: ${selectedPaymentApp} • Tap to choose app`;
         }
 
         function isMobile() {
             return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         }
 
-        function selectPaymentMethod(appName, event, triggerPay) {
-            if (event) event.preventDefault();
-            selectedPaymentApp = appName;
+        function togglePaymentAccordion(forceOpen) {
+            var list = document.getElementById('paymentAppOptionsList');
+            var header = document.getElementById('paymentAccordionHeader');
+            var chevron = document.getElementById('accordionChevron');
+            if (!list) return;
 
-            var apps = document.querySelectorAll('.btn-pay-app');
-            apps.forEach(function(b) { b.classList.remove('active'); });
-
-            var idMap = {
-                'PhonePe': 'btnPhonePe',
-                'Google Pay': 'btnGPay',
-                'Paytm': 'btnPaytm',
-                'Cards / QR / NetBanking': 'btnCardsNetbank'
-            };
-            var btn = document.getElementById(idMap[appName]);
-            if (btn) btn.classList.add('active');
-
-            var appEl = document.getElementById('payBtnAppName');
-            if (appEl) appEl.innerText = appName;
-
-            if (triggerPay) {
-                handleSecureGatewayPay();
+            var isOpen = list.classList.contains('show');
+            if (forceOpen === true || (!isOpen && forceOpen !== false)) {
+                list.classList.add('show');
+                if (header) header.classList.add('open');
+                if (chevron) chevron.classList.add('rotate');
+            } else {
+                list.classList.remove('show');
+                if (header) header.classList.remove('open');
+                if (chevron) chevron.classList.remove('rotate');
             }
+        }
+
+        function chooseAppAndLaunch(appName) {
+            selectedPaymentApp = appName;
+            var iconMap = {
+                'PhonePe': '🟣',
+                'Google Pay': '🔵',
+                'Paytm': '🔷',
+                'Cards / QR / NetBanking': '💳'
+            };
+            var iconEl = document.getElementById('accordionSelectedIcon');
+            if (iconEl) iconEl.innerText = iconMap[appName] || '📱';
+
+            var subEl = document.getElementById('accordionSelectedText');
+            if (subEl) subEl.innerText = `Selected: ${appName} • Tap to change`;
+
+            var btnApp = document.getElementById('payBtnAppName');
+            if (btnApp) btnApp.innerText = appName;
+
+            togglePaymentAccordion(false);
+            handleSecureGatewayPay(appName);
         }
 
         function showPaymentStatusToast(msg, type) {
@@ -2098,7 +2277,10 @@
         // SWIGGY / ZOMATO AUTOMATIC BANK GATEWAY PAYMENT CONTROLLER
         // 100% Verified: Only places order when bank confirms success.
         // If customer cancels or fails, payment closes and NO order is placed!
-        function handleSecureGatewayPay() {
+        function handleSecureGatewayPay(specificApp) {
+            if (specificApp) {
+                selectedPaymentApp = specificApp;
+            }
             var stats = calculateCartTotals();
             if (stats.count === 0) {
                 alert("Your cart is empty! Please add dishes first.");
@@ -2146,7 +2328,7 @@
                 amount: Math.round(stats.total * 100),
                 currency: "INR",
                 name: "Lotus Hut — The Drive In Cafe",
-                description: `Vehicle: ${custVehicle.toUpperCase()} • Car Delivery Order`,
+                description: `Vehicle: ${custVehicle.toUpperCase()} • ${selectedPaymentApp} Order`,
                 image: "logo.png",
                 prefill: {
                     name: custName,

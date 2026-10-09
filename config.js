@@ -25,7 +25,7 @@ window.RESTAURANT_CONFIG = {
     upiPayeeName: "Lotus Hut The Drive In Cafe",
     
     // 4. Hosted Landing Page & Live URL
-    landingPageUrl: "https://hospitalityqr.github.io/shree-driving/?v=3",
+    landingPageUrl: "https://hospitalityqr.github.io/shree-driving/?v=4",
     
     // 5. Visual Media Assets
     logoUrl: "logo.png",
