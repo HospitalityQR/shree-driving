@@ -38,7 +38,7 @@ var MENU_DATA = [
         name: "Classic Cold Coffee",
         nameHi: "क्लासिक कोल्ड कॉफी",
         category: "coffee",
-        price: 120,
+        price: 1,
         badge: "Popular",
         desc: "Refreshing creamy frappe made with fresh milk and roasted espresso blend.",
         prepTime: "5-10 Min",
