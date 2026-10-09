@@ -14,6 +14,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Realtime Cloud PubSub Sync (HiveMQ WebSocket) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+    <!-- Razorpay Standard Payment Gateway SDK (Automatic Bank Verification) -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <style>
         :root {
@@ -2399,7 +2401,62 @@
             var note = `Order #${orderId} ${custVehicle.toUpperCase()}`;
             var baseUpiQuery = `pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${stats.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;
 
-            // 1. DIRECT MOBILE APP TRIGGER (PhonePe, Google Pay, Paytm)
+            // 1. INSTANT PAYMENT GATEWAY (Razorpay / 100% Automatic Bank Verification)
+            // When customer pays using UPI/Gateway, it automatically returns to this interface upon completion,
+            // places the order, and then automatically opens WhatsApp!
+            var rzpKey = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.razorpayKeyId) ? window.RESTAURANT_CONFIG.razorpayKeyId.trim() : '';
+            var hasGatewayKey = (typeof Razorpay !== 'undefined') && rzpKey && (rzpKey.length > 5);
+
+            if (hasGatewayKey) {
+                var rzpOptions = {
+                    "key": rzpKey,
+                    "amount": Math.round(stats.total * 100), // in paise (e.g. ₹270 = 27000)
+                    "currency": "INR",
+                    "name": (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.name) || "LOTUS HUT",
+                    "description": `Drive-In Order #${orderId} • ${custVehicle.toUpperCase()}`,
+                    "image": (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.logoUrl) || "logo.png",
+                    "prefill": {
+                        "name": custName,
+                        "contact": custPhone ? ("+91" + custPhone) : ""
+                    },
+                    "notes": {
+                        "order_id": orderId,
+                        "vehicle_no": custVehicle.toUpperCase(),
+                        "spot": custSpot,
+                        "note": custNote
+                    },
+                    "theme": {
+                        "color": "#d91438"
+                    },
+                    // AUTOMATIC RETURN ON SUCCESSFUL PAYMENT:
+                    "handler": function (response) {
+                        console.log("✅ Gateway Payment Successful! Bank ID:", response.razorpay_payment_id);
+                        showPaymentStatusToast("✅ Payment Captured & Verified by Bank!", "success");
+                        // Confirms order and automatically dispatches WhatsApp!
+                        confirmPaymentAndPlaceOrder(selectedPaymentApp || "UPI Gateway", response.razorpay_payment_id);
+                    },
+                    "modal": {
+                        "ondismiss": function() {
+                            // Customer pressed Back or cancelled payment
+                            showPaymentStatusToast("❌ Payment cancelled: Order place nahi hua.", "error");
+                        }
+                    }
+                };
+
+                try {
+                    var rzp = new Razorpay(rzpOptions);
+                    rzp.on('payment.failed', function (resp) {
+                        var errMsg = (resp && resp.error && resp.error.description) ? resp.error.description : 'Transaction declined by bank';
+                        showPaymentStatusToast(`⚠️ Payment Failed: ${errMsg}`, "error");
+                    });
+                    rzp.open();
+                    return;
+                } catch (err) {
+                    console.warn("Razorpay checkout error, falling back to direct UPI:", err);
+                }
+            }
+
+            // 2. DIRECT MOBILE APP TRIGGER (PhonePe, Google Pay, Paytm) FALLBACK
             var isMobileDev = isMobile();
             var isDirectApp = (selectedPaymentApp === 'PhonePe' || selectedPaymentApp === 'Google Pay' || selectedPaymentApp === 'Paytm');
 
@@ -2446,7 +2503,7 @@
                 return;
             }
 
-            // 2. DESKTOP OR CARDS/QR/NETBANKING: OPEN DIRECT UPI & QR MODAL (Zero Third-Party Errors)
+            // 3. DESKTOP OR CARDS/QR/NETBANKING: OPEN DIRECT UPI & QR MODAL
             openUpiPayModal(orderId, stats.total, selectedPaymentApp, targetUri, baseUpiQuery, true);
         }
 
