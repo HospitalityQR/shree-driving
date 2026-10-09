@@ -2402,10 +2402,10 @@
             var baseUpiQuery = `pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${stats.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;
 
             // 1. INSTANT PAYMENT GATEWAY (Razorpay / 100% Automatic Bank Verification)
-            // When customer pays using UPI/Gateway, it automatically returns to this interface upon completion,
-            // places the order, and then automatically opens WhatsApp!
+            // Note: Only launch Razorpay if a real KYC-verified live merchant key (starting with 'rzp_live_') is provided.
+            // Sample test keys (rzp_test_...) lack KYC verification and show "Verification not done / No appropriate payment method found".
             var rzpKey = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.razorpayKeyId) ? window.RESTAURANT_CONFIG.razorpayKeyId.trim() : '';
-            var hasGatewayKey = (typeof Razorpay !== 'undefined') && rzpKey && (rzpKey.length > 5);
+            var hasGatewayKey = (typeof Razorpay !== 'undefined') && rzpKey && rzpKey.startsWith('rzp_live_');
 
             if (hasGatewayKey) {
                 var rzpOptions = {
