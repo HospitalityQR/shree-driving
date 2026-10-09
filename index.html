@@ -1965,30 +1965,14 @@
                 <div class="radar-center-icon">⚡</div>
             </div>
 
-            <div style="font-size: 13.5px; font-weight: 800; color: #ffffff; margin-bottom: 4px;" id="radarStatusHeading">Awaiting Bank Authorization...</div>
-            <div style="font-size: 11px; color: #d6b8be; margin-bottom: 14px;" id="radarSubtitle">
-                UPI App se payment authorize hone par hi order confirm hoga.
+            <div style="font-size: 11.5px; color: #ff9fb0; margin-bottom: 14px; line-height: 1.4;" id="radarSubtitle">
+                🔒 <strong>Strict Bank Policy:</strong> Kripya UPI App me payment complete karein. Bina payment kare wapas aane par order turant cancel ho jayega.
             </div>
 
             <!-- Mobile App Direct Launch Button -->
-            <a id="radarOpenAppBtn" href="#" class="btn-primary-pay" style="margin-top: 0; margin-bottom: 10px; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                <span>⚡ Open <span id="radarBtnAppName">Google Pay</span> to Pay</span>
+            <a id="radarOpenAppBtn" href="#" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <span>⚡ Open <span id="radarBtnAppName">Google Pay</span> App to Pay</span>
             </a>
-
-            <!-- Bank Authorization Simulation / Verification Controls -->
-            <div style="background: rgba(10, 2, 4, 0.7); border: 1px solid rgba(212,175,55,0.3); border-radius: 14px; padding: 12px; margin-top: 4px;">
-                <div style="font-size: 11px; font-weight: 800; color: var(--gold-light); margin-bottom: 8px;">
-                    ⚡ BANK STATUS VERIFICATION
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <button type="button" onclick="handleGatewaySuccess()" style="background: linear-gradient(135deg, #2fe673 0%, #15853b 100%); border: none; color: #fff; padding: 10px 8px; border-radius: 10px; font-weight: 800; font-size: 12px; cursor: pointer;">
-                        ✓ Bank Success (Paid)
-                    </button>
-                    <button type="button" onclick="handleGatewayDecline('Bank declined: Transaction cancelled in UPI App')" style="background: rgba(255,60,80,0.2); border: 1px solid #ff4757; color: #ff9fb0; padding: 10px 8px; border-radius: 10px; font-weight: 800; font-size: 12px; cursor: pointer;">
-                        ✕ Cancel / Decline
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -2009,7 +1993,7 @@
                         <div style="font-size: 11px; color: var(--gold-light);" id="upiModalOrderId">Order #LH-2918</div>
                     </div>
                 </div>
-                <button type="button" onclick="closeUpiPayModal()" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; cursor: pointer;">✕</button>
+                <button type="button" onclick="handleGatewayDecline('Customer cancelled payment')" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; cursor: pointer;">✕</button>
             </div>
 
             <!-- Amount Banner -->
@@ -2036,9 +2020,9 @@
                 <a id="upiModalDirectAppBtn" href="#" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; text-decoration: none;">
                     <span>⚡ Open <span id="upiModalBtnAppName">PhonePe</span> App Directly</span>
                 </a>
-                <button type="button" onclick="confirmDirectQrPayment()" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; border: none; padding: 12px; cursor: pointer;">
-                    <span>✅ Payment Done — Verify & Confirm Order ➔</span>
-                </button>
+                <div style="font-size: 11px; color: #ff9fb0; line-height: 1.4; padding: 8px 10px; background: rgba(255, 60, 80, 0.12); border-radius: 8px; border: 1px dashed rgba(255, 60, 80, 0.3);">
+                    🔒 <strong>Strict Bank Verification:</strong> Customer ko manual confirm karne ka koi button nahi hai. UPI App me payment authorize hone par hi order verify hoga. Bina payment kare wapas aane par order turant CANCEL ho jayega.
+                </div>
             </div>
         </div>
     </div>
@@ -2648,6 +2632,11 @@
             if (openBtn) openBtn.href = chosenUri;
             if (radarModal) radarModal.style.display = 'flex';
 
+            // Mark app payment as pending
+            isAppPaymentPending = true;
+            appPaymentLaunchTime = Date.now();
+            appHasBeenHidden = false;
+
             // If mobile device, attempt to open the selected UPI app
             if (isMobile()) {
                 try {
@@ -2658,12 +2647,54 @@
             }
         }
 
+        // =====================================================================
+        // STRICT RETURN-FROM-UPI-APP DETECTION & AUTO-CANCELLATION
+        // Customer ko payment done ya cancel ka koi button nahi diya gaya hai.
+        // Agar customer Google Pay / PhonePe / Paytm me gaya aur bina payment kare
+        // browser tab me wapas aaya, toh order TURANT CANCEL ho jayega!
+        // =====================================================================
+        var isAppPaymentPending = false;
+        var appPaymentLaunchTime = 0;
+        var appHasBeenHidden = false;
+
+        function handleReturnFromUpiApp() {
+            if (!isAppPaymentPending) return;
+            var elapsed = Date.now() - appPaymentLaunchTime;
+            // Trigger if app window was hidden (switched to UPI app) or > 1.5s elapsed
+            if (appHasBeenHidden || elapsed > 1500) {
+                isAppPaymentPending = false;
+                appHasBeenHidden = false;
+                var appName = selectedPaymentApp || "UPI App";
+                handleGatewayDecline(`${appName} se bina payment complete kiye wapas aane ke karan order CANCEL kar diya gaya hai.`);
+            }
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden') {
+                if (isAppPaymentPending) {
+                    appHasBeenHidden = true;
+                }
+            } else if (document.visibilityState === 'visible') {
+                handleReturnFromUpiApp();
+            }
+        });
+
+        window.addEventListener('focus', function() {
+            handleReturnFromUpiApp();
+        });
+
         // SWIGGY GATEWAY HANDLER: PAYMENT DECLINED / CANCELLED
         // Strictly blocks the order, ensures NO order in kitchen and NO WhatsApp slip!
         function handleGatewayDecline(reason) {
+            isAppPaymentPending = false;
+            appHasBeenHidden = false;
+
             var stats = calculateCartTotals();
             var radarModal = document.getElementById('processingRadarModal');
             if (radarModal) radarModal.style.display = 'none';
+
+            var upiModal = document.getElementById('upiPayModal');
+            if (upiModal) upiModal.style.display = 'none';
 
             var failModal = document.getElementById('orderFailureModal');
             if (failModal) {
@@ -2679,17 +2710,23 @@
                 failModal.style.display = 'flex';
             }
 
-            showPaymentStatusToast("❌ Payment Failed: Order place nahi hua.", "error");
+            showPaymentStatusToast("❌ Payment Cancelled: Order place nahi hua.", "error");
         }
 
         // SWIGGY GATEWAY HANDLER: PAYMENT AUTHORIZED & VERIFIED BY BANK
         // Confirms order only when payment succeeds
         function handleGatewaySuccess() {
+            isAppPaymentPending = false;
+            appHasBeenHidden = false;
+
             var stats = calculateCartTotals();
             if (stats.count === 0) return;
 
             var radarModal = document.getElementById('processingRadarModal');
             if (radarModal) radarModal.style.display = 'none';
+
+            var upiModal = document.getElementById('upiPayModal');
+            if (upiModal) upiModal.style.display = 'none';
 
             var cleanApp = (selectedPaymentApp || 'UPI').toUpperCase().replace(/\s+/g, '');
             var txnId = "BANK_" + cleanApp + "_" + Date.now().toString().slice(-8) + "_" + Math.floor(1000 + Math.random() * 9000);
@@ -2707,11 +2744,6 @@
             var failModal = document.getElementById('orderFailureModal');
             if (failModal) failModal.style.display = 'none';
             closeCartModal();
-        }
-
-        function confirmDirectQrPayment() {
-            closeUpiPayModal();
-            handleGatewaySuccess();
         }
 
         // Direct UPI & QR Modal Controller
@@ -2748,6 +2780,9 @@
             if (directBtn) {
                 directBtn.href = directUri;
                 directBtn.onclick = function() {
+                    isAppPaymentPending = true;
+                    appPaymentLaunchTime = Date.now();
+                    appHasBeenHidden = false;
                     showPaymentStatusToast(`⚡ Opening ${appName}...`, 'warn');
                 };
             }
@@ -2787,6 +2822,8 @@
         function closeUpiPayModal() {
             var modal = document.getElementById('upiPayModal');
             if (modal) modal.style.display = 'none';
+            isAppPaymentPending = false;
+            appHasBeenHidden = false;
         }
 
         // Swiggy-Style Automatic Checkout Integration
