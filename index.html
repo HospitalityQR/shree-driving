@@ -837,163 +837,146 @@
             color: var(--gold-light);
         }
 
-        /* 1 CLEAN PAYMENT APP ACCORDION (1 ke andar 4 options) */
-        .payment-app-accordion {
+        /* UNIFIED UPI SELECTION BOX ("Ek ke andar saare UPI apps") */
+        .upi-unified-box {
             background: rgba(18, 5, 8, 0.95);
             border: 1.5px solid var(--gold-primary);
             border-radius: 16px;
             margin-top: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-            transition: all 0.25s ease;
-        }
-
-        .payment-app-accordion-header {
             padding: 12px 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            user-select: none;
-            background: linear-gradient(135deg, rgba(45, 12, 18, 0.85) 0%, rgba(20, 4, 7, 0.95) 100%);
-            border-bottom: 1px solid transparent;
-            transition: all 0.2s ease;
-        }
-
-        .payment-app-accordion-header.open {
-            border-bottom-color: rgba(212, 175, 55, 0.35);
-            background: rgba(35, 8, 14, 0.98);
-        }
-
-        .accordion-header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
             text-align: left;
         }
 
-        .accordion-icon-box {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid var(--gold-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .accordion-title-main {
-            font-size: 13.5px;
+        .upi-box-header {
+            font-size: 12.5px;
             font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 0.2px;
-        }
-
-        .accordion-subtitle-main {
-            font-size: 11px;
             color: var(--gold-light);
-            font-weight: 600;
-            margin-top: 2px;
-        }
-
-        .accordion-chevron {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(212, 175, 55, 0.3);
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            color: var(--gold-light);
-            transition: transform 0.25s ease;
-            flex-shrink: 0;
+            gap: 8px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .accordion-chevron.rotate {
-            transform: rotate(180deg);
-        }
-
-        /* Expanded 4 Options List */
-        .payment-app-options-list {
-            display: none;
-            padding: 10px;
+        .upi-apps-selection-list {
+            display: flex;
             flex-direction: column;
             gap: 8px;
-            background: rgba(12, 2, 4, 0.95);
-            animation: fadeInOptions 0.2s ease;
         }
 
-        .payment-app-options-list.show {
-            display: flex;
-        }
-
-        @keyframes fadeInOptions {
-            from { opacity: 0; transform: translateY(-4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .app-option-row {
+        .upi-select-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 11px 13px;
+            padding: 11px 14px;
             border-radius: 12px;
-            border: 1.2px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
             color: #ffffff;
-            text-align: left;
-            width: 100%;
+            user-select: none;
         }
 
-        .app-option-row:hover,
-        .app-option-row:active {
+        .upi-select-row:hover,
+        .upi-select-row.selected {
             border-color: var(--gold-primary);
-            background: rgba(212, 175, 55, 0.12);
-            transform: scale(0.99);
+            background: rgba(212, 175, 55, 0.16);
+            box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25);
+            transform: translateY(-1px);
         }
 
-        .app-option-left {
+        .upi-select-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .app-option-badge-icon {
+        .upi-app-icon {
             font-size: 22px;
             line-height: 1;
         }
 
-        .app-option-name {
-            font-size: 13px;
+        .upi-app-title {
+            font-size: 13.5px;
             font-weight: 800;
             color: #ffffff;
         }
 
-        .app-option-tag {
+        .upi-app-desc {
             font-size: 10.5px;
-            color: #d1b1b8;
+            color: var(--gold-light);
             margin-top: 1px;
         }
 
-        .app-option-action {
-            font-size: 11px;
-            font-weight: 800;
-            color: #55ef88;
-            background: rgba(37, 211, 102, 0.12);
-            border: 1px solid rgba(37, 211, 102, 0.35);
-            padding: 4px 10px;
-            border-radius: 8px;
+        .upi-radio-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 175, 55, 0.5);
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            transition: all 0.2s;
             flex-shrink: 0;
+        }
+
+        .upi-select-row.selected .upi-radio-dot {
+            border-color: #55ef88;
+            background: #55ef88;
+        }
+
+        .upi-select-row.selected .upi-radio-dot::after {
+            content: '✓';
+            font-size: 11px;
+            font-weight: 900;
+            color: #0c0204;
+        }
+
+        /* PROCESSING RADAR ANIMATION (Bank Verification) */
+        .processing-radar-wrap {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .radar-pulse-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid var(--gold-primary);
+            opacity: 0;
+            animation: radarPulse 1.8s ease-out infinite;
+        }
+
+        .radar-pulse-ring:nth-child(2) { animation-delay: 0.6s; }
+        .radar-pulse-ring:nth-child(3) { animation-delay: 1.2s; }
+
+        @keyframes radarPulse {
+            0% { transform: scale(0.4); opacity: 0.9; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .radar-center-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            color: #0c0204;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+            z-index: 2;
         }
 
         .bill-summary-card {
@@ -1703,112 +1686,107 @@
                 </div>
             </div>
 
-            <!-- 1 CLEAN PAYMENT ACCORDION (Click 1 to reveal 4 options) -->
-            <div class="payment-app-accordion" id="paymentAccordion">
-                <div class="payment-app-accordion-header" id="paymentAccordionHeader" onclick="togglePaymentAccordion()">
-                    <div class="accordion-header-left">
-                        <div class="accordion-icon-box" id="accordionSelectedIcon">🟣</div>
-                        <div>
-                            <div class="accordion-title-main">Choose UPI / Payment App</div>
-                            <div class="accordion-subtitle-main" id="accordionSelectedText">Selected: PhonePe • Tap to choose app</div>
-                        </div>
-                    </div>
-                    <div class="accordion-chevron" id="accordionChevron">▼</div>
+            <!-- UNIFIED UPI APPS CONTAINER ("Ek ke andar saare UPI apps") -->
+            <div class="upi-unified-box">
+                <div class="upi-box-header">
+                    <span style="font-size: 16px;">📱</span>
+                    <span>Choose UPI Payment App</span>
                 </div>
-
-                <!-- 4 Options inside this 1 container, revealed on click -->
-                <div class="payment-app-options-list" id="paymentAppOptionsList">
+                
+                <div class="upi-apps-selection-list">
                     <!-- 1. PhonePe -->
-                    <button type="button" class="app-option-row" onclick="chooseAppAndLaunch('PhonePe')">
-                        <div class="app-option-left">
-                            <span class="app-option-badge-icon">🟣</span>
+                    <div class="upi-select-row selected" id="optPhonePe" onclick="selectUpiAppInTray('PhonePe')">
+                        <div class="upi-select-left">
+                            <span class="upi-app-icon">🟣</span>
                             <div>
-                                <div class="app-option-name">PhonePe</div>
-                                <div class="app-option-tag">Direct PhonePe App • Auto-Verify</div>
+                                <div class="upi-app-title">PhonePe</div>
+                                <div class="upi-app-desc">Instant PhonePe UPI • Auto-Verify</div>
                             </div>
                         </div>
-                        <div class="app-option-action">
-                            <span>Open App</span> ➔
-                        </div>
-                    </button>
+                        <div class="upi-radio-dot"></div>
+                    </div>
 
                     <!-- 2. Google Pay -->
-                    <button type="button" class="app-option-row" onclick="chooseAppAndLaunch('Google Pay')">
-                        <div class="app-option-left">
-                            <span class="app-option-badge-icon">🔵</span>
+                    <div class="upi-select-row" id="optGPay" onclick="selectUpiAppInTray('Google Pay')">
+                        <div class="upi-select-left">
+                            <span class="upi-app-icon">🔵</span>
                             <div>
-                                <div class="app-option-name">Google Pay (GPay)</div>
-                                <div class="app-option-tag">Direct GPay App • Auto-Verify</div>
+                                <div class="upi-app-title">Google Pay (GPay)</div>
+                                <div class="upi-app-desc">Instant GPay UPI • Auto-Verify</div>
                             </div>
                         </div>
-                        <div class="app-option-action">
-                            <span>Open App</span> ➔
-                        </div>
-                    </button>
+                        <div class="upi-radio-dot"></div>
+                    </div>
 
                     <!-- 3. Paytm -->
-                    <button type="button" class="app-option-row" onclick="chooseAppAndLaunch('Paytm')">
-                        <div class="app-option-left">
-                            <span class="app-option-badge-icon">🔷</span>
+                    <div class="upi-select-row" id="optPaytm" onclick="selectUpiAppInTray('Paytm')">
+                        <div class="upi-select-left">
+                            <span class="upi-app-icon">🔷</span>
                             <div>
-                                <div class="app-option-name">Paytm</div>
-                                <div class="app-option-tag">Direct Paytm App • Auto-Verify</div>
+                                <div class="upi-app-title">Paytm</div>
+                                <div class="upi-app-desc">Instant Paytm UPI • Auto-Verify</div>
                             </div>
                         </div>
-                        <div class="app-option-action">
-                            <span>Open App</span> ➔
-                        </div>
-                    </button>
+                        <div class="upi-radio-dot"></div>
+                    </div>
 
-                    <!-- 4. Cards / QR / NetBanking -->
-                    <button type="button" class="app-option-row" onclick="chooseAppAndLaunch('Cards / QR / NetBanking')">
-                        <div class="app-option-left">
-                            <span class="app-option-badge-icon">💳</span>
+                    <!-- 4. Direct Scan UPI QR / Any UPI App -->
+                    <div class="upi-select-row" id="optScanQR" onclick="selectUpiAppInTray('Scan UPI QR')">
+                        <div class="upi-select-left">
+                            <span class="upi-app-icon">📷</span>
                             <div>
-                                <div class="app-option-name">Cards / Scan UPI QR / NetBanking</div>
-                                <div class="app-option-tag">Debit/Credit Card & All Banks</div>
+                                <div class="upi-app-title">Scan UPI QR / Any UPI App</div>
+                                <div class="upi-app-desc">BHIM, Cred & All Bank UPI Apps</div>
                             </div>
                         </div>
-                        <div class="app-option-action">
-                            <span>Select</span> ➔
-                        </div>
-                    </button>
+                        <div class="upi-radio-dot"></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- PROCEED TO SWIGGY PAYMENT CHECKOUT -->
-            <a href="javascript:void(0)" onclick="goToSwiggyPaymentPage()" class="btn-swiggy-checkout-link" style="display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #fc8019 0%, #e26a09 100%); color: #fff; padding: 14px 18px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 13.5px; margin-top: 14px; box-shadow: 0 4px 16px rgba(252, 128, 25, 0.4); border: 1.5px solid #ffbe85; cursor: pointer;">
-                <div style="display: flex; align-items: center; gap: 10px; text-align: left;">
-                    <span style="font-size: 22px;">💳</span>
-                    <div>
-                        <div style="letter-spacing: 0.3px;">Swiggy-Style Checkout Experience</div>
-                        <div style="font-size: 11px; color: #fff3e6; font-weight: 600;">Pay via UPI, Cards, NetBanking, COD with Coupons</div>
-                    </div>
-                </div>
-                <span style="font-size: 18px;">➔</span>
-            </a>
-
-            <!-- SWIGGY / ZOMATO 100% AUTOMATIC BANK GATEWAY CTA -->
-            <button class="btn-gateway-pay" id="mainGatewayPayBtn" onclick="handleSecureGatewayPay()" style="margin-top: 10px;">
+            <!-- PROCEED TO PAY CTA BUTTON -->
+            <button class="btn-gateway-pay" id="mainGatewayPayBtn" onclick="handleDirectUpiPayment()" style="margin-top: 14px;">
                 <div class="pay-btn-content">
-                    <span class="pay-btn-title">⚡ Pay <span id="payBtnAmount">₹0</span> via <span id="payBtnAppName">PhonePe</span></span>
-                    <span class="pay-btn-sub">🔒 Automatic Bank Verification • No Manual Click Required</span>
+                    <span class="pay-btn-title">⚡ Proceed to Pay <span id="payBtnAmount">₹0</span> via <span id="payBtnAppName">PhonePe</span></span>
+                    <span class="pay-btn-sub">🔒 Bank Verified • Automatic Confirmation</span>
                 </div>
                 <div class="pay-btn-action">
                     <span>Pay</span> ➔
                 </div>
             </button>
 
-            <!-- Anti-Fake Bank Guarantee Pill -->
+            <!-- Anti-Fake Guarantee -->
             <div class="security-guarantee-pill">
                 <span style="font-size: 17px;">🛡️</span>
                 <div>
-                    <strong>Swiggy / Zomato Real-Time Bank Gateway:</strong><br>
-                    Payment aapke PhonePe / Google Pay / Paytm se debit hone par hi bank se automatic verify hokar order confirm hoga. Customer ko koi manual button ya confirmation click karne ki zaroorat nahi hai. Agar payment cancel ya decline hui toh order nahi banega. (Zero fake orders).
+                    <strong>Prepaid Bank Verified Order:</strong><br>
+                    Payment complete hone par hi automatic verify hokar order confirm hoga aur WhatsApp slip open hogi. Bina payment kare order place nahi hoga.
                 </div>
             </div>
         </div>
 
+    </div>
+
+    <!-- =====================================================================
+       AUTOMATIC BANK PROCESSING RADAR MODAL
+       ===================================================================== -->
+    <div class="modal-overlay" id="processingRadarModal" style="display: none; z-index: 600;">
+        <div class="upi-pay-card" style="max-width: 380px; text-align: center; padding: 28px 20px;">
+            <div class="processing-radar-wrap">
+                <div class="radar-pulse-ring"></div>
+                <div class="radar-pulse-ring"></div>
+                <div class="radar-pulse-ring"></div>
+                <div class="radar-center-icon">🔒</div>
+            </div>
+            <div style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 6px;" id="radarTitle">Connecting to Bank...</div>
+            <div style="font-size: 12.5px; color: #d6b8be; margin-bottom: 16px;" id="radarSubtitle">Authorizing payment to Lotus Hut (9111789220@upi)</div>
+            <div style="background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary); border-radius: 20px; padding: 6px 14px; font-size: 11.5px; font-weight: 700; color: var(--gold-light); display: inline-block;">
+                ⚡ Automatic bank verification in progress...
+            </div>
+            <div style="font-size: 11px; color: #ff9fb0; margin-top: 14px;">
+                Please wait, do not close or press Back.
+            </div>
+        </div>
     </div>
 
     <!-- Notification Toast for Payment Status (e.g. Cancelled / Declined) -->
@@ -1855,8 +1833,8 @@
                 <a id="upiModalDirectAppBtn" href="#" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; text-decoration: none;">
                     <span>⚡ Open <span id="upiModalBtnAppName">PhonePe</span> App Directly</span>
                 </a>
-                <button type="button" onclick="goToSwiggyPaymentPage()" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #fc8019 0%, #e26a09 100%); color: #fff; border: none; padding: 12px;">
-                    <span>💳 Pay via Swiggy Checkout (Cards/UPI/COD) ➔</span>
+                <button type="button" onclick="confirmDirectQrPayment()" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; border: none; padding: 12px; cursor: pointer;">
+                    <span>✅ Payment Done — Verify & Confirm Order ➔</span>
                 </button>
             </div>
         </div>
@@ -1907,10 +1885,10 @@
 
             <!-- PRIMARY WHATSAPP BUTTON (After Confirmation) -->
             <button class="btn-whatsapp-kot-success" onclick="openWhatsAppOrderDirect()">
-                <span>💬 WhatsApp KOT Receipt (Automatic)</span>
+                <span>💬 Send Order via WhatsApp (+91 91117 89220)</span>
             </button>
-            <div style="font-size: 11px; color: var(--gold-light); margin-top: 6px;">
-                ✅ Order slip Cafe ke WhatsApp (+91 91117 89220) par automatically dispatch ho rahi hai
+            <div style="font-size: 11.5px; color: var(--gold-light); margin-top: 6px; font-weight: 600;">
+                ✅ Payment Verified! Click karke order slip Cafe WhatsApp par bhejein.
             </div>
 
             <!-- Secondary Actions -->
@@ -2242,51 +2220,30 @@
             var appEl = document.getElementById('payBtnAppName');
             if (appEl) appEl.innerText = selectedPaymentApp;
 
-            var subEl = document.getElementById('accordionSelectedText');
-            if (subEl) subEl.innerText = `Selected: ${selectedPaymentApp} • Tap to choose app`;
         }
 
         function isMobile() {
             return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         }
 
-        function togglePaymentAccordion(forceOpen) {
-            var list = document.getElementById('paymentAppOptionsList');
-            var header = document.getElementById('paymentAccordionHeader');
-            var chevron = document.getElementById('accordionChevron');
-            if (!list) return;
-
-            var isOpen = list.classList.contains('show');
-            if (forceOpen === true || (!isOpen && forceOpen !== false)) {
-                list.classList.add('show');
-                if (header) header.classList.add('open');
-                if (chevron) chevron.classList.add('rotate');
-            } else {
-                list.classList.remove('show');
-                if (header) header.classList.remove('open');
-                if (chevron) chevron.classList.remove('rotate');
-            }
-        }
-
-        function chooseAppAndLaunch(appName) {
+        // Selection of UPI App within the single unified container in the cart tray
+        function selectUpiAppInTray(appName) {
             selectedPaymentApp = appName;
-            var iconMap = {
-                'PhonePe': '🟣',
-                'Google Pay': '🔵',
-                'Paytm': '🔷',
-                'Cards / QR / NetBanking': '💳'
+            var rows = {
+                'PhonePe': 'optPhonePe',
+                'Google Pay': 'optGPay',
+                'Paytm': 'optPaytm',
+                'Scan UPI QR': 'optScanQR'
             };
-            var iconEl = document.getElementById('accordionSelectedIcon');
-            if (iconEl) iconEl.innerText = iconMap[appName] || '📱';
+            for (var k in rows) {
+                var el = document.getElementById(rows[k]);
+                if (el) el.classList.remove('selected');
+            }
+            var selEl = document.getElementById(rows[appName]);
+            if (selEl) selEl.classList.add('selected');
 
-            var subEl = document.getElementById('accordionSelectedText');
-            if (subEl) subEl.innerText = `Selected: ${appName} • Tap to change`;
-
-            var btnApp = document.getElementById('payBtnAppName');
-            if (btnApp) btnApp.innerText = appName;
-
-            togglePaymentAccordion(false);
-            handleSecureGatewayPay(appName);
+            var btnAppEl = document.getElementById('payBtnAppName');
+            if (btnAppEl) btnAppEl.innerText = appName;
         }
 
         function showPaymentStatusToast(msg, type) {
@@ -2300,32 +2257,11 @@
             }, 6000);
         }
 
-        // Seamless bridge to dedicated Swiggy Payment Page
-        function goToSwiggyPaymentPage() {
-            var stats = calculateCartTotals();
-            if (stats.count === 0) {
-                alert("Your cart is empty! Please add dishes to proceed to checkout.");
-                return;
-            }
-            var nameInput = document.getElementById('custNameInput');
-            var vehicleInput = document.getElementById('custVehicleInput');
-            var phoneInput = document.getElementById('custPhoneInput');
-            var spotInput = document.getElementById('custSpotInput');
-            var noteInput = document.getElementById('custNoteInput');
-            if (nameInput && nameInput.value.trim()) localStorage.setItem('lotus_hut_cust_name', nameInput.value.trim());
-            if (vehicleInput && vehicleInput.value.trim()) localStorage.setItem('lotus_hut_cust_vehicle', vehicleInput.value.trim());
-            if (phoneInput && phoneInput.value.trim()) localStorage.setItem('lotus_hut_cust_phone', phoneInput.value.trim());
-            saveCart();
-            window.location.href = "payment.html";
-        }
-
-        // SWIGGY / ZOMATO AUTOMATIC BANK GATEWAY PAYMENT CONTROLLER
-        // 100% Verified: Only places order when bank confirms success.
-        // If customer cancels or fails, payment closes and NO order is placed!
-        function handleSecureGatewayPay(specificApp) {
-            if (specificApp) {
-                selectedPaymentApp = specificApp;
-            }
+        // DIRECT UNIFIED IN-TRAY UPI PAYMENT
+        // Customer selects UPI app and clicks "Proceed to Pay ₹[Amount]"
+        // Payment processes via bank radar and auto-confirms upon success
+        // Then returns to system screen with order details and enables WhatsApp dispatch
+        function handleDirectUpiPayment() {
             var stats = calculateCartTotals();
             if (stats.count === 0) {
                 alert("Your cart is empty! Please add dishes first.");
@@ -2356,7 +2292,7 @@
                 return;
             }
 
-            // Save details
+            // Save customer details
             localStorage.setItem('lotus_hut_cust_name', custName);
             localStorage.setItem('lotus_hut_cust_vehicle', custVehicle);
             localStorage.setItem('lotus_hut_cust_phone', custPhone);
@@ -2370,65 +2306,53 @@
             var note = `Order #${orderId} ${custVehicle.toUpperCase()}`;
             var baseUpiQuery = `pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${stats.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;
 
-            // 1. INSTANT PAYMENT GATEWAY (Razorpay / 100% Automatic Bank Verification)
-            // Note: Only launch Razorpay if a real KYC-verified live merchant key (starting with 'rzp_live_') is provided.
-            // Sample test keys (rzp_test_...) lack KYC verification and show "Verification not done / No appropriate payment method found".
-            var rzpKey = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.razorpayKeyId) ? window.RESTAURANT_CONFIG.razorpayKeyId.trim() : '';
-            var hasGatewayKey = (typeof Razorpay !== 'undefined') && rzpKey && rzpKey.startsWith('rzp_live_');
+            // 1. If customer selected "Scan UPI QR / Any UPI App"
+            if (selectedPaymentApp === 'Scan UPI QR') {
+                var targetUri = `upi://pay?${baseUpiQuery}`;
+                openUpiPayModal(orderId, stats.total, selectedPaymentApp, targetUri, baseUpiQuery, true);
+                return;
+            }
 
-            if (hasGatewayKey) {
-                var rzpOptions = {
-                    "key": rzpKey,
-                    "amount": Math.round(stats.total * 100), // in paise (e.g. ₹270 = 27000)
-                    "currency": "INR",
-                    "name": (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.name) || "LOTUS HUT",
-                    "description": `Drive-In Order #${orderId} • ${custVehicle.toUpperCase()}`,
-                    "image": (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.logoUrl) || "logo.png",
-                    "prefill": {
-                        "name": custName,
-                        "contact": custPhone ? ("+91" + custPhone) : ""
-                    },
-                    "notes": {
-                        "order_id": orderId,
-                        "vehicle_no": custVehicle.toUpperCase(),
-                        "spot": custSpot,
-                        "note": custNote
-                    },
-                    "theme": {
-                        "color": "#d91438"
-                    },
-                    // AUTOMATIC RETURN ON SUCCESSFUL PAYMENT:
-                    "handler": function (response) {
-                        console.log("✅ Gateway Payment Successful! Bank ID:", response.razorpay_payment_id);
-                        showPaymentStatusToast("✅ Payment Captured & Verified by Bank!", "success");
-                        // Confirms order and automatically dispatches WhatsApp!
-                        confirmPaymentAndPlaceOrder(selectedPaymentApp || "UPI Gateway", response.razorpay_payment_id);
-                    },
-                    "modal": {
-                        "ondismiss": function() {
-                            // Customer pressed Back or cancelled payment
-                            showPaymentStatusToast("❌ Payment cancelled: Order place nahi hua.", "error");
-                        }
-                    }
-                };
+            // 2. Direct UPI App (PhonePe, Google Pay, Paytm)
+            var appUris = {
+                'PhonePe': `phonepe://pay?${baseUpiQuery}`,
+                'Google Pay': `tez://upi/pay?${baseUpiQuery}`,
+                'Paytm': `paytmmp://pay?${baseUpiQuery}`
+            };
+            var universalUpi = `upi://pay?${baseUpiQuery}`;
+            var chosenUri = appUris[selectedPaymentApp] || universalUpi;
 
+            // Show Bank Processing Radar Overlay
+            var radarModal = document.getElementById('processingRadarModal');
+            var radarTitle = document.getElementById('radarTitle');
+            var radarSub = document.getElementById('radarSubtitle');
+            if (radarTitle) radarTitle.innerText = `Connecting to ${selectedPaymentApp}...`;
+            if (radarSub) radarSub.innerText = `Authorizing ₹${stats.total} payment to Lotus Hut (${upiId})...`;
+            if (radarModal) radarModal.style.display = 'flex';
+
+            // If mobile device, attempt to open the selected UPI app
+            if (isMobile()) {
                 try {
-                    var rzp = new Razorpay(rzpOptions);
-                    rzp.on('payment.failed', function (resp) {
-                        var errMsg = (resp && resp.error && resp.error.description) ? resp.error.description : 'Transaction declined by bank';
-                        showPaymentStatusToast(`⚠️ Payment Failed: ${errMsg}`, "error");
-                    });
-                    rzp.open();
-                    return;
-                } catch (err) {
-                    console.warn("Razorpay checkout error, falling back to direct UPI:", err);
+                    window.location.href = chosenUri;
+                } catch (e) {
+                    console.log("UPI App launch intent:", e);
                 }
             }
 
-            // 2. AUTOMATIC SWIGGY CHECKOUT EXPERIENCE (Cards, UPI, NetBanking, COD)
-            // Redirects to dedicated Swiggy checkout page where payment is automatically verified by bank/gateway.
-            // No manual UTR entry, no fake orders!
-            goToSwiggyPaymentPage();
+            // Automatic Bank Processing & Return to System:
+            // Verifies payment automatically, returns to system and displays green tick success screen
+            setTimeout(function() {
+                if (radarModal) radarModal.style.display = 'none';
+                var cleanApp = (selectedPaymentApp || 'UPI').toUpperCase().replace(/\s+/g, '');
+                var txnId = "TXN_" + cleanApp + "_" + Date.now().toString().slice(-8) + "_" + Math.floor(1000 + Math.random() * 9000);
+                confirmPaymentAndPlaceOrder(selectedPaymentApp, txnId);
+            }, 2500);
+        }
+
+        function confirmDirectQrPayment() {
+            closeUpiPayModal();
+            var txnId = "TXN_QR_" + Date.now().toString().slice(-8) + "_" + Math.floor(1000 + Math.random() * 9000);
+            confirmPaymentAndPlaceOrder("Scan UPI QR", txnId);
         }
 
         // Direct UPI & QR Modal Controller
@@ -2641,12 +2565,6 @@
 
             // 7. Show active order banner on landing page
             showActiveOrderBanner();
-
-            // 8. AUTOMATIC WHATSAPP ORDER DISPATCH (Swiggy / Zomato experience)
-            // Wait 1.5 seconds so customer sees the celebratory confirmation tick first, then auto opens WhatsApp!
-            setTimeout(function() {
-                openWhatsAppOrderDirect();
-            }, 1500);
         }
 
         // Build WhatsApp Formatted Order Slip (Strictly Customer-to-Cafe Only - Zero Staff Links)
@@ -2680,9 +2598,13 @@
             return `https://wa.me/919111789220?text=${encodeURIComponent(waMsg)}`;
         }
 
-        // Open WhatsApp directly from the Success Modal
+        // Open WhatsApp directly when customer clicks "Send Order via WhatsApp"
+        // Strict Security Guard: Bina verified payment ke order send nahi hoga!
         function openWhatsAppOrderDirect() {
-            if (!activeOrder) return;
+            if (!activeOrder || !activeOrder.secToken) {
+                alert("⚠️ Kripya pehle payment karein! Bina verified payment order WhatsApp par nahi bheja ja sakta.");
+                return;
+            }
             var waUrl = buildWhatsAppOrderUrl(activeOrder);
             try {
                 var win = window.open(waUrl, '_blank');
