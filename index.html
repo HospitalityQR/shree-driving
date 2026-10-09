@@ -2049,46 +2049,75 @@
        DIRECT UPI & APP QR MODAL (Zero Razorpay Errors)
        ===================================================================== -->
     <div class="upi-pay-modal" id="upiPayModal" style="display: none;">
-        <div class="upi-pay-card">
+        <div class="upi-pay-card" style="max-height: 92vh; overflow-y: auto;">
             <!-- Header -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span id="upiModalAppIcon" style="font-size: 24px;">🟣</span>
+                    <span id="upiModalAppIcon" style="font-size: 22px;">⚡</span>
                     <div style="text-align: left;">
-                        <div style="font-size: 15px; font-weight: 900; color: #ffffff;" id="upiModalAppTitle">Pay via PhonePe</div>
+                        <div style="font-size: 15px; font-weight: 900; color: #ffffff;" id="upiModalAppTitle">Pay via UPI / QR</div>
                         <div style="font-size: 11px; color: var(--gold-light);" id="upiModalOrderId">Order #LH-2918</div>
                     </div>
                 </div>
-                <button type="button" onclick="handleGatewayDecline('Customer cancelled payment')" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; cursor: pointer;">✕</button>
+                <button type="button" onclick="closeUpiPayModal()" style="background: rgba(255,255,255,0.12); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; cursor: pointer;">✕</button>
             </div>
 
             <!-- Amount Banner -->
-            <div style="background: rgba(212, 175, 55, 0.12); border: 1.5px solid var(--gold-primary); border-radius: 14px; padding: 12px; margin-bottom: 14px;">
+            <div style="background: rgba(212, 175, 55, 0.12); border: 1.5px solid var(--gold-primary); border-radius: 12px; padding: 10px; margin-bottom: 12px;">
                 <div style="font-size: 11px; color: #d6b8be;">Total Amount to Pay:</div>
-                <div style="font-size: 26px; font-weight: 900; color: var(--gold-light);" id="upiModalAmountDisplay">₹270</div>
-                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: Lotus Hut (9111789220@ybl)</div>
+                <div style="font-size: 26px; font-weight: 900; color: var(--gold-light);" id="upiModalAmountDisplay">₹0</div>
+                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: ANSH CHHAJED (9111789220@ybl)</div>
             </div>
 
             <!-- Dynamic QR Code Container -->
-            <div style="background: #ffffff; padding: 12px; border-radius: 16px; display: inline-block; margin-bottom: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6);">
-                <img id="upiModalQrImg" src="" alt="UPI QR Code" style="width: 200px; height: 200px; display: block; border-radius: 8px;">
+            <div style="background: #ffffff; padding: 10px; border-radius: 14px; display: inline-block; margin-bottom: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.5);">
+                <img id="upiModalQrImg" src="" alt="UPI QR Code" style="width: 190px; height: 190px; display: block; border-radius: 6px; margin: 0 auto;">
             </div>
 
-            <div style="font-size: 12.5px; color: #ffffff; font-weight: 700; margin-bottom: 4px;">
-                Scan with <span id="upiModalAppTag">PhonePe / Google Pay / Paytm</span>
+            <div style="font-size: 12px; color: #ffffff; font-weight: 700; margin-bottom: 2px;">
+                📷 Scan with PhonePe / GPay / Paytm / BHIM
             </div>
-            <div style="font-size: 11px; color: #d6b8be; margin-bottom: 14px;">
-                Apne phone se QR scan karke pay karein ya direct app kholein
+            <div style="font-size: 10.5px; color: #d6b8be; margin-bottom: 10px;">
+                Car me dusre phone se scan karein ya UPI ID copy karein
+            </div>
+
+            <!-- 1-Tap Quick Copy Actions (Solves PhonePe's security decline!) -->
+            <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+                <button type="button" onclick="copyUpiIdToClipboard()" id="btnCopyUpiId" style="flex: 1; padding: 9px 6px; background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary); border-radius: 8px; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                    <span>📋</span> <span id="copyUpiText">Copy 9111789220@ybl</span>
+                </button>
+                <button type="button" onclick="copyPhoneToClipboard()" id="btnCopyPhone" style="flex: 1; padding: 9px 6px; background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary); border-radius: 8px; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                    <span>📞</span> <span id="copyPhoneText">Copy 9111789220</span>
+                </button>
+            </div>
+
+            <!-- Direct UPI App Launch Buttons -->
+            <div style="font-size: 10.5px; color: #d6b8be; margin-bottom: 5px; text-align: left;">Ya direct app kholein:</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px;">
+                <button type="button" onclick="launchSpecificUpiApp('PhonePe')" style="background: rgba(103, 58, 183, 0.25); border: 1px solid #7c4dff; border-radius: 8px; padding: 8px 2px; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer;">
+                    🟣 PhonePe
+                </button>
+                <button type="button" onclick="launchSpecificUpiApp('Google Pay')" style="background: rgba(66, 133, 244, 0.25); border: 1px solid #4285f4; border-radius: 8px; padding: 8px 2px; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer;">
+                    🔵 Google Pay
+                </button>
+                <button type="button" onclick="launchSpecificUpiApp('Paytm')" style="background: rgba(0, 186, 242, 0.25); border: 1px solid #00baf2; border-radius: 8px; padding: 8px 2px; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer;">
+                    🔷 Paytm
+                </button>
+            </div>
+
+            <!-- Security Helper Note -->
+            <div style="font-size: 10.5px; color: #ffd580; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 8px; padding: 6px 8px; margin-bottom: 10px; line-height: 1.35; text-align: left;">
+                💡 <strong>Security Decline aane par:</strong> Upar diye gaye <strong>QR Code</strong> ko scan karein ya <strong>Copy UPI ID</strong> karke PhonePe/GPay me paste karke pay karein.
             </div>
 
             <!-- Action Buttons -->
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <a id="upiModalDirectAppBtn" href="#" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; text-decoration: none;">
-                    <span>⚡ Open <span id="upiModalBtnAppName">PhonePe</span> App Directly</span>
-                </a>
-                <div style="font-size: 11px; color: #ff9fb0; line-height: 1.4; padding: 8px 10px; background: rgba(255, 60, 80, 0.12); border-radius: 8px; border: 1px dashed rgba(255, 60, 80, 0.3);">
-                    🔒 <strong>Strict Bank Verification:</strong> Customer ko manual confirm karne ka koi button nahi hai. UPI App me payment authorize hone par hi order verify hoga. Bina payment kare wapas aane par order turant CANCEL ho jayega.
-                </div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <button type="button" onclick="confirmCustomerUpiPayment()" class="btn-primary-pay" style="margin-top: 0; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); color: #fff; border: none; font-size: 14.5px; font-weight: 900; padding: 13px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);">
+                    <span>✅ Payment Ho Gaya (Place Order)</span>
+                </button>
+                <button type="button" onclick="switchToCashOrderFromModal()" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #d6b8be; font-size: 11.5px; font-weight: 600; padding: 8px; border-radius: 8px; cursor: pointer; width: 100%;">
+                    💵 Online pay nahi ho raha? Pay Cash at Car
+                </button>
             </div>
         </div>
     </div>
@@ -2738,15 +2767,8 @@
                 }
             }
 
-            // 1. If customer selected "Scan UPI QR / Any UPI App"
-            if (selectedPaymentApp === 'Scan UPI QR') {
-                var targetUri = `upi://pay?${baseUpiQuery}`;
-                openUpiPayModal(orderId, stats.total, selectedPaymentApp, targetUri, baseUpiQuery, true);
-                return;
-            }
-
-            // 2. Direct UPI App (PhonePe, Google Pay, Paytm)
-            // Strict app-specific URI schemes so each app opens its own native app (Zero WhatsApp redirects!)
+            // 1. ALL UPI & SCAN OPTIONS (PhonePe, Google Pay, Paytm, Scan UPI QR)
+            // Open the comprehensive Zero-Error UPI Payment Modal
             var isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
             var appUris = {
                 'PhonePe': `phonepe://pay?${baseUpiQuery}`,
@@ -2754,83 +2776,98 @@
                 'Paytm': `paytmmp://pay?${baseUpiQuery}`
             };
             var chosenUri = appUris[selectedPaymentApp] || `phonepe://pay?${baseUpiQuery}`;
-
-            // Record timestamp when app was launched
-            paymentInitiatedTimestamp = Date.now();
-
-            // Setup and show Swiggy Native UPI Gateway Sheet (STRICT: Zero fake timer!)
-            var radarModal = document.getElementById('processingRadarModal');
-            var radarTitle = document.getElementById('radarTitle');
-            var radarAmount = document.getElementById('radarAmountDisplay');
-            var radarIcon = document.getElementById('radarCenterIcon');
-            var openBtn = document.getElementById('radarOpenAppBtn');
-            var btnApp = document.getElementById('radarBtnAppName');
-
-            var iconMap = { 'PhonePe': '🟣', 'Google Pay': '🔵', 'Paytm': '🔷' };
-            if (radarIcon) radarIcon.innerText = iconMap[selectedPaymentApp] || '📱';
-            if (radarTitle) radarTitle.innerText = `${selectedPaymentApp} Gateway`;
-            if (radarAmount) radarAmount.innerText = `₹${stats.total}`;
-            if (btnApp) btnApp.innerText = selectedPaymentApp;
-            if (openBtn) openBtn.href = chosenUri;
-            if (radarModal) radarModal.style.display = 'flex';
-
-            // Mark app payment as pending
-            isAppPaymentPending = true;
-            appPaymentLaunchTime = Date.now();
-            appHasBeenHidden = false;
-
-            // If mobile device, attempt to open the selected UPI app
-            if (isMobile()) {
-                try {
-                    window.location.href = chosenUri;
-                } catch (e) {
-                    console.log("UPI App launch intent:", e);
-                }
-            }
+            openUpiPayModal(orderId, stats.total, selectedPaymentApp, chosenUri, baseUpiQuery, true);
         }
 
         // =====================================================================
-        // STRICT RETURN-FROM-UPI-APP DETECTION & AUTO-CANCELLATION
-        // Customer ko payment done ya cancel ka koi button nahi diya gaya hai.
-        // Agar customer Google Pay / PhonePe / Paytm me gaya aur bina payment kare
-        // browser tab me wapas aaya, toh order TURANT CANCEL ho jayega!
+        // UPI & QR MODAL ACTIONS & ZERO-ERROR PAYMENT CONTROLLER
         // =====================================================================
-        var isAppPaymentPending = false;
-        var appPaymentLaunchTime = 0;
-        var appHasBeenHidden = false;
+        function copyUpiIdToClipboard() {
+            var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220@ybl";
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(upiId).then(function() {
+                    var txt = document.getElementById('copyUpiText');
+                    if (txt) txt.innerText = "✅ Copied " + upiId;
+                    showPaymentStatusToast("✅ UPI ID Copied! Open PhonePe/GPay > To UPI ID > Paste & Pay", "success");
+                    setTimeout(function() {
+                        if (txt) txt.innerText = "Copy " + upiId;
+                    }, 4000);
+                }).catch(function() {
+                    fallbackPromptCopy(upiId);
+                });
+            } else {
+                fallbackPromptCopy(upiId);
+            }
+        }
+
+        function fallbackPromptCopy(val) {
+            prompt("Copy UPI ID / Mobile Number:", val);
+            showPaymentStatusToast("✅ Copied! PhonePe / GPay me paste karke pay karein.", "success");
+        }
+
+        function copyPhoneToClipboard() {
+            var phone = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.phone) || "9111789220";
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(phone).then(function() {
+                    var txt = document.getElementById('copyPhoneText');
+                    if (txt) txt.innerText = "✅ Copied " + phone;
+                    showPaymentStatusToast("✅ Mobile Number Copied! Pay to " + phone, "success");
+                    setTimeout(function() {
+                        if (txt) txt.innerText = "Copy " + phone;
+                    }, 4000);
+                }).catch(function() {
+                    fallbackPromptCopy(phone);
+                });
+            } else {
+                fallbackPromptCopy(phone);
+            }
+        }
+
+        function launchSpecificUpiApp(appName) {
+            var stats = calculateCartTotals();
+            var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220@ybl";
+            var payeeName = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "ANSH CHHAJED";
+            var note = "Lotus Hut Cafe";
+            var baseUpiQuery = `pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${stats.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;
+            var isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            var appUris = {
+                'PhonePe': `phonepe://pay?${baseUpiQuery}`,
+                'Google Pay': isIos ? `gpay://upi/pay?${baseUpiQuery}` : `tez://upi/pay?${baseUpiQuery}`,
+                'Paytm': `paytmmp://pay?${baseUpiQuery}`
+            };
+            var uri = appUris[appName] || `phonepe://pay?${baseUpiQuery}`;
+            showPaymentStatusToast(`⚡ Opening ${appName}... Agar security decline aaye toh QR scan karein ya UPI ID paste karein!`, 'warn');
+            try {
+                window.location.href = uri;
+            } catch (e) {
+                console.log("App launch error:", e);
+            }
+        }
+
+        function confirmCustomerUpiPayment() {
+            closeUpiPayModal();
+            var stats = calculateCartTotals();
+            if (stats.count === 0) return;
+            var appName = selectedPaymentApp || "UPI";
+            var cleanApp = appName.toUpperCase().replace(/\s+/g, '');
+            var txnId = "UPI_" + cleanApp + "_" + Date.now().toString().slice(-6);
+            confirmPaymentAndPlaceOrder(appName, txnId);
+            showPaymentStatusToast("✅ Payment Confirmed! Order sent to kitchen.", "success");
+        }
+
+        function switchToCashOrderFromModal() {
+            closeUpiPayModal();
+            var cashTxnId = "CASH_" + Date.now().toString().slice(-6);
+            confirmPaymentAndPlaceOrder("CASH (Pay at Car)", cashTxnId);
+            showPaymentStatusToast("✅ Cash Order Placed! Staff will collect payment at your car.", "success");
+        }
 
         function handleReturnFromUpiApp() {
-            if (!isAppPaymentPending) return;
-            var elapsed = Date.now() - appPaymentLaunchTime;
-            // Trigger if app window was hidden (switched to UPI app) or > 1.5s elapsed
-            if (appHasBeenHidden || elapsed > 1500) {
-                isAppPaymentPending = false;
-                appHasBeenHidden = false;
-                var appName = selectedPaymentApp || "UPI App";
-                handleGatewayDecline(`${appName} se bina payment complete kiye wapas aane ke karan order CANCEL kar diya gaya hai.`);
-            }
+            // Keep user on the payment modal without auto-cancellation!
         }
 
-        document.addEventListener('visibilitychange', function() {
-            if (document.visibilityState === 'hidden') {
-                if (isAppPaymentPending) {
-                    appHasBeenHidden = true;
-                }
-            } else if (document.visibilityState === 'visible') {
-                handleReturnFromUpiApp();
-            }
-        });
-
-        window.addEventListener('focus', function() {
-            handleReturnFromUpiApp();
-        });
-
         // SWIGGY GATEWAY HANDLER: PAYMENT DECLINED / CANCELLED
-        // Strictly blocks the order, ensures NO order in kitchen and NO WhatsApp slip!
         function handleGatewayDecline(reason) {
-            isAppPaymentPending = false;
-            appHasBeenHidden = false;
-
             var stats = calculateCartTotals();
             var radarModal = document.getElementById('processingRadarModal');
             if (radarModal) radarModal.style.display = 'none';
@@ -2841,7 +2878,7 @@
             var failModal = document.getElementById('orderFailureModal');
             if (failModal) {
                 var reasonEl = document.getElementById('failureReasonText');
-                if (reasonEl) reasonEl.innerText = reason || "Transaction was cancelled in UPI App. No money was deducted.";
+                if (reasonEl) reasonEl.innerText = reason || "Transaction was cancelled. No money was deducted.";
 
                 var appEl = document.getElementById('failureAppDisplay');
                 if (appEl) appEl.innerText = selectedPaymentApp || "UPI App";
@@ -2856,11 +2893,7 @@
         }
 
         // SWIGGY GATEWAY HANDLER: PAYMENT AUTHORIZED & VERIFIED BY BANK
-        // Confirms order only when payment succeeds
         function handleGatewaySuccess() {
-            isAppPaymentPending = false;
-            appHasBeenHidden = false;
-
             var stats = calculateCartTotals();
             if (stats.count === 0) return;
 
@@ -2897,14 +2930,14 @@
                 'PhonePe': '🟣',
                 'Google Pay': '🔵',
                 'Paytm': '🔷',
-                'Cards / QR / NetBanking': '💳'
+                'Scan UPI QR': '📷'
             };
 
             var iconEl = document.getElementById('upiModalAppIcon');
-            if (iconEl) iconEl.innerText = iconMap[appName] || '📱';
+            if (iconEl) iconEl.innerText = iconMap[appName] || '⚡';
 
             var titleEl = document.getElementById('upiModalAppTitle');
-            if (titleEl) titleEl.innerText = `Pay via ${appName}`;
+            if (titleEl) titleEl.innerText = `Pay ₹${amount} via UPI / QR`;
 
             var orderIdEl = document.getElementById('upiModalOrderId');
             if (orderIdEl) orderIdEl.innerText = `Order #${orderId}`;
@@ -2912,26 +2945,9 @@
             var amtEl = document.getElementById('upiModalAmountDisplay');
             if (amtEl) amtEl.innerText = `₹${amount}`;
 
-            var tagEl = document.getElementById('upiModalAppTag');
-            if (tagEl) tagEl.innerText = appName;
-
-            var btnAppEl = document.getElementById('upiModalBtnAppName');
-            if (btnAppEl) btnAppEl.innerText = appName;
-
-            var directBtn = document.getElementById('upiModalDirectAppBtn');
-            if (directBtn) {
-                directBtn.href = directUri;
-                directBtn.onclick = function() {
-                    isAppPaymentPending = true;
-                    appPaymentLaunchTime = Date.now();
-                    appHasBeenHidden = false;
-                    showPaymentStatusToast(`⚡ Opening ${appName}...`, 'warn');
-                };
-            }
-
-            // Dynamic QR Code for exact amount, payee and note
+            // Dynamic High-Res QR Code for exact amount, payee and note
             var universalUpi = `upi://pay?${baseUpiQuery}`;
-            var qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${encodeURIComponent(universalUpi)}`;
+            var qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=8&data=${encodeURIComponent(universalUpi)}`;
             var qrImg = document.getElementById('upiModalQrImg');
             if (qrImg) {
                 qrImg.src = qrImgUrl;
@@ -2964,8 +2980,6 @@
         function closeUpiPayModal() {
             var modal = document.getElementById('upiPayModal');
             if (modal) modal.style.display = 'none';
-            isAppPaymentPending = false;
-            appHasBeenHidden = false;
         }
 
         // Swiggy-Style Automatic Checkout Integration
