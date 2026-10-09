@@ -2746,15 +2746,14 @@
             }
 
             // 2. Direct UPI App (PhonePe, Google Pay, Paytm)
-            // On iOS devices, universal upi:// scheme avoids sandbox and security declines
-            var universalUpi = `upi://pay?${baseUpiQuery}`;
-            var isIos = isMobile() && /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            // Strict app-specific URI schemes so each app opens its own native app (Zero WhatsApp redirects!)
+            var isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
             var appUris = {
-                'PhonePe': isIos ? universalUpi : `phonepe://pay?${baseUpiQuery}`,
-                'Google Pay': isIos ? universalUpi : `tez://upi/pay?${baseUpiQuery}`,
-                'Paytm': isIos ? universalUpi : `paytmmp://pay?${baseUpiQuery}`
+                'PhonePe': `phonepe://pay?${baseUpiQuery}`,
+                'Google Pay': isIos ? `gpay://upi/pay?${baseUpiQuery}` : `tez://upi/pay?${baseUpiQuery}`,
+                'Paytm': `paytmmp://pay?${baseUpiQuery}`
             };
-            var chosenUri = appUris[selectedPaymentApp] || universalUpi;
+            var chosenUri = appUris[selectedPaymentApp] || `phonepe://pay?${baseUpiQuery}`;
 
             // Record timestamp when app was launched
             paymentInitiatedTimestamp = Date.now();
