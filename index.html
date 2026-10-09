@@ -2318,6 +2318,57 @@
             var note = `Order #${orderId} ${custVehicle.toUpperCase()}`;
             var baseUpiQuery = `pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${stats.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;
 
+            // 0. OFFICIAL PAYMENT GATEWAY CHECK (Exact Swiggy / Zomato Bank Auto-Verification)
+            // If Razorpay Key is provided in config.js, it launches the bank-verified checkout.
+            // Google Pay, PhonePe, Cards & NetBanking verify directly with the bank!
+            // If user cancels or declines, the bank informs Razorpay and the order is NOT placed!
+            var rzpKey = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.razorpayKeyId) ? window.RESTAURANT_CONFIG.razorpayKeyId.trim() : '';
+            if (typeof Razorpay !== 'undefined' && rzpKey) {
+                var rzpOptions = {
+                    "key": rzpKey,
+                    "amount": Math.round(stats.total * 100),
+                    "currency": "INR",
+                    "name": (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.name) || "LOTUS HUT",
+                    "description": `Drive-In Order #${orderId} • ${custVehicle.toUpperCase()}`,
+                    "image": (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.logoUrl) || "logo.png",
+                    "prefill": {
+                        "name": custName,
+                        "contact": custPhone ? ("+91" + custPhone) : ""
+                    },
+                    "notes": {
+                        "order_id": orderId,
+                        "vehicle_no": custVehicle.toUpperCase(),
+                        "spot": custSpot,
+                        "note": custNote
+                    },
+                    "theme": {
+                        "color": "#fc8019"
+                    },
+                    "handler": function (response) {
+                        console.log("✅ Bank Verified Payment Successful! ID:", response.razorpay_payment_id);
+                        showPaymentStatusToast("✅ Payment Verified by Bank!", "success");
+                        confirmPaymentAndPlaceOrder(selectedPaymentApp || "Razorpay Gateway", response.razorpay_payment_id);
+                    },
+                    "modal": {
+                        "ondismiss": function() {
+                            showPaymentStatusToast("❌ Payment cancelled: Order place nahi hua.", "error");
+                        }
+                    }
+                };
+
+                try {
+                    var rzp = new Razorpay(rzpOptions);
+                    rzp.on('payment.failed', function (resp) {
+                        var errMsg = (resp && resp.error && resp.error.description) ? resp.error.description : 'Transaction declined by bank';
+                        showPaymentStatusToast(`⚠️ Payment Failed: ${errMsg}`, "error");
+                    });
+                    rzp.open();
+                    return;
+                } catch (err) {
+                    console.warn("Razorpay checkout error:", err);
+                }
+            }
+
             // 1. If customer selected "Scan UPI QR / Any UPI App"
             if (selectedPaymentApp === 'Scan UPI QR') {
                 var targetUri = `upi://pay?${baseUpiQuery}`;
