@@ -26,6 +26,7 @@ window.RESTAURANT_CONFIG = {
     
     // 4. Hosted Landing Page & Live URL
     landingPageUrl: "https://hospitalityqr.github.io/shree-driving/?v=9",
+    paymentPageUrl: "payment.html",
     
     // 5. Visual Media Assets
     logoUrl: "logo.png",

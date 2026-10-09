@@ -84,10 +84,44 @@ This system is built specifically for **Lotus Hut — The Drive In Cafe** matchi
 
 ---
 
+## 💳 3. Swiggy-Inspired Secure Payment Feature (`payment.html` & `app.py`)
+
+- **Modern Swiggy Checkout UI/UX**:
+  - Clean orange-and-white theme (`#fc8019`), card-based layout, and mobile-friendly responsive design.
+  - Transparent item breakdown, live quantity controls (`+` / `-`), taxes (5% GST), and drive-in service fee.
+  - Interactive coupon engine (`SWIGGY50`, `WELCOME`, `FEAST100`, `FREESHIP`) with instant savings highlights.
+- **5 Comprehensive Payment Methods**:
+  1. **UPI**: Google Pay, PhonePe, Paytm, and custom UPI ID validation with instant handle chips (`@okhdfcbank`, `@okaxis`, `@okicici`, `@oksbi`, `@paytm`, `@ybl`).
+  2. **Credit & Debit Cards**: Real-time card formatting, brand recognition (Visa, Mastercard, RuPay, Amex), expiry auto-slash, CVV masking with 256-bit SSL guarantee.
+  3. **Net Banking**: 6 popular Indian bank choices (HDFC, SBI, ICICI, Axis, Kotak, PNB) + dropdown for 40+ banks.
+  4. **Digital Wallets**: Amazon Pay, Paytm Wallet, PhonePe Wallet, Mobikwik.
+  5. **Cash on Delivery (COD)**: Pay cash to car service boy with anti-bot 3-digit security verification code.
+- **Payment Statuses & Animations**:
+  - **Processing Radar**: Real-time pulsing bank gateway authorization screen.
+  - **Success Screen**: Animated SVG green checkmark, celebratory 4-note ascending chime, unique transaction ID (`TXN_TEST_...`), 1-click WhatsApp order slip, and printable receipt.
+  - **Failure Screen**: Explanatory decline reasons, unique failure reference, and "🔄 Retry Payment" button (keeps cart intact).
+- **Secure Backend APIs (`app.py`)**:
+  - `POST /api/create-order`: Calculates order total, taxes, delivery fee, coupons, generates HMAC server token.
+  - `POST /api/verify-payment`: Verifies Razorpay HMAC signature or server token, generates unique transaction ID, marks order confirmed.
+  - `POST /api/simulate-payment`: Sandbox testing for successful, bank decline, and cancelled transactions.
+  - `GET /api/config` & `GET /api/coupons`: Public gateway configuration.
+  - **Zero credential storage**: Never stores card numbers, CVVs, or UPI PINs.
+
+---
+
 ## 🚀 How to Run & Test
 
-1. Double-click **`launch.bat`** (or open `index.html` in your browser).
-2. Select any dishes from the menu to see the floating cart and total calculation.
-3. Open the tray, enter Name, Vehicle Number, and 10-Digit WhatsApp Mobile No.
-4. Click **"Pay & Place Order"** — experience the Swiggy/Zomato style bank radar, automatic green checkmark confirmation, and automatic WhatsApp message opening!
-5. Open **`staff.html`** on the counter phone — enter Staff PIN **`9111`** to unlock the secure terminal, manage orders, and test the red/green stage buttons!
+### Option A: Complete Backend Server (Recommended)
+1. Double-click **`run_server.bat`** (or run `python app.py`).
+2. Server starts at `http://127.0.0.1:5000`.
+3. The Swiggy Payment Page opens automatically at `http://127.0.0.1:5000/payment.html`.
+4. Test the bottom floating **Sandbox Controls**:
+   - Click **🟢 Test Success** to test the green checkmark, unique transaction ID, and staff sync.
+   - Click **🔴 Test Bank Decline** to test the failure screen and Retry button.
+   - Click **🟡 Test Cancel** to test user cancellation.
+5. Place an order and check `http://127.0.0.1:5000/staff.html` (PIN: `9111`) to watch the order arrive in real-time!
+
+### Option B: Standalone Browser Testing
+1. Double-click **`launch.bat`** (opens `payment.html`, `index.html`, and `staff.html` in your browser).
+2. Enjoy the full frontend simulation with local state persistence and audio chime.
+
