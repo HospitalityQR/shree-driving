@@ -206,7 +206,7 @@ def build_luxury_standee(qr_menu_img, width=1200, height=1800, output_path="tabl
     p1_b = draw.textbbox((0, 0), pay_text1, font=get_font(21, bold=True))
     draw.text(((width - (p1_b[2] - p1_b[0])) // 2, pay_top + 18), pay_text1, fill="#fbe69b", font=get_font(21, bold=True))
 
-    pay_text2 = "UPI ID: 9111789220@upi  •  Helpline: 9111789220"
+    pay_text2 = "UPI ID: 9111789220@ybl  •  Helpline: 9111789220"
     p2_b = draw.textbbox((0, 0), pay_text2, font=get_font(18, bold=False))
     draw.text(((width - (p2_b[2] - p2_b[0])) // 2, pay_top + 55), pay_text2, fill="#ffffff", font=get_font(18, bold=False))
 
@@ -239,7 +239,7 @@ def build_luxury_standee(qr_menu_img, width=1200, height=1800, output_path="tabl
 
 if __name__ == "__main__":
     menu_url = "https://hospitalityqr.github.io/shree-driving/?v=2"
-    upi_url = "upi://pay?pa=9111789220@upi&pn=Lotus%20Hut%20The%20Drive%20In%20Cafe&cu=INR"
+    upi_url = "upi://pay?pa=9111789220@ybl&pn=Lotus%20Hut%20The%20Drive%20In%20Cafe&cu=INR"
 
     print("Generating Menu QR...")
     qr_menu = generate_styled_qr(menu_url, logo_path="logo.png", size=800)

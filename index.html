@@ -1954,7 +1954,7 @@
             <div style="background: rgba(212, 175, 55, 0.12); border: 1.5px solid var(--gold-primary); border-radius: 14px; padding: 12px; margin-bottom: 14px;">
                 <div style="font-size: 11px; color: #d6b8be;">Total Amount to Pay:</div>
                 <div style="font-size: 26px; font-weight: 900; color: var(--gold-light);" id="radarAmountDisplay">₹0</div>
-                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: Lotus Hut (9111789220@upi)</div>
+                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: Lotus Hut (9111789220@ybl)</div>
             </div>
 
             <!-- Live Processing Radar -->
@@ -2000,7 +2000,7 @@
             <div style="background: rgba(212, 175, 55, 0.12); border: 1.5px solid var(--gold-primary); border-radius: 14px; padding: 12px; margin-bottom: 14px;">
                 <div style="font-size: 11px; color: #d6b8be;">Total Amount to Pay:</div>
                 <div style="font-size: 26px; font-weight: 900; color: var(--gold-light);" id="upiModalAmountDisplay">₹270</div>
-                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: Lotus Hut (9111789220@upi)</div>
+                <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: Lotus Hut (9111789220@ybl)</div>
             </div>
 
             <!-- Dynamic QR Code Container -->
@@ -2541,7 +2541,7 @@
             var custSpot = (document.getElementById('custSpotInput') ? document.getElementById('custSpotInput').value.trim() : '') || 'Driveway / Parking';
             var custNote = (document.getElementById('custNoteInput') ? document.getElementById('custNoteInput').value.trim() : '');
 
-            var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220@upi";
+            var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220@ybl";
             var payeeName = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "Lotus Hut The Drive In Cafe";
             var note = `Order #${orderId} ${custVehicle.toUpperCase()}`;
             var baseUpiQuery = `pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${stats.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;
