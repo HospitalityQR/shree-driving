@@ -1768,23 +1768,34 @@
     </div>
 
     <!-- =====================================================================
-       AUTOMATIC BANK PROCESSING RADAR MODAL
+       STRICT AWAITING PAYMENT & BANK VERIFICATION MODAL
        ===================================================================== -->
     <div class="modal-overlay" id="processingRadarModal" style="display: none; z-index: 600;">
-        <div class="upi-pay-card" style="max-width: 380px; text-align: center; padding: 28px 20px;">
+        <div class="upi-pay-card" style="max-width: 390px; text-align: center; padding: 26px 20px;">
             <div class="processing-radar-wrap">
                 <div class="radar-pulse-ring"></div>
                 <div class="radar-pulse-ring"></div>
                 <div class="radar-pulse-ring"></div>
-                <div class="radar-center-icon">🔒</div>
+                <div class="radar-center-icon" id="radarCenterIcon">📱</div>
             </div>
-            <div style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 6px;" id="radarTitle">Connecting to Bank...</div>
-            <div style="font-size: 12.5px; color: #d6b8be; margin-bottom: 16px;" id="radarSubtitle">Authorizing payment to Lotus Hut (9111789220@upi)</div>
-            <div style="background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary); border-radius: 20px; padding: 6px 14px; font-size: 11.5px; font-weight: 700; color: var(--gold-light); display: inline-block;">
-                ⚡ Automatic bank verification in progress...
+            <div style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px;" id="radarTitle">Opening UPI App...</div>
+            <div style="font-size: 13px; color: var(--gold-light); font-weight: 700; margin-bottom: 6px;" id="radarAmountInfo">Amount: ₹0 • Lotus Hut (9111789220@upi)</div>
+            <div style="font-size: 11.5px; color: #d6b8be; margin-bottom: 16px; line-height: 1.4;" id="radarSubtitle">
+                Kripya app me payment complete karein. Agar payment cancel kiya hai toh Cancel dabayein.
             </div>
-            <div style="font-size: 11px; color: #ff9fb0; margin-top: 14px;">
-                Please wait, do not close or press Back.
+
+            <!-- Action buttons: Strict verification; NO fake auto-timer! -->
+            <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 10px;">
+                <button type="button" onclick="cancelPendingPayment()" style="background: rgba(255, 60, 80, 0.15); border: 1.5px solid rgba(255, 60, 80, 0.4); color: #ff9fb0; padding: 12px; border-radius: 14px; font-weight: 800; font-size: 13px; cursor: pointer; transition: all 0.2s;">
+                    ✕ Payment Cancelled / Nahi Hua
+                </button>
+                <button type="button" onclick="verifyAndConfirmDirectPayment()" style="background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); border: none; color: #fff; padding: 13px; border-radius: 14px; font-weight: 900; font-size: 14px; cursor: pointer; box-shadow: 0 4px 15px rgba(37,211,102,0.4);">
+                    ✓ Maine Payment Kar Diya Hai — Confirm Order ➔
+                </button>
+            </div>
+
+            <div style="font-size: 10.5px; color: #ffb3c1; margin-top: 14px; line-height: 1.3;">
+                🔒 <strong>Strict Cafe Policy:</strong> Counter soundbox / SMS par payment check hone par hi food prepare hoga. Fake click par order cancel ho jayega.
             </div>
         </div>
     </div>
@@ -2206,6 +2217,7 @@
 
         // 5. Setup Payment Links & Summary Display
         var selectedPaymentApp = "PhonePe";
+        var paymentInitiatedTimestamp = 0;
 
         function setupPaymentLinks(amount) {
             var subTotalEl = document.getElementById('billSubtotalDisplay');
@@ -2322,12 +2334,21 @@
             var universalUpi = `upi://pay?${baseUpiQuery}`;
             var chosenUri = appUris[selectedPaymentApp] || universalUpi;
 
-            // Show Bank Processing Radar Overlay
+            // Record timestamp when app was launched
+            paymentInitiatedTimestamp = Date.now();
+
+            // Setup and show Awaiting Payment Modal (STRICT: Zero fake timer!)
             var radarModal = document.getElementById('processingRadarModal');
             var radarTitle = document.getElementById('radarTitle');
+            var radarAmount = document.getElementById('radarAmountInfo');
             var radarSub = document.getElementById('radarSubtitle');
-            if (radarTitle) radarTitle.innerText = `Connecting to ${selectedPaymentApp}...`;
-            if (radarSub) radarSub.innerText = `Authorizing ₹${stats.total} payment to Lotus Hut (${upiId})...`;
+            var radarIcon = document.getElementById('radarCenterIcon');
+
+            var iconMap = { 'PhonePe': '🟣', 'Google Pay': '🔵', 'Paytm': '🔷' };
+            if (radarIcon) radarIcon.innerText = iconMap[selectedPaymentApp] || '📱';
+            if (radarTitle) radarTitle.innerText = `Waiting for ${selectedPaymentApp}...`;
+            if (radarAmount) radarAmount.innerText = `Amount: ₹${stats.total} • Lotus Hut (${upiId})`;
+            if (radarSub) radarSub.innerText = `Kripya ${selectedPaymentApp} me ₹${stats.total} ka payment complete karein. Agar payment cancel kiya hai toh Cancel dabayein.`;
             if (radarModal) radarModal.style.display = 'flex';
 
             // If mobile device, attempt to open the selected UPI app
@@ -2339,19 +2360,56 @@
                 }
             }
 
-            // Automatic Bank Processing & Return to System:
-            // Verifies payment automatically, returns to system and displays green tick success screen
-            setTimeout(function() {
-                if (radarModal) radarModal.style.display = 'none';
-                var cleanApp = (selectedPaymentApp || 'UPI').toUpperCase().replace(/\s+/g, '');
-                var txnId = "TXN_" + cleanApp + "_" + Date.now().toString().slice(-8) + "_" + Math.floor(1000 + Math.random() * 9000);
-                confirmPaymentAndPlaceOrder(selectedPaymentApp, txnId);
-            }, 2500);
+            // NOTE: Strict Anti-Fraud Policy:
+            // Under NO circumstance does a timer automatically confirm the order!
+            // If customer closes Google Pay or comes back without paying, the order is NOT placed.
+        }
+
+        // Cancel pending payment (Customer pressed back or cancelled in UPI app)
+        function cancelPendingPayment() {
+            var radarModal = document.getElementById('processingRadarModal');
+            if (radarModal) radarModal.style.display = 'none';
+            showPaymentStatusToast("❌ Payment Cancelled: Order place nahi hua.", "error");
+        }
+
+        // Verify and confirm direct payment
+        // Strict Anti-Fraud Guard: Checks elapsed time and requires explicit user confirmation
+        function verifyAndConfirmDirectPayment() {
+            var stats = calculateCartTotals();
+            if (stats.count === 0) return;
+
+            var timeElapsed = Date.now() - paymentInitiatedTimestamp;
+            // Real UPI PIN entry and bank processing takes at least 4-5 seconds
+            if (timeElapsed < 4000) {
+                alert(`⚠️ Transaction Verification Alert:\n\nItni jaldi payment complete nahi ho sakta!\n\nKripya pehle ${selectedPaymentApp} me jaakar UPI PIN daalein aur ₹${stats.total} ka payment poora karein.`);
+                return;
+            }
+
+            var confirmed = confirm(
+                `⚠️ STRICT PAYMENT CONFIRMATION:\n\n` +
+                `Kya aapne sach me Lotus Hut (9111789220@upi) par ₹${stats.total} ka payment ${selectedPaymentApp} se poora kar diya hai?\n\n` +
+                `Staff counter phone / soundbox par bank notification check karke hi food prepare karega.`
+            );
+            if (!confirmed) return;
+
+            var radarModal = document.getElementById('processingRadarModal');
+            if (radarModal) radarModal.style.display = 'none';
+
+            var cleanApp = (selectedPaymentApp || 'UPI').toUpperCase().replace(/\s+/g, '');
+            var txnId = "UPI_" + cleanApp + "_" + Date.now().toString().slice(-8);
+            confirmPaymentAndPlaceOrder(selectedPaymentApp, txnId);
         }
 
         function confirmDirectQrPayment() {
+            var stats = calculateCartTotals();
+            var confirmed = confirm(
+                `⚠️ QR PAYMENT CONFIRMATION:\n\n` +
+                `Kya aapne QR code scan karke ₹${stats.total} ka payment Lotus Hut (9111789220@upi) par poora kar diya hai?\n\n` +
+                `Staff counter soundbox / SMS se verify karke hi order prepare karega.`
+            );
+            if (!confirmed) return;
             closeUpiPayModal();
-            var txnId = "TXN_QR_" + Date.now().toString().slice(-8) + "_" + Math.floor(1000 + Math.random() * 9000);
+            var txnId = "UPI_QR_" + Date.now().toString().slice(-8);
             confirmPaymentAndPlaceOrder("Scan UPI QR", txnId);
         }
 
@@ -2517,7 +2575,8 @@
                 items: itemsList,
                 totalAmount: stats.total,
                 total: stats.total,
-                paymentMode: `✅ BANK VERIFIED (${paymentApp})`,
+                paymentMode: `DIRECT UPI (${paymentApp})`,
+                isCounterVerified: false,
                 utr: verifiedPaymentId,
                 timestamp: `${timeStr}, ${dateStr}`,
                 status: 'PENDING'
@@ -2592,7 +2651,7 @@
                         `💳 *PAYMENT*: ${orderObj.paymentMode}\n` +
                         `🔢 *Transaction ID*: ${orderObj.utr || orderObj.secToken}\n` +
                         `━━━━━━━━━━━━━━━━━━━━\n` +
-                        `✅ *Payment Confirmed — Food Being Prepared*\n` +
+                        `🔔 *Verification*: Cafe Soundbox (+91 91117 89220)\n` +
                         `🙏 *Lotus Hut The Drive-In Cafe Indore*`;
 
             return `https://wa.me/919111789220?text=${encodeURIComponent(waMsg)}`;
