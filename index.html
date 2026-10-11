@@ -2048,24 +2048,53 @@
                 <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: ANSH CHHAJED • Lotus Hut Cafe</div>
             </div>
 
-            <!-- Direct Mobile Number Transfer Box (High Visibility) -->
-            <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 12px; padding: 10px; margin-bottom: 10px; text-align: left;">
-                <div style="font-size: 11.5px; font-weight: 800; color: #fbe69b; margin-bottom: 4px;">
-                    📱 Method 1: Pay to Mobile Number
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.06); padding: 7px 10px; border-radius: 8px;">
-                    <div>
-                        <div style="font-size: 14px; font-weight: 900; color: #ffffff; letter-spacing: 0.5px;">9111789220</div>
-                        <div style="font-size: 10px; color: #d6b8be;">PhonePe / GPay 'To Mobile Number'</div>
+            <!-- Direct Mobile Number Transfer Box (Clickable to Directly Launch PhonePe App) -->
+            <div style="background: linear-gradient(135deg, rgba(103, 58, 183, 0.22), rgba(0, 0, 0, 0.45)); border: 1.5px solid #a855f7; border-radius: 14px; padding: 12px; margin-bottom: 12px; text-align: left; box-shadow: 0 4px 18px rgba(168, 85, 247, 0.25);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <div style="font-size: 12px; font-weight: 800; color: #f3e8ff; display: flex; align-items: center; gap: 5px;">
+                        <span>📱</span> Pay to Mobile Number
                     </div>
-                    <button type="button" onclick="copyUpiDetails('9111789220', 'Mobile Number')" style="background: linear-gradient(135deg, #fbe69b, #d4af37); border: none; color: #120406; font-weight: 800; font-size: 11px; padding: 6px 12px; border-radius: 6px; cursor: pointer;">
-                        Copy Number
+                    <span style="background: #a855f7; color: #ffffff; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 10px;">
+                        Direct App ➔
+                    </span>
+                </div>
+
+                <!-- Clickable Phone Number Row (Directly Launches PhonePe / UPI App) -->
+                <div onclick="openPhonePeWithNumber('PhonePe')" style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.45); padding: 10px 12px; border-radius: 10px; border: 1.2px solid rgba(168, 85, 247, 0.45); cursor: pointer; transition: all 0.2s ease;">
+                    <div>
+                        <div style="font-size: 19px; font-weight: 900; color: #ffffff; letter-spacing: 1px; font-family: monospace;">
+                            9111789220
+                        </div>
+                        <div style="font-size: 10.5px; color: #d8b4fe; font-weight: 600; margin-top: 2px;">
+                            👉 Number par click karein PhonePe kholne ke liye
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <button type="button" onclick="event.stopPropagation(); copyUpiDetails('9111789220', 'Mobile Number')" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #ffffff; font-weight: 700; font-size: 11px; padding: 6px 10px; border-radius: 8px; cursor: pointer;">
+                            📋 Copy
+                        </button>
+                        <button type="button" style="background: linear-gradient(135deg, #a855f7, #7c3aed); border: none; color: #ffffff; font-weight: 900; font-size: 12px; padding: 7px 12px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 8px rgba(168,85,247,0.5);">
+                            Open App ➔
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Direct Launch App Buttons (PhonePe, GPay, Paytm) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 8px;">
+                    <button type="button" onclick="openPhonePeWithNumber('PhonePe')" style="background: rgba(103, 58, 183, 0.35); border: 1px solid #a855f7; color: #ffffff; font-size: 11px; font-weight: 800; padding: 7px 4px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                        <span>🟣</span> PhonePe
+                    </button>
+                    <button type="button" onclick="openPhonePeWithNumber('Google Pay')" style="background: rgba(66, 133, 244, 0.25); border: 1px solid #4285f4; color: #ffffff; font-size: 11px; font-weight: 800; padding: 7px 4px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                        <span>🔵</span> GPay
+                    </button>
+                    <button type="button" onclick="openPhonePeWithNumber('Paytm')" style="background: rgba(0, 186, 242, 0.25); border: 1px solid #00baf2; color: #ffffff; font-size: 11px; font-weight: 800; padding: 7px 4px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                        <span>🔷</span> Paytm
                     </button>
                 </div>
             </div>
 
             <!-- Dynamic QR Code Container (Method 2) -->
-            <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 12px; padding: 12px 10px; margin-bottom: 12px;">
+            <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 12px; padding: 12px 10px; margin-bottom: 8px;">
                 <div style="font-size: 11.5px; font-weight: 800; color: #fbe69b; margin-bottom: 8px; text-align: left;">
                     📷 Method 2: Scan QR Code (100% Instant Success)
                 </div>
@@ -2083,15 +2112,12 @@
                 </button>
             </div>
 
-            <!-- Single-Tap Auto-Verification Confirmation Button (NO UTR FIELD!) -->
-            <button type="button" onclick="handleUpiPaymentDoneClick()" style="width: 100%; background: linear-gradient(135deg, #2fe673 0%, #25d366 50%, #15853b 100%); border: none; color: #ffffff; border-radius: 14px; padding: 14px 12px; font-size: 15px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45); margin-bottom: 8px;">
-                <span>✅ Payment Done • Confirm Order</span>
+            <!-- Direct Send Order via WhatsApp Button (Direct WhatsApp KOT Dispatch) -->
+            <button type="button" onclick="confirmAndOpenWhatsAppFromModal()" class="btn-whatsapp-kot-success" style="margin-top: 6px; width: 100%;">
+                <span>💬 Send Order via WhatsApp (+91 91117 89220)</span>
             </button>
-            <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-bottom: 4px;">
-                ⚡ Automatic Verification • Instant Kitchen Order Alert
-            </div>
-            <div style="font-size: 10.5px; color: #a88; line-height: 1.3;">
-                Payment karne ke baad Confirm dabayein — order seedha kitchen counter par chala jayega aur WhatsApp receipt khulegi.
+            <div style="font-size: 11px; color: var(--gold-light); margin-top: 6px; font-weight: 600;">
+                QR scan karne ke baad yahan tap karke direct WhatsApp par slip bhejein
             </div>
         </div>
     </div>
@@ -2686,6 +2712,12 @@
                 return;
             }
 
+            // 0b. PAY VIA MOBILE NUMBER DIRECT OPTION (Direct PhonePe Launch)
+            if (selectedPaymentApp === 'Pay via Mobile No') {
+                openPhonePeWithNumber('PhonePe');
+                return;
+            }
+
             var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220-4@ybl";
             var payeeName = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "ANSH CHHAJED";
             var note = "Lotus Hut Cafe";
@@ -2790,20 +2822,77 @@
             if (modal) modal.style.display = 'none';
         }
 
-        // Automatic Verification Confirmation (Zero manual UTR entry needed!)
-        function handleUpiPaymentDoneClick() {
+        // Direct PhonePe / UPI App Launch using Mobile Number (9111789220)
+        function openPhonePeWithNumber(appName) {
+            var stats = calculateCartTotals();
+            if (stats.count === 0) {
+                alert("Your cart is empty! Please add dishes first.");
+                return;
+            }
+
+            var targetApp = appName || 'PhonePe';
+
+            // 1. Copy mobile number 9111789220 to clipboard immediately
+            copyUpiDetails('9111789220', 'Mobile Number');
+
+            // 2. Auto-confirm order for kitchen & staff screen (Counter Bell will ring!)
+            var cleanApp = targetApp.toUpperCase().replace(/\s+/g, '');
+            var txnId = `MOB_${cleanApp}_${Date.now().toString().slice(-6)}`;
+
+            closeUpiPayModal();
+            confirmPaymentAndPlaceOrder(`${targetApp} (9111789220)`, txnId);
+            showPaymentStatusToast(`✅ ${targetApp} App opening... Order sent to kitchen!`, "success");
+
+            // 3. Launch the chosen UPI app directly
+            var isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            var isAndroid = /Android/i.test(navigator.userAgent);
+            var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220-4@ybl";
+            var payeeName = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "ANSH CHHAJED";
+            var baseQuery = `pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${stats.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Lotus Hut')}`;
+
+            if (targetApp === 'Google Pay') {
+                window.location.href = isIos ? `gpay://upi/pay?${baseQuery}` : `tez://upi/pay?${baseQuery}`;
+            } else if (targetApp === 'Paytm') {
+                window.location.href = `paytmmp://pay?${baseQuery}`;
+            } else {
+                // PhonePe (Default & Primary)
+                if (isIos) {
+                    window.location.href = "phonepe://";
+                } else if (isAndroid) {
+                    try {
+                        window.location.href = "phonepe://";
+                    } catch(e) {
+                        window.location.href = `upi://pay?${baseQuery}`;
+                    }
+                } else {
+                    window.location.href = "phonepe://";
+                }
+            }
+        }
+
+        // Direct Send Order via WhatsApp from Modal (For QR Scan Customers)
+        function confirmAndOpenWhatsAppFromModal() {
             var stats = calculateCartTotals();
             if (stats.count === 0) {
                 alert("Your cart is empty!");
                 return;
             }
 
-            var cleanApp = (selectedPaymentApp || 'DIRECT_UPI').toUpperCase().replace(/\s+/g, '');
-            var txnId = `AUTO_VERIFIED_${cleanApp}_${Date.now().toString().slice(-6)}`;
+            var cleanApp = (selectedPaymentApp || 'DIRECT_QR').toUpperCase().replace(/\s+/g, '');
+            var txnId = `QR_AUTO_${cleanApp}_${Date.now().toString().slice(-6)}`;
 
             closeUpiPayModal();
-            confirmPaymentAndPlaceOrder(selectedPaymentApp || "Direct UPI", txnId);
-            showPaymentStatusToast("✅ Payment Verified! Order sent to kitchen.", "success");
+            confirmPaymentAndPlaceOrder(selectedPaymentApp || "Direct QR", txnId);
+            showPaymentStatusToast("✅ Order confirmed! Opening WhatsApp...", "success");
+
+            setTimeout(function() {
+                openWhatsAppOrderDirect();
+            }, 350);
+        }
+
+        // Backward compatibility handler
+        function handleUpiPaymentDoneClick() {
+            confirmAndOpenWhatsAppFromModal();
         }
 
         // SWIGGY GATEWAY HANDLER: PAYMENT DECLINED / CANCELLED
