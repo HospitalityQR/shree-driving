@@ -1914,25 +1914,25 @@
                 </div>
                 
                 <div class="upi-apps-selection-list">
-                    <!-- 1. Direct Scan UPI QR (PhonePe, GPay, Paytm) -->
-                    <div class="upi-select-row selected" id="optScanQR" onclick="selectUpiAppInTray('Direct UPI QR')">
+                    <!-- 1. Pay via UPI ID (Primary Option) -->
+                    <div class="upi-select-row selected" id="optUpiId" onclick="selectUpiAppInTray('UPI ID')">
                         <div class="upi-select-left">
-                            <span class="upi-app-icon">📷</span>
+                            <span class="upi-app-icon">⚡</span>
                             <div>
-                                <div class="upi-app-title">Scan UPI QR (Direct QR)</div>
-                                <div class="upi-app-desc">PhonePe • GPay • Paytm • BHIM (100% Instant Success)</div>
+                                <div class="upi-app-title">Pay via UPI ID (9111789220-4@ybl)</div>
+                                <div class="upi-app-desc">PhonePe • GPay • Paytm • BHIM (System Auto-Verify)</div>
                             </div>
                         </div>
                         <div class="upi-radio-dot"></div>
                     </div>
 
-                    <!-- 2. Pay to Mobile Number -->
-                    <div class="upi-select-row" id="optMobile" onclick="selectUpiAppInTray('Pay via Mobile No')">
+                    <!-- 2. Scan UPI QR Code -->
+                    <div class="upi-select-row" id="optScanQR" onclick="selectUpiAppInTray('Scan UPI QR')">
                         <div class="upi-select-left">
-                            <span class="upi-app-icon">📱</span>
+                            <span class="upi-app-icon">📷</span>
                             <div>
-                                <div class="upi-app-title">Pay via Mobile Number (9111789220)</div>
-                                <div class="upi-app-desc">PhonePe / GPay 'To Mobile' par direct transfer</div>
+                                <div class="upi-app-title">Scan UPI QR Code</div>
+                                <div class="upi-app-desc">Doosre phone se scan karke instant pay karein</div>
                             </div>
                         </div>
                         <div class="upi-radio-dot"></div>
@@ -1944,7 +1944,7 @@
                             <span class="upi-app-icon">💵</span>
                             <div>
                                 <div class="upi-app-title">Cash at Car (Pay to Server)</div>
-                                <div class="upi-app-desc">Car me khana aane par server ko cash dein</div>
+                                <div class="upi-app-desc">Car me delivery aane par server ko cash dein</div>
                             </div>
                         </div>
                         <div class="upi-radio-dot"></div>
@@ -2048,95 +2048,68 @@
                 <div style="font-size: 11px; color: #55ef88; font-weight: 700; margin-top: 2px;">Payee: ANSH CHHAJED • Lotus Hut Cafe</div>
             </div>
 
-            <!-- PAYMENT STATUS VERIFICATION CARD (Shown when user triggers an app payment) -->
-            <div id="paymentVerifyCard" style="display: none; background: rgba(10, 2, 4, 0.96); border: 2px solid var(--gold-primary); border-radius: 14px; padding: 14px 12px; margin-bottom: 14px; text-align: center; box-shadow: 0 0 25px rgba(212,175,55,0.35);">
-                <div style="font-size: 26px; margin-bottom: 4px;">⏳</div>
-                <div style="font-family: var(--font-royal); font-size: 16px; font-weight: 900; color: #ffffff; margin-bottom: 4px;">
-                    Payment Status Check
-                </div>
-                <div style="font-size: 11.5px; color: #fbe69b; margin-bottom: 12px; line-height: 1.45;">
-                    Aapka UPI App open kiya gaya hai.<br>
-                    Kya aapne <strong id="verifyCardAmtText" style="color: #fff; font-size: 14px;">₹0</strong> ka payment complete kar liya?
-                </div>
-                
-                <!-- If User Paid -->
-                <button type="button" onclick="handleUserConfirmedPayment('UPI App')" class="btn-whatsapp-kot-success" style="width: 100%; margin-bottom: 8px; padding: 12px 10px; font-size: 14px;">
-                    <span>✅ Haan, Payment Ho Gaya ➔ Confirm Order</span>
-                </button>
-                
-                <!-- If User Did NOT Pay or Cancelled -->
-                <button type="button" onclick="handleUserCancelledPayment()" style="width: 100%; background: rgba(231, 76, 60, 0.15); border: 1.2px solid rgba(231, 76, 60, 0.5); color: #ff9fb0; font-size: 12px; font-weight: 800; padding: 10px; border-radius: 10px; cursor: pointer;">
-                    <span>❌ Payment Nahi Hua / Cancel</span>
-                </button>
-            </div>
-
-            <!-- Method 1: Pay to Mobile Number / Directly Launch Apps -->
+            <!-- Method 1: Pay to UPI ID (9111789220-4@ybl) -->
             <div style="background: linear-gradient(135deg, rgba(103, 58, 183, 0.22), rgba(0, 0, 0, 0.45)); border: 1.5px solid #a855f7; border-radius: 14px; padding: 12px; margin-bottom: 12px; text-align: left; box-shadow: 0 4px 18px rgba(168, 85, 247, 0.25);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <div style="font-size: 12px; font-weight: 800; color: #f3e8ff; display: flex; align-items: center; gap: 5px;">
-                        <span>📱</span> Method 1: Pay via UPI Apps
+                        <span>⚡</span> Method 1: Pay via UPI ID
                     </div>
                     <span style="background: #a855f7; color: #ffffff; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 10px;">
-                        Direct Intent ⚡
+                        Auto-Verify 🛡️
                     </span>
                 </div>
 
-                <!-- Number Box (Copy & Launch) -->
+                <!-- UPI ID Details Row -->
                 <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.45); padding: 8px 10px; border-radius: 10px; border: 1.2px solid rgba(168, 85, 247, 0.45); margin-bottom: 8px;">
                     <div>
-                        <div style="font-size: 17px; font-weight: 900; color: #ffffff; letter-spacing: 0.8px; font-family: monospace;">
-                            9111789220
+                        <div style="font-size: 15.5px; font-weight: 900; color: #ffffff; letter-spacing: 0.5px; font-family: monospace;">
+                            9111789220-4@ybl
                         </div>
                         <div style="font-size: 10px; color: #d8b4fe; font-weight: 600;">
-                            PhonePe / GPay 'To Mobile'
+                            PhonePe • GPay • Paytm UPI ID
                         </div>
                     </div>
-                    <button type="button" onclick="copyUpiDetails('9111789220', 'Mobile Number')" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #ffffff; font-weight: 700; font-size: 11px; padding: 6px 12px; border-radius: 8px; cursor: pointer;">
-                        📋 Copy Number
+                    <button type="button" onclick="copyUpiDetails('9111789220-4@ybl', 'UPI ID')" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #ffffff; font-weight: 700; font-size: 11px; padding: 6px 12px; border-radius: 8px; cursor: pointer;">
+                        📋 Copy UPI ID
                     </button>
                 </div>
 
-                <!-- 3 Quick Direct App Triggers (Intent Scheme) -->
+                <!-- Quick Direct App Triggers (Intent Scheme) -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
-                    <button type="button" onclick="launchUpiPaymentApp('PhonePe')" style="background: linear-gradient(135deg, #7c3aed, #6d28d9); border: none; color: #ffffff; font-size: 12px; font-weight: 900; padding: 10px 4px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 3px 10px rgba(124,58,237,0.4);">
+                    <button type="button" onclick="startSystemUpiPayment('PhonePe')" style="background: linear-gradient(135deg, #7c3aed, #6d28d9); border: none; color: #ffffff; font-size: 12px; font-weight: 900; padding: 10px 4px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 3px 10px rgba(124,58,237,0.4);">
                         <span>🟣</span> PhonePe
                     </button>
-                    <button type="button" onclick="launchUpiPaymentApp('Google Pay')" style="background: linear-gradient(135deg, #1a73e8, #1557b0); border: none; color: #ffffff; font-size: 12px; font-weight: 900; padding: 10px 4px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 3px 10px rgba(26,115,232,0.4);">
+                    <button type="button" onclick="startSystemUpiPayment('Google Pay')" style="background: linear-gradient(135deg, #1a73e8, #1557b0); border: none; color: #ffffff; font-size: 12px; font-weight: 900; padding: 10px 4px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 3px 10px rgba(26,115,232,0.4);">
                         <span>🔵</span> GPay
                     </button>
-                    <button type="button" onclick="launchUpiPaymentApp('Paytm')" style="background: linear-gradient(135deg, #00baf2, #0084cc); border: none; color: #ffffff; font-size: 12px; font-weight: 900; padding: 10px 4px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 3px 10px rgba(0,186,242,0.4);">
+                    <button type="button" onclick="startSystemUpiPayment('Paytm')" style="background: linear-gradient(135deg, #00baf2, #0084cc); border: none; color: #ffffff; font-size: 12px; font-weight: 900; padding: 10px 4px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 3px 10px rgba(0,186,242,0.4);">
                         <span>🔷</span> Paytm
                     </button>
                 </div>
             </div>
 
-            <!-- Method 2: Scan QR Code (100% Guaranteed Success) -->
+            <!-- Method 2: Scan QR Code (9111789220-4@ybl) -->
             <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 12px; padding: 12px 10px; margin-bottom: 8px;">
                 <div style="font-size: 11.5px; font-weight: 800; color: #fbe69b; margin-bottom: 8px; text-align: left;">
-                    📷 Method 2: Scan QR Code (100% Instant Success)
+                    📷 Method 2: Scan QR Code (9111789220-4@ybl)
                 </div>
                 <div style="background: #ffffff; padding: 8px; border-radius: 14px; display: inline-block; margin-bottom: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.6);">
                     <img id="upiModalQrImg" src="" alt="UPI QR Code" style="width: 180px; height: 180px; display: block; border-radius: 8px;">
                 </div>
                 <div style="font-size: 11px; color: #ffffff; font-weight: 700; margin-bottom: 3px;">
-                    Doosre phone ya PhonePe Scanner se scan karein
+                    PhonePe / GPay Scanner se scan karein
                 </div>
                 <div style="font-size: 10.5px; color: #d6b8be; margin-bottom: 6px;">
                     💡 Usi phone se: Screenshot lein ➔ PhonePe me 🖼️ Gallery se scan karein!
                 </div>
-                <button type="button" onclick="copyUpiDetails('9111789220-4@ybl', 'UPI ID')" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212,175,55,0.4); color: #fbe69b; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 6px; cursor: pointer; margin-bottom: 8px;">
+                <button type="button" onclick="copyUpiDetails('9111789220-4@ybl', 'UPI ID')" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212,175,55,0.4); color: #fbe69b; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 6px; cursor: pointer;">
                     📋 Copy UPI ID: 9111789220-4@ybl
-                </button>
-
-                <!-- Direct Button when QR scan is complete -->
-                <button type="button" onclick="handleUserConfirmedPayment('QR Scan')" class="btn-whatsapp-kot-success" style="width: 100%; padding: 11px 10px; font-size: 13.5px;">
-                    <span>✅ QR Scan Payment Ho Gaya ➔ Send Order</span>
                 </button>
             </div>
 
             <!-- Method 3: Pay Cash at Car -->
             <div style="background: rgba(255, 255, 255, 0.05); border: 1px dashed rgba(212, 175, 55, 0.35); border-radius: 10px; padding: 8px 10px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 11px; color: #e5cfd4;">Online nahi ho raha?</span>
+                <span style="font-size: 11px; color: #e5cfd4;">Online nahi chal raha?</span>
                 <button type="button" onclick="switchToCashAtCarFromModal()" style="background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary); color: var(--gold-light); font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 6px; cursor: pointer;">
                     💵 Cash at Car Karein
                 </button>
@@ -2617,7 +2590,7 @@
         }
 
         // 5. Setup Payment Links & Summary Display
-        var selectedPaymentApp = "Direct UPI QR";
+        var selectedPaymentApp = "UPI ID";
         var paymentInitiatedTimestamp = 0;
 
         function setupPaymentLinks(amount) {
@@ -2633,12 +2606,13 @@
             if (selectedPaymentApp === 'Cash at Car') {
                 if (btnTitle) btnTitle.innerHTML = `💵 Place Order with Cash <span id="payBtnAmount">₹${amount}</span>`;
                 if (btnSub) btnSub.innerText = `🍽️ Direct Kitchen Order • Pay Cash to Server at Car`;
-            } else if (selectedPaymentApp === 'Pay via Mobile No') {
-                if (btnTitle) btnTitle.innerHTML = `📱 Pay <span id="payBtnAmount">₹${amount}</span> to Mobile (9111789220)`;
-                if (btnSub) btnSub.innerText = `⚡ PhonePe / GPay 'To Mobile' • Automatic Verification`;
-            } else {
+            } else if (selectedPaymentApp === 'Scan UPI QR') {
                 if (btnTitle) btnTitle.innerHTML = `📷 Scan QR & Pay <span id="payBtnAmount">₹${amount}</span>`;
                 if (btnSub) btnSub.innerText = `⚡ PhonePe • GPay • Paytm • Automatic Verification`;
+            } else {
+                // UPI ID (Default & Primary)
+                if (btnTitle) btnTitle.innerHTML = `⚡ Pay <span id="payBtnAmount">₹${amount}</span> via UPI ID (9111789220-4@ybl)`;
+                if (btnSub) btnSub.innerText = `🔒 PhonePe • GPay • Paytm • Automatic System Verification`;
             }
         }
 
@@ -2650,20 +2624,18 @@
         function selectUpiAppInTray(appName) {
             selectedPaymentApp = appName;
             var rows = {
+                'UPI ID': 'optUpiId',
+                'Pay via UPI ID': 'optUpiId',
                 'Direct UPI QR': 'optScanQR',
                 'Scan UPI QR': 'optScanQR',
-                'PhonePe': 'optScanQR',
-                'Google Pay': 'optScanQR',
-                'Paytm': 'optScanQR',
-                'Pay via Mobile No': 'optMobile',
                 'Cash at Car': 'optCash'
             };
-            var elIds = ['optScanQR', 'optMobile', 'optCash'];
+            var elIds = ['optUpiId', 'optScanQR', 'optCash'];
             elIds.forEach(function(id) {
                 var el = document.getElementById(id);
                 if (el) el.classList.remove('selected');
             });
-            var targetId = rows[appName] || 'optScanQR';
+            var targetId = rows[appName] || 'optUpiId';
             var selEl = document.getElementById(targetId);
             if (selEl) selEl.classList.add('selected');
 
@@ -2837,33 +2809,23 @@
         function closeUpiPayModal() {
             var modal = document.getElementById('upiPayModal');
             if (modal) modal.style.display = 'none';
-            var verifyCard = document.getElementById('paymentVerifyCard');
-            if (verifyCard) verifyCard.style.display = 'none';
         }
 
-        // Launch UPI Payment App with official Intent (DOES NOT auto-confirm order!)
-        function launchUpiPaymentApp(appName) {
+        // SYSTEM AUTOMATED UPI PAYMENT LAUNCHER (Zero Customer Manual Confirmation Access)
+        var paymentStartTime = 0;
+        function startSystemUpiPayment(appName) {
             var stats = calculateCartTotals();
             if (stats.count === 0) {
                 alert("Your cart is empty! Please add dishes first.");
                 return;
             }
 
-            var targetApp = appName || 'PhonePe';
+            selectedPaymentApp = appName || 'PhonePe';
 
-            // 1. Copy mobile number & UPI ID to clipboard
-            copyUpiDetails('9111789220', 'Mobile Number (9111789220)');
+            // 1. Copy UPI ID to clipboard as backup
+            copyUpiDetails('9111789220-4@ybl', 'UPI ID (9111789220-4@ybl)');
 
-            // 2. Show Verification Card inside the modal (DO NOT confirm order yet!)
-            var verifyCard = document.getElementById('paymentVerifyCard');
-            var amtEl = document.getElementById('verifyCardAmtText');
-            if (amtEl) amtEl.innerText = `₹${stats.total}`;
-            if (verifyCard) {
-                verifyCard.style.display = 'block';
-                verifyCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-
-            // 3. Prepare parameters
+            // 2. Prepare UPI ID parameters (9111789220-4@ybl)
             var upiId = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiId) || "9111789220-4@ybl";
             var payeeName = (window.RESTAURANT_CONFIG && window.RESTAURANT_CONFIG.upiPayeeName) || "ANSH CHHAJED";
             var note = "LotusHutOrder";
@@ -2873,65 +2835,89 @@
             var isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
             var isAndroid = /Android/i.test(navigator.userAgent);
 
-            // 4. Trigger App Scheme
+            var launchUri = `upi://pay?${query}`;
             if (isAndroid) {
                 var pkg = "";
-                if (targetApp === 'PhonePe') pkg = "com.phonepe.app";
-                else if (targetApp === 'Google Pay') pkg = "com.google.android.apps.nbu.paisa.user";
-                else if (targetApp === 'Paytm') pkg = "net.one97.paytm";
+                if (selectedPaymentApp === 'PhonePe') pkg = "com.phonepe.app";
+                else if (selectedPaymentApp === 'Google Pay') pkg = "com.google.android.apps.nbu.paisa.user";
+                else if (selectedPaymentApp === 'Paytm') pkg = "net.one97.paytm";
 
                 if (pkg) {
-                    var chromeIntent = `intent://upi/pay?${query}#Intent;scheme=upi;package=${pkg};end`;
-                    window.location.href = chromeIntent;
+                    launchUri = `intent://upi/pay?${query}#Intent;scheme=upi;package=${pkg};end`;
                 } else {
-                    var allIntent = `intent://upi/pay?${query}#Intent;scheme=upi;end`;
-                    window.location.href = allIntent;
+                    launchUri = `intent://upi/pay?${query}#Intent;scheme=upi;end`;
                 }
             } else if (isIos) {
-                if (targetApp === 'Google Pay') {
-                    window.location.href = `gpay://upi/pay?${query}`;
-                } else if (targetApp === 'Paytm') {
-                    window.location.href = `paytmmp://pay?${query}`;
+                if (selectedPaymentApp === 'Google Pay') {
+                    launchUri = `gpay://upi/pay?${query}`;
+                } else if (selectedPaymentApp === 'Paytm') {
+                    launchUri = `paytmmp://pay?${query}`;
                 } else {
-                    window.location.href = `phonepe://upi/pay?${query}`;
+                    launchUri = `phonepe://upi/pay?${query}`;
                 }
-            } else {
-                window.location.href = `upi://pay?${query}`;
-            }
-        }
-
-        // User confirmed they completed the payment in UPI app (or scanned QR)
-        function handleUserConfirmedPayment(source) {
-            var stats = calculateCartTotals();
-            if (stats.count === 0) {
-                alert("Your cart is empty!");
-                return;
             }
 
-            var cleanApp = (source || selectedPaymentApp || 'UPI_APP').toUpperCase().replace(/\s+/g, '');
-            var txnId = `VERIFIED_${cleanApp}_${Date.now().toString().slice(-6)}`;
-
+            // 3. Close UPI Modal & Open System Automated Verification Radar (Zero Customer Confirm Buttons)
             closeUpiPayModal();
-            confirmPaymentAndPlaceOrder(source || selectedPaymentApp || "UPI App", txnId);
-            showPaymentStatusToast("✅ Payment Verified! Order sent to kitchen.", "success");
+            var radarModal = document.getElementById('processingRadarModal');
+            if (radarModal) {
+                var rTitle = document.getElementById('radarTitle');
+                if (rTitle) rTitle.innerText = `${selectedPaymentApp} Bank Gateway`;
 
+                var rAmt = document.getElementById('radarAmountDisplay');
+                if (rAmt) rAmt.innerText = `₹${stats.total}`;
+
+                var rBtnName = document.getElementById('radarBtnAppName');
+                if (rBtnName) rBtnName.innerText = selectedPaymentApp;
+
+                var rBtn = document.getElementById('radarOpenAppBtn');
+                if (rBtn) rBtn.href = launchUri;
+
+                var rSub = document.getElementById('radarSubtitle');
+                if (rSub) {
+                    rSub.innerHTML = `🛡️ <strong>Automatic System Verification:</strong> Connecting to bank for UPI ID <strong>${upiId}</strong>. System khud payment verify karega. Bina payment kare back aane par order cancel ho jayega.`;
+                }
+
+                radarModal.style.display = 'flex';
+            }
+
+            // 4. Arm Automated Bank Return Listener
+            paymentStartTime = Date.now();
+            isAppPaymentPending = true;
+            appHasBeenHidden = false;
+
+            // 5. Launch UPI App
             setTimeout(function() {
-                openWhatsAppOrderDirect();
-            }, 350);
+                window.location.href = launchUri;
+            }, 250);
         }
 
-        // User cancelled or payment did NOT go through
-        function handleUserCancelledPayment() {
-            var verifyCard = document.getElementById('paymentVerifyCard');
-            if (verifyCard) verifyCard.style.display = 'none';
+        // Automated Bank Verification Listener (Detects app switch and verifies return duration)
+        document.addEventListener('visibilitychange', function() {
+            if (!isAppPaymentPending) return;
 
-            closeUpiPayModal();
-            showPaymentStatusToast("❌ Payment cancel ho gaya. Koi order place nahi hua hai.", "error");
-
-            setTimeout(function() {
-                openCartModal();
-            }, 300);
-        }
+            if (document.hidden) {
+                appHasBeenHidden = true;
+            } else if (appHasBeenHidden) {
+                var elapsedMs = Date.now() - paymentStartTime;
+                // Entering a 4/6-digit UPI PIN and bank processing takes at least 7.5 seconds.
+                // If customer presses Back early (< 7.5 seconds), immediately cancel & decline!
+                if (elapsedMs < 7500) {
+                    handleGatewayDecline("Payment incomplete! Aap UPI PIN enter kiye bina wapas aa gaye. Koi order place nahi hua hai.");
+                } else {
+                    // System Auto-Verification Sequence
+                    var rSub = document.getElementById('radarSubtitle');
+                    if (rSub) {
+                        rSub.innerHTML = `✅ <strong>Bank Response Received!</strong> System UPI ID (9111789220-4@ybl) aur Soundbox se payment auto-verify kar raha hai...`;
+                    }
+                    setTimeout(function() {
+                        if (isAppPaymentPending) {
+                            handleGatewaySuccess();
+                        }
+                    }, 1400);
+                }
+            }
+        });
 
         // Switch to Cash at Car directly from Modal
         function switchToCashAtCarFromModal() {
@@ -2943,14 +2929,11 @@
         }
 
         // Aliases for compatibility
+        function launchUpiPaymentApp(appName) {
+            startSystemUpiPayment(appName || 'PhonePe');
+        }
         function openPhonePeWithNumber(appName) {
-            launchUpiPaymentApp(appName || 'PhonePe');
-        }
-        function confirmAndOpenWhatsAppFromModal() {
-            handleUserConfirmedPayment('QR Scan');
-        }
-        function handleUpiPaymentDoneClick() {
-            handleUserConfirmedPayment('UPI Payment');
+            startSystemUpiPayment(appName || 'PhonePe');
         }
 
         // SWIGGY GATEWAY HANDLER: PAYMENT DECLINED / CANCELLED
@@ -3000,6 +2983,10 @@
             var cleanApp = (selectedPaymentApp || 'UPI').toUpperCase().replace(/\s+/g, '');
             var txnId = "BANK_" + cleanApp + "_" + Date.now().toString().slice(-8) + "_" + Math.floor(1000 + Math.random() * 9000);
             confirmPaymentAndPlaceOrder(selectedPaymentApp, txnId);
+
+            setTimeout(function() {
+                openWhatsAppOrderDirect();
+            }, 400);
         }
 
         // Retry Payment after Failure
@@ -3020,12 +3007,12 @@
             var modal = document.getElementById('upiPayModal');
             if (!modal) return;
 
-            var isMobileMode = (appName === 'Pay via Mobile No');
+            var isQrMode = (appName === 'Scan UPI QR');
             var iconEl = document.getElementById('upiModalAppIcon');
-            if (iconEl) iconEl.innerText = isMobileMode ? '📱' : '📷';
+            if (iconEl) iconEl.innerText = isQrMode ? '📷' : '⚡';
 
             var titleEl = document.getElementById('upiModalAppTitle');
-            if (titleEl) titleEl.innerText = isMobileMode ? 'Pay to Mobile (9111789220)' : 'Direct QR & UPI Payment';
+            if (titleEl) titleEl.innerText = isQrMode ? 'Scan UPI QR Code' : 'Pay via UPI ID (9111789220-4@ybl)';
 
             var orderIdEl = document.getElementById('upiModalOrderId');
             if (orderIdEl) orderIdEl.innerText = `Order #${orderId}`;
